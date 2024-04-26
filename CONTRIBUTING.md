@@ -8,4 +8,4 @@
 
 ## Reccomended VSCode Extensions
 Reccomended Extensions are included in the .code-workspace file.
-Required extensions are PROS
+Required extensions are: PROS, (C/C++ or Clangd)
