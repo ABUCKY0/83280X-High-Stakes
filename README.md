@@ -1,4 +1,4 @@
-<img src="blob:chrome-untrusted://media-app/f2eaff52-f90f-47ef-9e01-1bafbfa39acd" alt="LC Robotics (1280 x 640 px).png"/>![image](https://github.com/ABUCKY0/2024-High-Stakes/assets/81783950/b4a7c8b1-959e-4a4b-a0c2-f86285986757)
+![image](https://github.com/ABUCKY0/2024-High-Stakes/assets/81783950/b4a7c8b1-959e-4a4b-a0c2-f86285986757)
 
 # 83280X High Stakes 2024 Codebase 
 
