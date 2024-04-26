@@ -1,6 +1,6 @@
 ![image](https://github.com/ABUCKY0/2024-High-Stakes/assets/81783950/b4a7c8b1-959e-4a4b-a0c2-f86285986757)
 
-# 83280X High Stakes 2024 Codebase 
+# 83280X High Stakes 2024 
 
 This project contains the team's codebase for the 2024-2025 High Stakes Season. 
 
