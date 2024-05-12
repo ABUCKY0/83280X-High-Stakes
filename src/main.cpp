@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include "robotlog/robotlog.h"
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -53,4 +53,16 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {}
+void opcontrol() {
+    ROBOTLOG::LOGGER logger;
+    logger.rlog(ROBOTLOG::Level::INFO, "Hello, World!");
+    while (true) {
+        logger.rlog(ROBOTLOG::Level::INFO, "Hello, World!");
+        logger.info("Hello, World!");
+        logger.debug("Hello, World!");
+        logger.warning("Hello, World!");
+        logger.error("Hello, World!");
+        logger.data("debug doesn't have a log level, so it's useful for logging something that needs to be logged as if you were just cout << ing it.");
+        pros::delay(2);
+    }
+}
