@@ -1,32 +1,14 @@
 #include "main.h"
-#include <algorithm>
+#include <algorithm> // IWYU pragma: keep
+#include <cstddef> // IWYU pragma: keep
 #include <iostream>
+#include <optional> // IWYU pragma: keep
 #include "./Constants/constants.h"
 #include "./AutonomousSelector/BuildInfo/build_info.h"
 #include "./AutonomousSelector/Selector.hpp"
 pros::adi::AnalogOut wings('A');
 
-
-// Controller master(E_CONTROLLER_MASTER);
-// Motor left_frt_mtr(MOTOR_PORT_LEFT_FRONT);
-// Motor left_mid_mtr(MOTOR_PORT_LEFT_MIDDLE);
-// Motor left_bck_mtr(MOTOR_PORT_LEFT_BACK);
-// // group motors
-// Motor_Group left_dt({left_frt_mtr, left_mid_mtr, left_bck_mtr});
-
-// Motor right_frt_mtr(MOTOR_PORT_RIGHT_FRONT);
-// Motor right_mid_mtr(MOTOR_PORT_RIGHT_MIDDLE);
-// Motor right_bck_mtr(MOTOR_PORT_RIGHT_BACK);
-
-// // group motors
-// Motor_Group right_dt({right_frt_mtr, right_mid_mtr, right_bck_mtr});
-
-// Motor intake1 = Motor(MOTOR_PORT_INTAKE);
-// Motor intake2 = Motor(MOTOR_PORT_INTAKE_2);
-// // Reverse
-// MotorGroup intake({intake1, intake2});
-
-// Motor flywheel = Motor(MOTOR_PORT_FLYWHEEL);
+ROBOTLOG::LOGGER logger();
 
 void actuateWings(bool state)
 {
@@ -177,13 +159,13 @@ void autonomous()
 {
   cout << "[MAIN] (INFO): [AUTON] Running Autonomous\n";
   // Run the selected auton
-  if (gameMode == 0 || gameMode == NULL)
+  if (gameMode == 1)
   {
-    runMatchAuton(auton);
+    runSkillsAuton(auton);
   }
   else
   {
-    runSkillsAuton(auton);
+    runMatchAuton(auton);
   }
 }
 
@@ -210,6 +192,7 @@ void opcontrol()
 {
   while (true)
   {
+
     pros::delay(20);
   }
 }

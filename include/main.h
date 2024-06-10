@@ -41,7 +41,8 @@
  */
 //#include "okapi/api.hpp"
 //#include "pros/api_legacy.h"
-#include "pros/apix.h"
+#include "pros/apix.h" // IWYU pragma: keep
+#include "robotlog/robotlog.h"
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
  * Motor, you can use the namespace with the following commented out line.
@@ -77,10 +78,11 @@ void opcontrol(void);
 /**
  * You can add C++-only headers here
  */
-#include <iostream>
-#include <string>
-#include <random>
-#include <vector>
+#include <iostream> // IWYU pragma: keep
+#include <string> // IWYU pragma: keep
+#include <random> // IWYU pragma: keep
+#include <vector> // IWYU pragma: keep
+#include "lemlib/api.hpp" // IWYU pragma: keep
 
 #endif
 
