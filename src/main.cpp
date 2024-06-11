@@ -1,5 +1,28 @@
 #include "main.h"
-#include "robotlog/robotlog.h"
+#include <algorithm> // IWYU pragma: keep
+#include <cstddef> // IWYU pragma: keep
+#include <iostream>
+#include <optional> // IWYU pragma: keep
+#include "./Constants/constants.h"
+#include "./AutonomousSelector/BuildInfo/build_info.h"
+#include "./AutonomousSelector/Selector.hpp"
+pros::adi::AnalogOut wings('A');
+
+ROBOTLOG::LOGGER logger();
+
+void actuateWings(bool state)
+{
+  // Actuate the wings
+  estpsi = estpsi - 5;
+  if (state)
+  {
+    wings.set_value(1);
+  }
+  else
+  {
+    wings.set_value(0);
+  }
+}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -7,14 +30,93 @@
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() {}
+void initialize()
+{
+#if USE_UI == 1
+  cout << "[MAIN] (INFO): [UI_INIT] Marble UI\n";
+  cout << "Running Marble UI\n";
+  init_marble_ui();
+  create_tasks();
+
+#else
+  cout << "[MAIN] (INFO): [NOUI_INIT] No UI Initalized\n";
+#endif
+  std::cout << "Build Date: " << std::string(build_date) << std::endl;
+  std::cout << "Git Branch: " << std::string(git_branch) << std::endl;
+  std::cout << "Git Commit: " << std::string(git_commit) << std::endl;
+  std::cout << "Compiler Version: " << std::string(compiler_version) << std::endl;
+  std::cout << "Build Environment: " << std::string(build_environment) << std::endl;
+  std::cout << "Build Number: " << build_number << std::endl;
+  std::cout << "Developer Name: " << std::string(developer_name) << std::endl;
+  std::cout << "Application Environment: " << std::string(application_environment) << std::endl;
+  std::cout << "Codebase Version: " << std::string(codebase_version) << std::endl;
+
+}
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {}
+void disabled() { cout << "Disabled"; }
+
+void runMatchAuton(char auton)
+{
+  // Run the selected match auton
+  switch (auton)
+  {
+  case 0:
+    cout << "[MAIN] (INFO): [AUTONRUN] Preload Only Autonomous (ID:0)\n";
+    // Preload Only Auton
+    break;
+  case 1:
+    cout << "[MAIN] (INFO): [AUTONRUN] Load Side Autonomous (ID:1)\n";
+    
+    // Load Side Auton
+    break;
+  case 2:
+    cout << "[MAIN] (INFO): [AUTONRUN] Goal Side Autonomous (ID:2)\n";
+    // Goal Side Auton
+    break;
+  case 3:
+    cout << "[MAIN] (INFO): [AUTONRUN] No Autonomous (ID:3)\n";
+    // No Autonomous
+    break;
+  default:
+    cout << "[MAIN] (INFO): [AUTONRUN] Preload Only Autonomous [Default State] "
+            "(ID:0 [-1])\n";
+    // run 0
+    break;
+  }
+}
+void runSkillsAuton(char auton)
+{
+  // Run the selected skills auton
+  switch (auton)
+  {
+  case 0:
+    cout << "[MAIN] (INFO): [SKILLSRUN] Over Barrier Autonomous (ID:0)\n";
+    // Over Barrier Auton
+    break;
+  case 1:
+    cout << "[MAIN] (INFO): [SKILLSRUN] Under Sidebar Autonomous (ID:1)\n";
+    // Under Side Bar Auton
+    break;
+  case 2:
+    cout << "[MAIN] (INFO): [SKILLSRUN] Launch Only Autonomous (ID:2)\n";
+    // Launch-Only Auton
+    break;
+  case 3:
+    cout << "[MAIN] (INFO): [SKILLSRUN] No Autonomous (ID:3)\n";
+    // No Autonomous
+    break;
+  default:
+    cout << "[MAIN] (INFO): [AUTONRUN] Over Barrier Autonomous [Default State] "
+            "(ID:0 [-1])\n";
+    // run 0
+    break;
+  }
+}
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
@@ -25,7 +127,10 @@ void disabled() {}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+void competition_initialize()
+{
+  cout << "[MAIN] (INFO): [INIT] Competition Initalize\n";
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -38,7 +143,25 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous()
+{
+  cout << "[MAIN] (INFO): [AUTON] Running Autonomous\n";
+  // Run the selected auton
+  if (gameMode == 1)
+  {
+    runSkillsAuton(auton);
+  }
+  else
+  {
+    runMatchAuton(auton);
+  }
+}
+
+uint32_t RGBToUint32(uint8_t red, uint8_t green, uint8_t blue)
+{
+  // Pack the RGB components into a 32-bit unsigned integer
+  return ((uint32_t)red << 16) | ((uint32_t)green << 8) | blue;
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -53,16 +176,11 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {
-    ROBOTLOG::LOGGER logger;
-    logger.rlog(ROBOTLOG::Level::INFO, "Hello, World!");
-    while (true) {
-        logger.rlog(ROBOTLOG::Level::INFO, "Hello, World!");
-        logger.info("Hello, World!");
-        logger.debug("Hello, World!");
-        logger.warning("Hello, World!");
-        logger.error("Hello, World!");
-        logger.data("debug doesn't have a log level, so it's useful for logging something that needs to be logged as if you were just cout << ing it.");
-        pros::delay(2);
-    }
+void opcontrol()
+{
+  while (true)
+  {
+
+    pros::delay(20);
+  }
 }

@@ -2,10 +2,10 @@
 #define ROBOTLOG_H
 
 #include "colors.h"
-#include "main.h"
 #include "pros/rtos.hpp"
 #include <atomic>
 #include <chrono>
+#include <cstdint>
 #include <cstdio>
 #include <fstream>
 #include <mutex>
@@ -14,6 +14,7 @@
 #include <regex>
 #include <sstream>
 #include <string>
+#include <iostream>
 
 #define __FILENAME__                                                           \
   (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
@@ -55,6 +56,8 @@ private:
   std::optional<int> line;
   std::optional<Level> level;
   std::optional<std::string> message;
+  // time
+  std::optional<uint32_t> time;
 
 public:
   LogMessage(Level level, std::string message, std::string file, int line) {
@@ -62,6 +65,7 @@ public:
     this->message = std::make_optional(message);
     this->file = std::make_optional(file);
     this->line = std::make_optional(line);
+    this->time = std::make_optional(pros::millis());
   }
 
   std::string getFile() { return this->file.value_or(""); }
@@ -166,6 +170,8 @@ public:
     return "";
   }
 
+  uint32_t getTime() { return this->time.value_or(0); }
+
   std::string format(std::string formatString,
                      std::string COLOR_ERR = ROBOTLOG::Colors::RED,
                      std::string COLOR_WARN = ROBOTLOG::Colors::YELLOW,
@@ -217,6 +223,9 @@ public:
     formatString =
         std::regex_replace(formatString, std::regex("<MESSAGE>"), // Message
                            this->getMessage());
+    formatString = std::regex_replace(
+        formatString, std::regex("<TIME>"), // Time
+        std::to_string(this->getTime()));
 
     return formatString;
   }
@@ -229,7 +238,7 @@ private:
                                // format, this will prevent updating that. This
                                // blocks user code, but so be it
   std::optional<std::string> logFormat =
-      "<CBLEVEL> <FILE>:<LINE> - <MESSAGE>"; // replace <LEVEL> with
+      "<CBLEVEL> (<TIME>ms) <FILE>:<LINE> - <MESSAGE>"; // replace <LEVEL> with
                                              // <CLEVEL> to colorize the
                                              // level, <BLEVEL> to put
                                              // brackets around the
@@ -248,6 +257,7 @@ private:
   std::string COLOR_INFO = ROBOTLOG::Colors::GREEN;
   std::string COLOR_DEBUG = ROBOTLOG::Colors::MAGENTA;
   pros::Mutex logmutex;
+  std::ofstream file;
 
   static void taskEntry(void *param) {
     ROBOTLOG::LOGGER *logger = static_cast<ROBOTLOG::LOGGER *>(param);
@@ -260,8 +270,7 @@ private:
         pros::delay(10);
       }
 
-      // std::ofstream file(this->filePath.value_or(""));
-      constexpr static char maxlogwrites = 10;
+      constexpr static char maxlogwrites = 100;
       long availableLogs = this->logs.size();
       short loopindices = 0;
       if (maxlogwrites >= availableLogs) {
@@ -270,12 +279,30 @@ private:
         loopindices = maxlogwrites;
       }
 
+      // Catchup on logs (log up to 250 at a time instead of 100 max)
+      if (availableLogs > 250) {
+        loopindices = 250;
+      }
+      // debug output logs.size()
+      std::cout << "Logs: " << this->logs.size() << "\n";
       for (int i = 0; i < loopindices; i++) {
         LogMessage msg = this->logs.front();
         std::string logmsg = msg.format(
-            this->logFormat.value_or("<CBLEVEL> <FILE>:<LINE> - <MESSAGE>"));
-        std::cout << logmsg << "\n";
+            this->logFormat.value_or("<CBLEVEL> (<TIME>ms) <FILE>:<LINE> - <MESSAGE>"));
+        // std::cout << logmsg << "\n";
+        logmsg = logmsg + "\n";
+        std::printf("%s", logmsg.c_str());
         this->logs.pop();
+
+        if (file.is_open()) {
+          file << logmsg;
+        }
+      }
+      if (file.is_open()) {
+        file << std::flush;
+        file.flush();
+        file.close();
+        file.open(filePath.value(), std::ios::app);
       }
       pros::delay(5);
     }
@@ -287,6 +314,19 @@ public:
    *
    */
   LOGGER() : worker(&taskEntry, this, "(VexLog) LogProcessor") {
+    this->addlog(Level::debug, "Initalized VexLog @ " +
+                                   std::to_string(pros::millis()) + "ms");
+  }
+
+  /**
+   * @brief Construct a new LOGGER object
+   *
+   * @param filePath the file path to save logs to
+   */
+  LOGGER(std::string filePath)
+      : worker(&taskEntry, this, "(VexLog) LogProcessor (File Enabled)") {
+    this->file.open(filePath, std::ios::app);
+    this->filePath = std::make_optional(filePath);
     this->addlog(Level::debug, "Initalized VexLog @ " +
                                    std::to_string(pros::millis()) + "ms");
   }
@@ -336,11 +376,11 @@ public:
 
   /** @brief Log a message with a specified log level
    *
-   * Log a message with a specified log level. Automatically include the filename
-   * and line number in the log message.
+   * Log a message with a specified log level. Automatically include the
+   * filename and line number in the log message.
    * @param level Log level
    * @param message Log message
-  */
+   */
   inline void ilog(ROBOTLOG::Level level, std::string message, std::string file,
                    int line) {
     this->addlog(level, message, file, line);
@@ -351,7 +391,7 @@ public:
    * Log a message with log level INFO. Automatically include the filename
    * and line number in the log message.
    * @param message Log message
-  */
+   */
   inline void info(std::string message) {
     this->addlog(ROBOTLOG::Level::INFO, message, __FILENAME__, __LINE__);
   }
@@ -361,7 +401,7 @@ public:
    * Log a message with log level DEBUG. Automatically include the filename
    * and line number in the log message.
    * @param message debug message
-  */
+   */
   inline void debug(std::string message) {
     this->addlog(ROBOTLOG::Level::DEBUG, message, __FILENAME__, __LINE__);
   }
@@ -371,7 +411,7 @@ public:
    * Log a message with log level WARNING. Automatically include the filename
    * and line number in the log message.
    * @param message Log message
-  */
+   */
   inline void warning(std::string message) {
     this->addlog(ROBOTLOG::Level::WARNING, message, __FILENAME__, __LINE__);
   }
@@ -381,7 +421,7 @@ public:
    * Log a message with log level ERROR. Automatically include the filename
    * and line number in the log message.
    * @param message Log message
-  */
+   */
   inline void error(std::string message) {
     this->addlog(ROBOTLOG::Level::ERROR, message, __FILENAME__, __LINE__);
   }
@@ -391,11 +431,10 @@ public:
    * Log a message with log level DATA. Automatically include the filename
    * and line number in the log message.
    * @param message Log message
-  */
+   */
   inline void data(std::string message) {
     this->addlog(ROBOTLOG::Level::DATA, message, __FILENAME__, __LINE__);
   }
-
 
   /**
    * @brief Set the Console Log Level
@@ -404,10 +443,10 @@ public:
    * than or equal to the console log level will be printed to the console.
    * @param level the new console log level
    */
-  void setConsoleLogLevel(ROBOTLOG::Level level) { this->consoleLogLevel = level; }
-
+  void setConsoleLogLevel(ROBOTLOG::Level level) {
+    this->consoleLogLevel = level;
+  }
 };
-
 
 // /**
 //  * Macro to generate log entries
@@ -418,29 +457,32 @@ public:
 //  * @param level Log level
 //  * @param message Log message
 //  */
- #define rlog(level, message) LOGGER::ilog(level, message, __FILENAME__, __LINE__)
+#define rlog(level, message)                                                   \
+  LOGGER::ilog(level, message, __FILENAME__, __LINE__)
 
 // /**
 //  * @brief Macro to generate log entries with log level INFO
 //  *
-//  * Used when a info message is to be logged. Automatically include the filename
+//  * Used when a info message is to be logged. Automatically include the
+//  filename
 //  * and line number in the debug message.
 //  *
 //  * @param message Log message
 //  * @example info("This is an info message");
 //  */
-#define rinfo(message)  LOGGER::info(message)
+#define rinfo(message) LOGGER::info(message)
 
 // /**
 //  * @brief Macro to generate log entries with log level DEBUG
 //  *
-//  * Used when an debug message is to be logged. Automatically include the filename
+//  * Used when an debug message is to be logged. Automatically include the
+//  filename
 //  * and line number in the info message.
 //  *
 //  * @param message debug message
 //  * @example debug("This is a debug message");
 //  */
-#define rdebug(message)                                                         \
+#define rdebug(message)                                                        \
   LOGGER::addlog(ROBOTLOG::Level::DEBUG, message, __FILENAME__, __LINE__)
 
 // /**
@@ -452,7 +494,7 @@ public:
 //  * @param message Log message
 //  * @example warning("This is a warning message");
 //  */
-#define rwarning(message)                                                       \
+#define rwarning(message)                                                      \
   LOGGER::addlog(ROBOTLOG::Level::WARNING, message, __FILENAME__, __LINE__)
 
 // /**
@@ -463,19 +505,20 @@ public:
 //  * @param message Log message
 //  * @example error("This is an error message");
 //  */
-#define rerror(message)                                                         \
+#define rerror(message)                                                        \
   LOGGER::addlog(ROBOTLOG::Level::ERROR, message, __FILENAME__, __LINE__)
 
 // /**
 //  * @brief Macro to generate log entries with log level DATA. Only prints the
 //  * message, no formatting.
 //  *
-//  * Used when raw data should be printed/saved. Does not add any extra formatting
+//  * Used when raw data should be printed/saved. Does not add any extra
+//  formatting
 //  * to the message on the console or in the file.
 //  * @param message Log message
 //  * @example data("This is a data-only message");
 //  */
-#define rdata(message)                                                          \
+#define rdata(message)                                                         \
   LOGGER::addlog(ROBOTLOG::Level::DATA, message, __FILENAME__, __LINE__)
 
 #endif
