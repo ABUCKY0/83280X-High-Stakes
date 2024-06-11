@@ -32,18 +32,6 @@ void actuateWings(bool state)
  */
 void initialize()
 {
-//   intake2.set_reversed(true);
-//   // set gearset
-//   left_frt_mtr.set_gearing(MOTOR_GEARSET_18);
-//   left_mid_mtr.set_gearing(MOTOR_GEARSET_18);
-//   left_bck_mtr.set_gearing(MOTOR_GEARSET_18);
-//   right_frt_mtr.set_gearing(MOTOR_GEARSET_18);
-//   right_mid_mtr.set_gearing(MOTOR_GEARSET_18);
-//   right_bck_mtr.set_gearing(MOTOR_GEARSET_18);
-//   flywheel.set_gearing(MOTOR_GEARSET_06);
-
-//   left_dt.set_gearing(MOTOR_GEARSET_18);
-//   right_dt.set_gearing(MOTOR_GEARSET_18);
 #if USE_UI == 1
   cout << "[MAIN] (INFO): [UI_INIT] Marble UI\n";
   cout << "Running Marble UI\n";
