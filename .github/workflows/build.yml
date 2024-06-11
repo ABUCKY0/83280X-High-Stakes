@@ -17,4 +17,4 @@ jobs:
 
       - name: Run LemLib/pros-build
         id: test
-        uses: LemLib/pros-build
+        uses: LemLib/pros-build@v2.0.1
