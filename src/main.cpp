@@ -6,23 +6,15 @@
 #include "./Constants/constants.h"
 #include "./AutonomousSelector/BuildInfo/build_info.h"
 #include "./AutonomousSelector/Selector.hpp"
-pros::adi::AnalogOut wings('A');
+#include "pros/misc.h"
+#include "pros/misc.hpp"
+#include "pros/motor_group.hpp"
 
 ROBOTLOG::LOGGER logger();
 
-void actuateWings(bool state)
-{
-  // Actuate the wings
-  estpsi = estpsi - 5;
-  if (state)
-  {
-    wings.set_value(1);
-  }
-  else
-  {
-    wings.set_value(0);
-  }
-}
+pros::Controller master(CONTROLLER_MASTER);
+pros::MotorGroup leftdt({1, 2, 3});
+pros::MotorGroup rightdt({11, 12, 13});
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -180,7 +172,8 @@ void opcontrol()
 {
   while (true)
   {
-
+    leftdt.move(master.get_analog(ANALOG_LEFT_Y));
+    rightdt.move(master.get_analog(ANALOG_RIGHT_Y));
     pros::delay(20);
   }
 }
