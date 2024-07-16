@@ -2,6 +2,8 @@
 #include "pros/apix.h"
 #include "./Helpers/helpers.h"
 #include "../Constants/constants.h"
+#include "./BuildInfo/build_info.h"
+#include <sstream>
 #if USE_UI == 1
 
 lv_obj_t *auton_selector;
@@ -345,6 +347,11 @@ void init_marble_ui()
 	style_midtext.text.font = &blackopsone_20;
 	style_midtext.text.color = LV_COLOR_WHITE;
 
+	static lv_style_t style_buildtext;
+	lv_style_copy(&style_buildtext, &lv_style_plain);
+	style_buildtext.text.font = &blackopsone_12;
+	style_buildtext.text.color = LV_COLOR_WHITE;
+
 
 	// Set the size and position of the box
 	lv_obj_set_size(box, 443, 211.4); // Replace with the size you want
@@ -549,12 +556,27 @@ void init_marble_ui()
 	// Chicken
 	lv_obj_t* logo = createImage(gamescr, 382.1, 152.3, 8, &MiniChickenSandwich);
 
+	std::ostringstream buildtagstr;
+	// if contains MSYS, then it is windows
+	// if contains linux, then it is linux
+	// if contains darwin, then it is mac
+	auto buildenv = "";
+	if (string(build_environment).find("MSYS") != std::string::npos) {
+		buildenv = "Built on Windows";
+	}
+	else if (string(build_environment).find("linux") != std::string::npos) {
+		buildenv = "Built on Linux";
+	}
+	else if (string(build_environment).find("darwin") != std::string::npos) { // Untested
+		buildenv = "Built on Mac";
+	}
+	else {
+		buildenv = "Unknown Build Environment";
+	}
+	buildtagstr << "Build: " << build_date << " -- v" << codebase_version << "@" << application_environment << "-" << build_number << "+" << std::string(git_commit).substr(0,6)  << "\n"<< buildenv << " - Git Branch: " << "(" << git_branch << "), Commit: " << string(git_commit).substr(0,8) << "...";
 
-
-	
-
-
-
+	lv_obj_t* buildtag = createLabel(matchscr, 0, 210, buildtagstr.str().c_str());
+	lv_obj_set_style(buildtag, &style_buildtext);	
 
 
 	// return mutex
