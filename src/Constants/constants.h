@@ -1,4 +1,5 @@
 #ifndef CONSTANTS
+#define CONSTANTS
 #include "main.h"
 extern int ui_id;
 extern int gameMode;
