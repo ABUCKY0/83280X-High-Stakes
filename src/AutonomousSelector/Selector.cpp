@@ -2,7 +2,6 @@
 #include "pros/apix.h"
 #include "./Helpers/helpers.h"
 #include "../Constants/constants.h"
-#include "./BuildInfo/build_info.h"
 #include <sstream>
 #if USE_UI == 1
 
@@ -561,20 +560,20 @@ void init_marble_ui()
 	// if contains linux, then it is linux
 	// if contains darwin, then it is mac
 	auto buildenv = "";
-	if (string(build_environment).find("MSYS") != std::string::npos) {
-		buildenv = "Built on Windows";
-	}
-	else if (string(build_environment).find("linux") != std::string::npos) {
-		buildenv = "Built on Linux";
-	}
-	else if (string(build_environment).find("darwin") != std::string::npos) { // Untested
-		buildenv = "Built on Mac";
-	}
-	else {
-		buildenv = "Unknown Build Environment";
-	}
-	buildtagstr << "Build: " << build_date << " -- v" << codebase_version << "@" << application_environment << "-" << build_number << "+" << std::string(git_commit).substr(0,6)  << "\n"<< buildenv << " - Git Branch: " << "(" << git_branch << "), Commit: " << string(git_commit).substr(0,8) << "...";
-
+	// if (string(build_environment).find("MSYS") != std::string::npos) {
+	// 	buildenv = "Built on Windows";
+	// }
+	// else if (string(build_environment).find("linux") != std::string::npos) {
+	// 	buildenv = "Built on Linux";
+	// }
+	// else if (string(build_environment).find("darwin") != std::string::npos) { // Untested
+	// 	buildenv = "Built on Mac";
+	// }
+	// else {
+	// 	buildenv = "Unknown Build Environment";
+	// }
+	// buildtagstr << "Build: " << build_date << " -- v" << codebase_version << "@" << application_environment << "-" << build_number << "+" << std::string(git_commit).substr(0,6)  << "\n"<< buildenv << " - Git Branch: " << "(" << git_branch << "), Commit: " << string(git_commit).substr(0,8) << "...";
+	buildtagstr << BUILD_ENVIRONMENT;
 	lv_obj_t* buildtag = createLabel(matchscr, 0, 210, buildtagstr.str().c_str());
 	lv_obj_set_style(buildtag, &style_buildtext);	
 

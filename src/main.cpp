@@ -4,7 +4,6 @@
 #include <iostream>
 #include <optional> // IWYU pragma: keep
 #include "./Constants/constants.h"
-#include "./AutonomousSelector/BuildInfo/build_info.h"
 #include "./AutonomousSelector/Selector.hpp"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
@@ -33,16 +32,26 @@ void initialize()
 #else
   cout << "[MAIN] (INFO): [NOUI_INIT] No UI Initalized\n";
 #endif
-  std::cout << "Build Date: " << std::string(build_date) << std::endl;
-  std::cout << "Git Branch: " << std::string(git_branch) << std::endl;
-  std::cout << "Git Commit: " << std::string(git_commit) << std::endl;
-  std::cout << "Compiler Version: " << std::string(compiler_version) << std::endl;
-  std::cout << "Build Environment: " << std::string(build_environment) << std::endl;
-  std::cout << "Build Number: " << build_number << std::endl;
-  std::cout << "Developer Name: " << std::string(developer_name) << std::endl;
-  std::cout << "Application Environment: " << std::string(application_environment) << std::endl;
-  std::cout << "Codebase Version: " << std::string(codebase_version) << std::endl;
-
+  // std::cout << "Build Date: " << std::string(build_date) << std::endl;
+  // std::cout << "Git Branch: " << std::string(git_branch) << std::endl;
+  // std::cout << "Git Commit: " << std::string(git_commit) << std::endl;
+  // std::cout << "Compiler Version: " << std::string(compiler_version) << std::endl;
+  // std::cout << "Build Environment: " << std::string(build_environment) << std::endl;
+  // std::cout << "Build Number: " << build_number << std::endl;
+  // std::cout << "Developer Name: " << std::string(developer_name) << std::endl;
+  // std::cout << "Application Environment: " << std::string(application_environment) << std::endl;
+  // std::cout << "Codebase Version: " << std::string(codebase_version) << std::endl;
+  std::cout << "Build Date: " << BUILD_DATE << std::endl;
+  std::cout << "Git Branch: " << GIT_BRANCH << std::endl;
+  std::cout << "Git Commit: " << GIT_COMMIT << std::endl;
+  std::cout << "Compiler Version: " << COMPILER_VERSION << std::endl;
+  std::cout << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
+  std::cout << "Build Number: " << BUILD_NUMBER << std::endl;
+  std::cout << "Developer Name: " << DEVELOPER_NAME << std::endl;
+  std::cout << "Application Environment: " << APPLICATION_ENVIRONMENT << std::endl;
+  std::cout << "Codebase Version: " << CODEBASE_VERSION << std::endl;
+  std::cout << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
+  
 }
 
 /**
