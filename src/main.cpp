@@ -9,7 +9,6 @@
 #include <iostream>
 #include <optional> // IWYU pragma: keep
 
-
 ROBOTLOG::LOGGER logger();
 
 pros::Controller master(CONTROLLER_MASTER);

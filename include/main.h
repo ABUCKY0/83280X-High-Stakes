@@ -39,8 +39,8 @@
 /**
  * You should add more #includes here
  */
-//#include "okapi/api.hpp"
-//#include "pros/api_legacy.h"
+// #include "okapi/api.hpp"
+// #include "pros/api_legacy.h"
 #include "pros/apix.h" // IWYU pragma: keep
 #include "robotlog/robotlog.h"
 /**
@@ -55,7 +55,6 @@ using namespace pros::literals;
 // using namespace okapi;
 using namespace pros;
 using namespace std;
-
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure
@@ -78,15 +77,14 @@ void opcontrol(void);
 /**
  * You can add C++-only headers here
  */
-#include <iostream> // IWYU pragma: keep
-#include <string> // IWYU pragma: keep
-#include <random> // IWYU pragma: keep
-#include <vector> // IWYU pragma: keep
 #include "packages/lemlib/api.hpp" // IWYU pragma: keep
+#include <iostream>                // IWYU pragma: keep
+#include <random>                  // IWYU pragma: keep
+#include <string>                  // IWYU pragma: keep
+#include <vector>                  // IWYU pragma: keep
+
 
 #endif
-
-
 
 LV_IMG_DECLARE(arrow_down);
 LV_IMG_DECLARE(arrow_up);
@@ -127,7 +125,6 @@ LV_IMG_DECLARE(chicken_sandwich_nobg);
 LV_IMG_DECLARE(fire);
 LV_IMG_DECLARE(MiniChickenSandwich);
 
-
 LV_IMG_DECLARE(bg);
 
 LV_FONT_DECLARE(blackopsone_4);
@@ -144,6 +141,4 @@ LV_FONT_DECLARE(blackopsone_30);
 LV_FONT_DECLARE(blackopsone_40);
 LV_FONT_DECLARE(blackopsone_50);
 
-
-#endif  // _PROS_MAIN_H_
-
+#endif // _PROS_MAIN_H_

@@ -16,7 +16,9 @@
  * @param title Text to display on the button.
  * @return Pointer to the created button object.
  */
-lv_obj_t *createBtn(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, lv_coord_t width, lv_coord_t height, int id, const char *title);
+lv_obj_t *createBtn(lv_obj_t *parent, lv_coord_t x, lv_coord_t y,
+                    lv_coord_t width, lv_coord_t height, int id,
+                    const char *title);
 
 /**
  * Create a style for a button.
@@ -30,7 +32,10 @@ lv_obj_t *createBtn(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, lv_coord_t wid
  * @param btn Button to apply the style to.
  * @return Pointer to the created style.
  */
-lv_style_t *createBtnStyle(lv_style_t *copy, lv_color_t rel, lv_color_t pr, lv_color_t tglRel, lv_color_t tglPr, lv_color_t tglBorder, lv_color_t textColor, lv_obj_t *btn);
+lv_style_t *createBtnStyle(lv_style_t *copy, lv_color_t rel, lv_color_t pr,
+                           lv_color_t tglRel, lv_color_t tglPr,
+                           lv_color_t tglBorder, lv_color_t textColor,
+                           lv_obj_t *btn);
 
 /**
  * Set a style for a button.
@@ -48,7 +53,8 @@ void setBtnStyle(lv_style_t *btnStyle, lv_obj_t *btn);
  * @param imgSrc Source of the image to display on the button.
  * @return Pointer to the created image button object.
  */
-lv_obj_t *createImgBtn(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int id, const void *imgSrc);
+lv_obj_t *createImgBtn(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int id,
+                       const void *imgSrc);
 
 /**
  * Create an image.
@@ -59,7 +65,8 @@ lv_obj_t *createImgBtn(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int id, con
  * @param imgSrc Source of the image to display.
  * @return Pointer to the created image object.
  */
-lv_obj_t *createImage(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int id, const void *imgSrc);
+lv_obj_t *createImage(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int id,
+                      const void *imgSrc);
 
 /**
  * Create an image with specified size.
@@ -72,7 +79,9 @@ lv_obj_t *createImage(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int id, cons
  * @param imgSrc Source of the image to display.
  * @return Pointer to the created image object.
  */
-lv_obj_t *createImage(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, lv_coord_t wid, lv_coord_t hei, int id, const void *imgSrc);
+lv_obj_t *createImage(lv_obj_t *parent, lv_coord_t x, lv_coord_t y,
+                      lv_coord_t wid, lv_coord_t hei, int id,
+                      const void *imgSrc);
 
 /**
  * Create a base object.
@@ -81,7 +90,7 @@ lv_obj_t *createImage(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, lv_coord_t w
  * @param y Y position of the object.
  * @return Pointer to the created object.
  */
-lv_obj_t* createBaseObject(lv_obj_t *parent, int x, int y);
+lv_obj_t *createBaseObject(lv_obj_t *parent, int x, int y);
 
 /**
  * Create a label.
@@ -91,7 +100,7 @@ lv_obj_t* createBaseObject(lv_obj_t *parent, int x, int y);
  * @param text Text to display on the label.
  * @return Pointer to the created label object.
  */
-lv_obj_t* createLabel(lv_obj_t *parent, int x, int y, const char *text);
+lv_obj_t *createLabel(lv_obj_t *parent, int x, int y, const char *text);
 
 /**
  * Create an image.
@@ -296,7 +305,8 @@ lv_obj_t *createList(lv_obj_t *parent, int x, int y);
  * @param y Y position of the drop-down list.
  * @return Pointer to the created drop-down list object.
  */
-lv_obj_t *createDropDownList(lv_obj_t *parent, const char *options, int x, int y);
+lv_obj_t *createDropDownList(lv_obj_t *parent, const char *options, int x,
+                             int y);
 
 /**
  * Create a roller.

@@ -1,8 +1,9 @@
 #ifndef MARBLE_UI_H
 #define MARBLE_UI_H
 
-#include "main.h"
 #include "Constants.hpp"
+#include "main.h" // IWYU pragma: keep
+
 
 // Function declarations
 lv_res_t mar_onMatchConfirmPress(lv_obj_t *btn);

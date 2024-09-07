@@ -14,6 +14,28 @@
 			"Autonomous/Paths",
 			"SkillsAuton/Paths"
 		],
-		"editor.tabSize": 2
+		"editor.tabSize": 2,
+		"formatFiles.excludedFolders": [
+			"node_modules",
+			"build",
+			"dist",
+			"out",
+			"include/packages",
+			"firmware",
+			"bin",
+			".vscode",
+			".github",
+			".d",
+			".cache",
+			".git",
+			".clang-format",
+			".clang-tidy",
+			"Makefile",
+			"common.mk",
+			"*.json",
+			"project.pros",
+			"include/api.h",
+			"include/main.h"
+		]
 	}
 }
