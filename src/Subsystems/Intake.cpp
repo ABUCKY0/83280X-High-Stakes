@@ -5,10 +5,17 @@
 #include <iostream>
 #include "pros/apix.h"
 
+enum class PTOState {
+    DRIVETRAIN,
+    LIFT
+};
+
+
 
 /**
  * @brief Intake subsystem
  * 
+ * This class is responsible for controlling the intake and lift subsystems. It is responsible for controlling the intake motors, lift motors, and the PTOs.
  */
 class Intake {
 private:
@@ -17,11 +24,12 @@ private:
     pros::adi::Pneumatics ptoLeft;
     pros::adi::Pneumatics ptoRight;
     pros::Rotation liftPosition;
+    PTOState ptoState = PTOState::LIFT;
 
 
 public:
     Intake() = delete;
-    Intake(std::initializer_list<std::int8_t> motors, std::initializer_list<std::int8_t> liftmotors, std::uint8_t pneumaticLeft, std::uint8_t pneumaticRight, const std::int8_t rotationPort) : intakeMotors(motors), liftMotors(liftmotors), ptoLeft(pneumaticLeft, true), ptoRight(pneumaticRight, true), liftPosition(rotationPort) {
+    Intake(std::initializer_list<std::int8_t> motors, std::initializer_list<std::int8_t> liftmotors, std::uint8_t pneumaticLeft, std::uint8_t pneumaticRight, const std::int8_t rotationPort) : intakeMotors(motors), liftMotors(liftmotors), ptoLeft(pneumaticLeft, true), ptoRight(pneumaticRight, true), liftPosition(rotationPort), ptoState(PTOState::LIFT) {
         intakeMotors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         liftMotors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     }
