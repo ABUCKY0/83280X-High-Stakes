@@ -1,6 +1,6 @@
 #include "main.h"
-#include "./AutonomousSelector/Selector.hpp"
-#include "./Constants/constants.h"
+#include "AutonomousSelector/Selector.hpp"
+#include "Constants.hpp"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
 #include "pros/motor_group.hpp"

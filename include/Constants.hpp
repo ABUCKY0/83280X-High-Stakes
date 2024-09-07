@@ -8,7 +8,6 @@ extern lv_obj_t *gamescr;
 extern lv_obj_t *matchscr;
 extern lv_obj_t *skillsscr;
 
-
 #define MOTOR_PORT_LEFT_FRONT 1
 #define MOTOR_PORT_LEFT_MIDDLE 2
 #define MOTOR_PORT_LEFT_BACK 3

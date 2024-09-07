@@ -30,9 +30,7 @@ Intake::Intake(std::initializer_list<std::int8_t> motors,
  */
 void Intake::pto_take() {
   // take the PTOs from the drivetrain
-
   ptoLeft.retract();
-  
   ptoRight.retract();
   liftMotors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   liftMotors.move(0); // Ensure that the lift motors are not moving to prevent

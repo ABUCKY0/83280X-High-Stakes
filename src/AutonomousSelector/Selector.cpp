@@ -1,7 +1,7 @@
 #include "main.h"
 #include "pros/apix.h"
-#include "./Helpers/helpers.h"
-#include "../Constants/constants.h"
+#include "AutonomousSelector/helpers.hpp"
+#include "Constants.hpp"
 #include <sstream>
 #if USE_UI == 1
 

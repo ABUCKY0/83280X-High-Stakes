@@ -1,4 +1,5 @@
 #include "main.h"
+#include "AutonomousSelector/helpers.hpp"
 lv_obj_t *createBtn(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, lv_coord_t width, lv_coord_t height, int id, const char *title)
 {
     cout << "[HELPER] (INFO): [CREATING] Button\n";

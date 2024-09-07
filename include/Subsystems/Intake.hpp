@@ -1,9 +1,7 @@
 #ifndef SUBSYSTEM_INTAKE_HPP
 #define SUBSYSTEM_INTAKE_HPP
-#include "main.h"      // IWYU pragma: keep
-#include "pros/apix.h" // IWYU pragma: keep
-#include <atomic> // IWYU pragma: keep
-#include <iostream> // IWYU pragma: keep
+#include "main.h" // IWYU pragma: keep 
+#include <atomic> 
 
 enum class PTOState {
     DRIVETRAIN,
