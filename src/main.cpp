@@ -1,13 +1,14 @@
 #include "main.h"
-#include <algorithm> // IWYU pragma: keep
-#include <cstddef> // IWYU pragma: keep
-#include <iostream>
-#include <optional> // IWYU pragma: keep
-#include "./Constants/constants.h"
 #include "./AutonomousSelector/Selector.hpp"
+#include "./Constants/constants.h"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
 #include "pros/motor_group.hpp"
+#include <algorithm> // IWYU pragma: keep
+#include <cstddef>   // IWYU pragma: keep
+#include <iostream>
+#include <optional> // IWYU pragma: keep
+
 
 ROBOTLOG::LOGGER logger();
 
@@ -21,8 +22,7 @@ pros::MotorGroup rightdt({11, 12, 13});
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize()
-{
+void initialize() {
 #if USE_UI == 1
   cout << "[MAIN] (INFO): [UI_INIT] Marble UI\n";
   cout << "Running Marble UI\n";
@@ -32,15 +32,6 @@ void initialize()
 #else
   cout << "[MAIN] (INFO): [NOUI_INIT] No UI Initalized\n";
 #endif
-  // std::cout << "Build Date: " << std::string(build_date) << std::endl;
-  // std::cout << "Git Branch: " << std::string(git_branch) << std::endl;
-  // std::cout << "Git Commit: " << std::string(git_commit) << std::endl;
-  // std::cout << "Compiler Version: " << std::string(compiler_version) << std::endl;
-  // std::cout << "Build Environment: " << std::string(build_environment) << std::endl;
-  // std::cout << "Build Number: " << build_number << std::endl;
-  // std::cout << "Developer Name: " << std::string(developer_name) << std::endl;
-  // std::cout << "Application Environment: " << std::string(application_environment) << std::endl;
-  // std::cout << "Codebase Version: " << std::string(codebase_version) << std::endl;
   std::cout << "Build Date: " << BUILD_DATE << std::endl;
   std::cout << "Git Branch: " << GIT_BRANCH << std::endl;
   std::cout << "Git Commit: " << GIT_COMMIT << std::endl;
@@ -48,10 +39,10 @@ void initialize()
   std::cout << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
   std::cout << "Build Number: " << BUILD_NUMBER << std::endl;
   std::cout << "Developer Name: " << DEVELOPER_NAME << std::endl;
-  std::cout << "Application Environment: " << APPLICATION_ENVIRONMENT << std::endl;
+  std::cout << "Application Environment: " << APPLICATION_ENVIRONMENT
+            << std::endl;
   std::cout << "Codebase Version: " << CODEBASE_VERSION << std::endl;
   std::cout << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
-  
 }
 
 /**
@@ -61,18 +52,16 @@ void initialize()
  */
 void disabled() { cout << "Disabled"; }
 
-void runMatchAuton(char auton)
-{
+void runMatchAuton(char auton) {
   // Run the selected match auton
-  switch (auton)
-  {
+  switch (auton) {
   case 0:
     cout << "[MAIN] (INFO): [AUTONRUN] Preload Only Autonomous (ID:0)\n";
     // Preload Only Auton
     break;
   case 1:
     cout << "[MAIN] (INFO): [AUTONRUN] Load Side Autonomous (ID:1)\n";
-    
+
     // Load Side Auton
     break;
   case 2:
@@ -90,11 +79,9 @@ void runMatchAuton(char auton)
     break;
   }
 }
-void runSkillsAuton(char auton)
-{
+void runSkillsAuton(char auton) {
   // Run the selected skills auton
-  switch (auton)
-  {
+  switch (auton) {
   case 0:
     cout << "[MAIN] (INFO): [SKILLSRUN] Over Barrier Autonomous (ID:0)\n";
     // Over Barrier Auton
@@ -128,8 +115,7 @@ void runSkillsAuton(char auton)
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize()
-{
+void competition_initialize() {
   cout << "[MAIN] (INFO): [INIT] Competition Initalize\n";
 }
 
@@ -144,22 +130,17 @@ void competition_initialize()
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous()
-{
+void autonomous() {
   cout << "[MAIN] (INFO): [AUTON] Running Autonomous\n";
   // Run the selected auton
-  if (gameMode == 1)
-  {
+  if (gameMode == 1) {
     runSkillsAuton(auton);
-  }
-  else
-  {
+  } else {
     runMatchAuton(auton);
   }
 }
 
-uint32_t RGBToUint32(uint8_t red, uint8_t green, uint8_t blue)
-{
+uint32_t RGBToUint32(uint8_t red, uint8_t green, uint8_t blue) {
   // Pack the RGB components into a 32-bit unsigned integer
   return ((uint32_t)red << 16) | ((uint32_t)green << 8) | blue;
 }
@@ -177,10 +158,8 @@ uint32_t RGBToUint32(uint8_t red, uint8_t green, uint8_t blue)
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol()
-{
-  while (true)
-  {
+void opcontrol() {
+  while (true) {
     leftdt.move(master.get_analog(ANALOG_LEFT_Y));
     rightdt.move(master.get_analog(ANALOG_RIGHT_Y));
     pros::delay(20);

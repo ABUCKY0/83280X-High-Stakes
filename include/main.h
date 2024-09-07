@@ -34,7 +34,7 @@
  */
 #define PROS_USE_LITERALS
 
-#include "api.h"
+#include "api.h" // IWYU pragma: keep
 
 /**
  * You should add more #includes here
@@ -82,7 +82,7 @@ void opcontrol(void);
 #include <string> // IWYU pragma: keep
 #include <random> // IWYU pragma: keep
 #include <vector> // IWYU pragma: keep
-#include "lemlib/api.hpp" // IWYU pragma: keep
+#include "packages/lemlib/api.hpp" // IWYU pragma: keep
 
 #endif
 

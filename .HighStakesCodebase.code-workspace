@@ -9,6 +9,7 @@
 			"build",
 			"paths",
 			"Lift/Intake Subsystem"
-		]
+		],
+		"editor.tabSize": 2
 	}
 }
