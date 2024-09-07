@@ -8,10 +8,6 @@ This project contains the team's codebase for the 2024-2025 High Stakes Season.
 
 The main goals for the programming side of the robot is the following:
 
-> As a side note, in the context of the current writing, defense is when a robot is in the scoring area of a game. This definition will be updated once the game reveal is updated, but is currently being written with Over Under in mind.  
-> Defense: When a robot is on the side with their team's match load zone color and the opposing team's goal. aka, when a given team is in the opponents offsensive zone (i.e. Over Under blue team robot on the blue team's match load zone side/red team's goal side)  
-> Offense: When you are on the side with your team's goal. Opposite of Defense.
-
 - [ ] Support for Pure Pursuit through LemLib
 - [ ] 2x Defensive Autonomouses
   - [ ] Main Autonomous
@@ -24,7 +20,7 @@ The main goals for the programming side of the robot is the following:
   - [ ] Skills1
   - [ ] Skills2
   - [ ] Skills3
-- [ ] Autonomous Selector (Needs to be copied from Pre-Season Development Testing)
+- [x] Autonomous Selector (Needs to be copied from Pre-Season Development Testing)
 
 # Contributing Rules - [CONTRIBUTING.md](./contributing.md)
 
