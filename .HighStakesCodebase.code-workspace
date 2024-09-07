@@ -6,9 +6,13 @@
 	],
 	"settings": {
 		"conventionalCommits.scopes": [
-			"build",
-			"paths",
-			"Lift/Intake Subsystem"
+			"Subsystem/Intake",
+			"Subsystem/Drivetrain",
+			"Subsystem/Lift",
+			"Subsystem/Mobile Goal",
+			"Subsystem/Autonomous Selector",
+			"Autonomous/Paths",
+			"SkillsAuton/Paths"
 		],
 		"editor.tabSize": 2
 	}
