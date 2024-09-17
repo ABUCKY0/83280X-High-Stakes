@@ -1,0 +1,14 @@
+name: SUBSYSTEM FEATURE
+description: Subsystem Feature
+title: '🏎️[SUBSYSTEM/what] | '
+labels:
+  - '🆕feature '
+  - 🚩subsystem/feature
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: Describe the Subsystem Feature (Or Subsystem)
+      placeholder: Describe the Subsystem Feature (Or Subsystem)
+    validations:
+      required: true

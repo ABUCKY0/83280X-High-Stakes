@@ -1,0 +1,13 @@
+name: AUTON FEAT
+description: Autonomous Feat
+title: '🏎️[AUTON] | '
+labels:
+  - '🆕feature'
+  - '🚗 match/autonomous'
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: Describe the autonomous route
+    validations:
+      required: true

@@ -1,0 +1,13 @@
+name: SUBSYSTEM BUG
+description: Subsystem Bug
+title: '🐞[SUBSYSTEM/what] | '
+labels:
+  - 🐞subsystem/bug
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: Describe the Subsystem Bug
+      placeholder: Describe the Subsystem Bug
+    validations:
+      required: true
