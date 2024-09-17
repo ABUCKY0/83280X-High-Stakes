@@ -27,8 +27,8 @@ EXTRA_INCDIR=$(ROOT)/include/packages
 BUILD_DATE:=$(shell date "+%Y-%m-%d %H:%M:%S")
 GIT_BRANCH:=$(shell git rev-parse --abbrev-ref HEAD)
 GIT_COMMIT:=$(shell git rev-parse HEAD)
-COMPILER_VERSION:="$(shell arm-none-eabi-g++ --version | head -n 1 | sed 's/(/\\(/g' | sed 's/)/\\)/g' | sed 's/#/\\#/g')"
-BUILD_ENVIRONMENT:="$(shell uname -a | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+COMPILER_VERSION:=$(shell arm-none-eabi-g++ --version | head -n 1 | sed 's/[()#]/_/g')
+BUILD_ENVIRONMENT:=$(shell uname -a | sed 's/[()]/_/g')
 BUILD_NUMBER:=$(shell cat $(SRCDIR)/AutonomousSelector/BuildInfo/build_number.txt)
 $(shell echo $$(($(BUILD_NUMBER) + 1)) > $(SRCDIR)/AutonomousSelector/BuildInfo/build_number.txt)
 DEVELOPER_NAME:=ABUCKY0
