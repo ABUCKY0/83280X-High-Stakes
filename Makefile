@@ -27,7 +27,7 @@ EXTRA_INCDIR=$(ROOT)/include/packages
 BUILD_DATE:=$(shell date "+%Y-%m-%d %H:%M:%S")
 GIT_BRANCH:=$(shell git rev-parse --abbrev-ref HEAD)
 GIT_COMMIT:=$(shell git rev-parse HEAD)
-COMPILER_VERSION:=$(shell arm-none-eabi-g++ --version | head -n 1 | sed 's/[()#]/_/g')
+COMPILER_VERSION:=arm-none-eabi_10.3-2021.10_release
 BUILD_ENVIRONMENT:=$(shell uname -a | sed 's/[()]/_/g')
 BUILD_NUMBER:=$(shell cat $(SRCDIR)/AutonomousSelector/BuildInfo/build_number.txt)
 $(shell echo $$(($(BUILD_NUMBER) + 1)) > $(SRCDIR)/AutonomousSelector/BuildInfo/build_number.txt)
