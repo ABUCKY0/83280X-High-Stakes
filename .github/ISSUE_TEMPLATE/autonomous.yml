@@ -5,7 +5,7 @@ labels:
   - '🆕feature'
   - '🚗 match/autonomous'
 body:
-  - type: input
+  - type: textarea
     attributes:
       label: Description
       description: Describe the autonomous route
