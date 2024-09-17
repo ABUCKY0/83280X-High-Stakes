@@ -48,9 +48,9 @@ EXCLUDE_COLD_LIBRARIES:=
 
 # Set this to 1 to add additional rules to compile your project as a PROS library template
 # TODO: SET TO 1 FOR LIBRARY
-IS_LIBRARY:=1
-LIBNAME:=vexlog
-VERSION:=0.0.1-alpha3
+IS_LIBRARY:=0
+LIBNAME:=highstakes
+VERSION:=0.0.1-precompalpha
 # EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/unpublishedfile.c
 # this line excludes opcontrol.c and similar files
 EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(file).$(cext)) $(foreach cxxext,$(CXXEXTS),$(file).$(cxxext)))
