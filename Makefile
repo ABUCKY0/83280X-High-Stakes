@@ -34,6 +34,16 @@ $(shell echo $$(($(BUILD_NUMBER) + 1)) > $(SRCDIR)/AutonomousSelector/BuildInfo/
 DEVELOPER_NAME:=ABUCKY0
 APPLICATION_ENVIRONMENT:=alpha
 CODEBASE_VERSION:=0.0.5
+# Print build information
+$(info Build Date: $(BUILD_DATE))
+$(info Git Branch: $(GIT_BRANCH))
+$(info Git Commit: $(GIT_COMMIT))
+$(info Compiler Version: $(COMPILER_VERSION))
+$(info Build Environment: $(BUILD_ENVIRONMENT))
+$(info Build Number: $(BUILD_NUMBER))
+$(info Developer Name: $(DEVELOPER_NAME))
+$(info Application Environment: $(APPLICATION_ENVIRONMENT))
+$(info Codebase Version: $(CODEBASE_VERSION))
 
 
 WARNFLAGS+=
