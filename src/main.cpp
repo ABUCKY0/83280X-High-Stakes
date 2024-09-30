@@ -8,7 +8,7 @@
 #include <cstddef>   // IWYU pragma: keep
 #include <iostream>
 #include <optional> // IWYU pragma: keep
-
+#include "Vex/things.h"
 ROBOTLOG::LOGGER logger();
 
 pros::Controller master(CONTROLLER_MASTER);
@@ -42,6 +42,10 @@ void initialize() {
             << std::endl;
   std::cout << "Codebase Version: " << CODEBASE_VERSION << std::endl;
   std::cout << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
+
+  //vex things
+  std::cout << "Is Comp Switch??: " << to_string(pros::competition::is_competition_switch()) << std::endl;
+  std::cout << "IS Field Control??: " << to_string(pros::competition::is_field_control())  << std::endl;
 }
 
 /**

@@ -567,31 +567,28 @@ void init_marble_ui() {
   std::ostringstream buildtagstr;
   // if contains MSYS, then it is windows
   // if contains linux, then it is linux
-  // if contains darwin, then it is mac
+  // if contains darwin, then it is mac 
   auto buildenv = "";
-  // if (string(build_environment).find("MSYS") != std::string::npos) {
-  // 	buildenv = "Built on Windows";
-  // }
-  // else if (string(build_environment).find("linux") != std::string::npos) {
-  // 	buildenv = "Built on Linux";
-  // }
-  // else if (string(build_environment).find("darwin") != std::string::npos) {
-  // // Untested 	buildenv = "Built on Mac";
-  // }
-  // else {
-  // 	buildenv = "Unknown Build Environment";
-  // }
-  // buildtagstr << "Build: " << build_date << " -- v" << codebase_version <<
-  // "@" << application_environment << "-" << build_number << "+" <<
-  // std::string(git_commit).substr(0,6)  << "\n"<< buildenv << " - Git Branch:
-  // " << "(" << git_branch << "), Commit: " << string(git_commit).substr(0,8)
-  // << "...";
-  buildtagstr << BUILD_ENVIRONMENT;
+  if (string(BUILD_ENVIRONMENT).find("MSYS") != std::string::npos) {
+    buildenv = "Built on Windows";
+  } else if (string(BUILD_ENVIRONMENT).find("linux") != std::string::npos) {
+    buildenv = "Built on Linux";
+  } else if (string(BUILD_ENVIRONMENT).find("darwin") != std::string::npos) {
+    // Untested 	buildenv = "Built on Mac";
+  } else {
+    buildenv = "Unknown Build Environment"; 
+  }
+  buildtagstr << "Build: " << BUILD_DATE << " -- v" << CODEBASE_VERSION << "@"
+              << APPLICATION_ENVIRONMENT << "-" << BUILD_NUMBER << "+"
+              << std::string(GIT_COMMIT).substr(0, 6) << "\n"
+              << buildenv << " - Git Branch: " << "(" << GIT_BRANCH
+              << ")" << " - " << ROBOT_NAME << COMPETITION_NAME;
+  // buildtagstr << BUILD_ENVIRONMENT;
   lv_obj_t *buildtag = createLabel(matchscr, 0, 210, buildtagstr.str().c_str());
   lv_obj_set_style(buildtag, &style_buildtext);
 
-  // return mutex
-  dataMutex.give();
+  // return mutex 
+  dataMutex.give(); 
   // lv_scr_load(gamescr);
   //  set id
   // lv_obj_set_free_num(gamescr, 1337);
