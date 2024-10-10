@@ -669,12 +669,12 @@ void task_updvar(void *param) {
       motorIntakeTemp1 = -1;
 
     motorIntakeTemp2 =
-        pros::c::motor_get_temperature(MOTOR_PORT_INTAKE_2) * 1.8 + 32;
+        pros::c::motor_get_temperature(MOTOR_PORT_LEFT_LIFT) * 1.8 + 32;
     if (motorIntakeTemp2 == PROS_ERR_F)
       motorIntakeTemp2 = -1;
 
     motorLauncherTemp =
-        pros::c::motor_get_temperature(MOTOR_PORT_FLYWHEEL) * 1.8 + 32;
+        pros::c::motor_get_temperature(MOTOR_PORT_RIGHT_LIFT) * 1.8 + 32;
     if (motorLauncherTemp == PROS_ERR_F)
       motorLauncherTemp = -1;
 
