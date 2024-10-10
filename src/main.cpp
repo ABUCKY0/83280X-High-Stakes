@@ -1,19 +1,32 @@
-#include "main.h"
-#include "AutonomousSelector/Selector.hpp"
-#include "Constants.hpp"
-#include "pros/misc.h"
-#include "pros/misc.hpp"
-#include "pros/motor_group.hpp"
+// C++ Includes
 #include <algorithm> // IWYU pragma: keep
 #include <cstddef>   // IWYU pragma: keep
 #include <iostream>
 #include <optional> // IWYU pragma: keep
 
+// PROS
+#include "main.h"
+#include "pros/misc.h"
+#include "pros/misc.hpp"
+#include "pros/motor_group.hpp"
+
+// Constants
+#include "Constants.hpp"
+
+// Subsystems
+#include "AutonomousSelector/Selector.hpp"
+#include "Subsystems/MobileGoalGrabber.hpp"
+#include "Subsystems/Intake.hpp"
+#include "Subsystems/Drivetrain/Drivetrain.hpp"
+
 ROBOTLOG::LOGGER logger();
 
 pros::Controller master(CONTROLLER_MASTER);
-pros::MotorGroup leftdt({1, 2, 3});
-pros::MotorGroup rightdt({11, 12, 13});
+pros::MotorGroup leftdt({MOTOR_PORT_LEFT_FRONT, MOTOR_PORT_LEFT_MIDDLE, MOTOR_PORT_LEFT_BACK});
+pros::MotorGroup rightdt({MOTOR_PORT_LEFT_FRONT, MOTOR_PORT_LEFT_MIDDLE, MOTOR_PORT_RIGHT_BACK});
+
+static MobileGoalGrabber mogoGrabber(PNEUMATIC_PORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH);
+static Intake intake({MOTOR_PORT_INTAKE}, {MOTOR_PORT_LEFT_LIFT, MOTOR_PORT_RIGHT_LIFT}, PNEUMATIC_PORT_PTO_LEFT, PNEUMATIC_PORT_PTO_RIGHT, SENSOR_PORT_LIFT);
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -31,6 +44,9 @@ void initialize() {
 #else
   cout << "[MAIN] (INFO): [NOUI_INIT] No UI Initalized\n";
 #endif
+  /*
+  Build Information
+  */
   std::cout << "Build Date: " << BUILD_DATE << std::endl;
   std::cout << "Git Branch: " << GIT_BRANCH << std::endl;
   std::cout << "Git Commit: " << GIT_COMMIT << std::endl;
@@ -42,6 +58,7 @@ void initialize() {
             << std::endl;
   std::cout << "Codebase Version: " << CODEBASE_VERSION << std::endl;
   std::cout << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
+
 }
 
 /**

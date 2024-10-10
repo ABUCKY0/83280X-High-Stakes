@@ -19,7 +19,7 @@ private:
   pros::adi::Pneumatics ptoRight;
   pros::Rotation liftPosition;
   PTOState ptoState = PTOState::LIFT;
-  std::atomic_bool ptoLock = false;
+  std::atomic_bool ptoLock = false; // 
 
 public:
   /**
