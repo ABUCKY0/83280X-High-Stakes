@@ -63,15 +63,16 @@ string skills_autons = "Auton A\nAuton B\nAuton C\nDriver";
 
 pros::Mutex dataMutex; // Mutex to protect shared data
 
-double motor1Temp = 0.0;
-double motor2Temp = 0.0;
-double motor3Temp = 0.0;
-double motor11Temp = 0.0;
-double motor12Temp = 0.0;
-double motor13Temp = 0.0;
-double motorIntakeTemp1 = 0.0;
-double motorIntakeTemp2 = 0.0;
-double motorLauncherTemp = 0.0;
+double drivetrain_left_a_temp = 0.0;
+double drivetrain_left_b_temp = 0.0;
+double drivetrain_left_lift_temp = 0.0;
+double drivetrain_right_a_temp = 0.0;
+double drivetrain_right_b_temp = 0.0;
+double drivetrain_right_lift_temp = 0.0;
+double intake1_temp = 0.0;
+double intake2_temp = 0.0;
+char ActiveVexNetConnection = 9; // 0 = No Connection, 1 = Primary, 2 = Backup
+
 double estpsi = 100.0;
 double batteryCharge = 0.0;
 
@@ -633,52 +634,56 @@ void task_updvar(void *param) {
 
     // Update the shared data
     // Update the shared data
-    motor1Temp =
-        pros::c::motor_get_temperature(MOTOR_PORT_LEFT_FRONT) * 1.8 + 32;
-    if (motor1Temp == PROS_ERR_F)
-      motor1Temp = -1;
+    drivetrain_left_a_temp =
+        pros::c::motor_get_temperature(MOTOR_PORT_LEFT_A) * 1.8 + 32;
+    if (drivetrain_left_a_temp == PROS_ERR_F)
+      drivetrain_left_a_temp = -1;
 
-    motor2Temp =
-        pros::c::motor_get_temperature(MOTOR_PORT_LEFT_MIDDLE) * 1.8 + 32;
-    if (motor2Temp == PROS_ERR_F)
-      motor2Temp = -1;
+    drivetrain_left_b_temp =
+        pros::c::motor_get_temperature(MOTOR_PORT_LEFT_B) * 1.8 + 32;
+    if (drivetrain_left_b_temp == PROS_ERR_F)
+      drivetrain_left_b_temp = -1;
 
-    motor3Temp =
-        pros::c::motor_get_temperature(MOTOR_PORT_LEFT_BACK) * 1.8 + 32;
-    if (motor3Temp == PROS_ERR_F)
-      motor3Temp = -1;
-
-    motor11Temp =
-        pros::c::motor_get_temperature(MOTOR_PORT_RIGHT_FRONT) * 1.8 + 32;
-    if (motor11Temp == PROS_ERR_F)
-      motor11Temp = -1;
-
-    motor12Temp =
-        pros::c::motor_get_temperature(MOTOR_PORT_RIGHT_MIDDLE) * 1.8 + 32;
-    if (motor12Temp == PROS_ERR_F)
-      motor12Temp = -1;
-
-    motor13Temp =
-        pros::c::motor_get_temperature(MOTOR_PORT_RIGHT_BACK) * 1.8 + 32;
-    if (motor13Temp == PROS_ERR_F)
-      motor13Temp = -1;
-
-    motorIntakeTemp1 =
-        pros::c::motor_get_temperature(MOTOR_PORT_INTAKE) * 1.8 + 32;
-    if (motorIntakeTemp1 == PROS_ERR_F)
-      motorIntakeTemp1 = -1;
-
-    motorIntakeTemp2 =
+    drivetrain_left_lift_temp =
         pros::c::motor_get_temperature(MOTOR_PORT_LEFT_LIFT) * 1.8 + 32;
-    if (motorIntakeTemp2 == PROS_ERR_F)
-      motorIntakeTemp2 = -1;
+    if (drivetrain_left_lift_temp == PROS_ERR_F)
+      drivetrain_left_lift_temp = -1;
 
-    motorLauncherTemp =
+    drivetrain_right_a_temp =
+        pros::c::motor_get_temperature(MOTOR_PORT_RIGHT_A) * 1.8 + 32;
+    if (drivetrain_right_a_temp == PROS_ERR_F)
+      drivetrain_right_a_temp = -1;
+
+    drivetrain_right_b_temp =
+        pros::c::motor_get_temperature(MOTOR_PORT_RIGHT_B) * 1.8 + 32;
+    if (drivetrain_right_b_temp == PROS_ERR_F)
+      drivetrain_right_b_temp = -1;
+
+    drivetrain_right_lift_temp =
         pros::c::motor_get_temperature(MOTOR_PORT_RIGHT_LIFT) * 1.8 + 32;
-    if (motorLauncherTemp == PROS_ERR_F)
-      motorLauncherTemp = -1;
+    if (drivetrain_right_lift_temp == PROS_ERR_F)
+      drivetrain_right_lift_temp = -1;
 
-    batteryCharge = pros::battery::get_capacity();
+    intake1_temp = pros::c::motor_get_temperature(MOTOR_PORT_INTAKE) * 1.8 + 32;
+    if (intake1_temp == PROS_ERR_F)
+      intake1_temp = -1;
+
+    intake2_temp =
+        pros::c::motor_get_temperature(MOTOR_PORT_LEFT_LIFT) * 1.8 + 32;
+    if (intake2_temp == PROS_ERR_F)
+      intake2_temp = -1;
+
+    if (pros::c::link_connected(GEN_PORT_VEXNET_PRIMARY)) {
+      ActiveVexNetConnection = 0;
+    }
+    else if (pros::c::link_connected(GEN_PORT_VEXNET_BACKUP)) {
+      ActiveVexNetConnection = 1;
+    }
+    else {
+      ActiveVexNetConnection = -1;
+    }
+
+        batteryCharge = pros::battery::get_capacity();
     if (batteryCharge == PROS_ERR)
       batteryCharge = -1;
 
@@ -692,66 +697,69 @@ void task_updui(void *param) {
 
     // Make sure the mutex is available
     dataMutex.take(2000); // Try to take the mutex
-
     // Make sure the Game Screen is loaded
     if (lv_scr_act() == gamescr) {
       // 7 is the offset for 4 digit numbers
       // 9 is the offset for 3 digit numbers
 
-      if (motor1Temp != -1) {
-        lv_label_set_text(box_m1_val,
-                          (std::to_string((int)motor1Temp) + "F").c_str());
+      if (drivetrain_left_a_temp != -1) {
+        lv_label_set_text(
+            box_m1_val,
+            (std::to_string((int)drivetrain_left_a_temp) + "F").c_str());
       } else {
         lv_label_set_text(box_m1_val, "ERR");
       }
-      if (motor2Temp != -1) {
-        lv_label_set_text(box_m2_val,
-                          (std::to_string((int)motor2Temp) + "F").c_str());
+      if (drivetrain_left_b_temp != -1) {
+        lv_label_set_text(
+            box_m2_val,
+            (std::to_string((int)drivetrain_left_b_temp) + "F").c_str());
       } else {
         lv_label_set_text(box_m2_val, "ERR");
       }
-      if (motor3Temp != -1) {
-        lv_label_set_text(box_m3_val,
-                          (std::to_string((int)motor3Temp) + "F").c_str());
+      if (drivetrain_left_lift_temp != -1) {
+        lv_label_set_text(
+            box_m3_val,
+            (std::to_string((int)drivetrain_left_lift_temp) + "F").c_str());
       } else {
         lv_label_set_text(box_m3_val, "ERR");
       }
-      if (motor11Temp != -1) {
-        lv_label_set_text(box_m11_val,
-                          (std::to_string((int)motor11Temp) + "F").c_str());
+      if (drivetrain_right_a_temp != -1) {
+        lv_label_set_text(
+            box_m11_val,
+            (std::to_string((int)drivetrain_right_a_temp) + "F").c_str());
       } else {
         lv_label_set_text(box_m11_val, "ERR");
       }
-      if (motor12Temp != -1) {
-        lv_label_set_text(box_m12_val,
-                          (std::to_string((int)motor12Temp) + "F").c_str());
+      if (drivetrain_right_b_temp != -1) {
+        lv_label_set_text(
+            box_m12_val,
+            (std::to_string((int)drivetrain_right_b_temp) + "F").c_str());
       } else {
         lv_label_set_text(box_m12_val, "ERR");
       }
-      if (motor13Temp != -1) {
-        lv_label_set_text(box_m13_val,
-                          (std::to_string((int)motor13Temp) + "F").c_str());
+      if (drivetrain_right_lift_temp != -1) {
+        lv_label_set_text(
+            box_m13_val,
+            (std::to_string((int)drivetrain_right_lift_temp) + "F").c_str());
       } else {
         lv_label_set_text(box_m13_val, "ERR");
       }
-      if (motorIntakeTemp1 != -1) {
-        lv_label_set_text(
-            box_intake1_val,
-            (std::to_string((int)motorIntakeTemp1) + "F").c_str());
+      if (intake1_temp != -1) {
+        lv_label_set_text(box_intake1_val,
+                          (std::to_string((int)intake1_temp) + "F").c_str());
       } else {
         lv_label_set_text(box_intake1_val, "ERR");
       }
-      if (motorIntakeTemp2 != -1) {
-        lv_label_set_text(
-            box_intake2_val,
-            (std::to_string((int)motorIntakeTemp2) + "F").c_str());
+      if (intake2_temp != -1) {
+        lv_label_set_text(box_intake2_val,
+                          (std::to_string((int)intake2_temp) + "F").c_str());
       } else {
         lv_label_set_text(box_intake2_val, "ERR");
       }
-      if (motorLauncherTemp != -1) {
-        lv_label_set_text(
-            box_launcher_val,
-            (std::to_string((int)motorLauncherTemp) + "F").c_str());
+      if (ActiveVexNetConnection == 1) {
+        lv_label_set_text(box_launcher_val, "PRIM");
+      } else if (ActiveVexNetConnection == 2) {
+        lv_label_set_text(box_launcher_val, "ALT");
       } else {
         lv_label_set_text(box_launcher_val, "ERR");
       }
@@ -771,47 +779,47 @@ void task_updui(void *param) {
       // 7 is the offset for 4 digit numbers
       // 9 is the offset for 3 digit numbers
 
-      if (motor1Temp >= 100) {
+      if (drivetrain_left_a_temp >= 100) {
         lv_obj_align(box_m1_val, box_m1, LV_ALIGN_CENTER, 0, -15);
       } else {
         lv_obj_align(box_m1_val, box_m1, LV_ALIGN_CENTER, -1, -15);
       }
-      if (motor2Temp >= 100) {
+      if (drivetrain_left_b_temp >= 100) {
         lv_obj_align(box_m2_val, box_m2, LV_ALIGN_CENTER, 0, -15);
       } else {
         lv_obj_align(box_m2_val, box_m2, LV_ALIGN_CENTER, -1, -15);
       }
-      if (motor3Temp >= 100) {
+      if (drivetrain_left_lift_temp >= 100) {
         lv_obj_align(box_m3_val, box_m3, LV_ALIGN_CENTER, 0, -15);
       } else {
         lv_obj_align(box_m3_val, box_m3, LV_ALIGN_CENTER, -1, -15);
       }
-      if (motor11Temp >= 100) {
+      if (drivetrain_right_a_temp >= 100) {
         lv_obj_align(box_m11_val, box_m11, LV_ALIGN_CENTER, 0, -15);
       } else {
         lv_obj_align(box_m11_val, box_m11, LV_ALIGN_CENTER, -1, -15);
       }
-      if (motor12Temp >= 100) {
+      if (drivetrain_right_b_temp >= 100) {
         lv_obj_align(box_m12_val, box_m12, LV_ALIGN_CENTER, 0, -15);
       } else {
         lv_obj_align(box_m12_val, box_m12, LV_ALIGN_CENTER, -1, -15);
       }
-      if (motor13Temp >= 100) {
+      if (drivetrain_right_lift_temp >= 100) {
         lv_obj_align(box_m13_val, box_m13, LV_ALIGN_CENTER, 0, -15);
       } else {
         lv_obj_align(box_m13_val, box_m13, LV_ALIGN_CENTER, -1, -15);
       }
-      if (motorLauncherTemp >= 100) {
-        lv_obj_align(box_launcher_val, box_launcher, LV_ALIGN_CENTER, 0, -15);
-      } else {
-        lv_obj_align(box_launcher_val, box_launcher, LV_ALIGN_CENTER, -1, -15);
-      }
-      if (motorIntakeTemp1 >= 100) {
+      // if (ActiveVexNetConnection >= 100) {
+      //   lv_obj_align(box_launcher_val, box_launcher, LV_ALIGN_CENTER, 0, -15);
+      // } else {
+      //   lv_obj_align(box_launcher_val, box_launcher, LV_ALIGN_CENTER, -1, -15);
+      // }
+      if (intake1_temp >= 100) {
         lv_obj_align(box_intake1_val, box_intake1, LV_ALIGN_CENTER, 0, -15);
       } else {
         lv_obj_align(box_intake1_val, box_intake1, LV_ALIGN_CENTER, -1, -15);
       }
-      if (motorIntakeTemp2 >= 100) {
+      if (intake2_temp >= 100) {
         lv_obj_align(box_intake2_val, box_intake2, LV_ALIGN_CENTER, 0, -15);
       } else {
         lv_obj_align(box_intake2_val, box_intake2, LV_ALIGN_CENTER, -1, -15);
@@ -822,56 +830,56 @@ void task_updui(void *param) {
        */
 
       // Motor 1
-      if (motor1Temp < 90 && motor1Temp != -1) {
+      if (drivetrain_left_a_temp < 90 && drivetrain_left_a_temp != -1) {
         lv_obj_set_style(box_m1, box_green);
-      } else if (motor1Temp >= 90 && motor1Temp < 140) {
+      } else if (drivetrain_left_a_temp >= 90 && drivetrain_left_a_temp < 140) {
         lv_obj_set_style(box_m1, box_yellow);
-      } else if (motor1Temp >= 140 || motor1Temp == -1) {
+      } else if (drivetrain_left_a_temp >= 140 || drivetrain_left_a_temp == -1) {
         lv_obj_set_style(box_m1, box_red);
       }
 
       // Motor 2
-      if (motor2Temp < 90 && motor2Temp != -1) {
+      if (drivetrain_left_b_temp < 90 && drivetrain_left_b_temp != -1) {
         lv_obj_set_style(box_m2, box_green);
-      } else if (motor2Temp >= 90 && motor2Temp < 140) {
+      } else if (drivetrain_left_b_temp >= 90 && drivetrain_left_b_temp < 140) {
         lv_obj_set_style(box_m2, box_yellow);
-      } else if (motor2Temp >= 140 || motor2Temp == -1) {
+      } else if (drivetrain_left_b_temp >= 140 || drivetrain_left_b_temp == -1) {
         lv_obj_set_style(box_m2, box_red);
       }
 
       // Motor 3
-      if (motor3Temp < 90 && motor3Temp != -1) {
+      if (drivetrain_left_lift_temp < 90 && drivetrain_left_lift_temp != -1) {
         lv_obj_set_style(box_m3, box_green);
-      } else if (motor3Temp >= 90 && motor3Temp < 140) {
+      } else if (drivetrain_left_lift_temp >= 90 && drivetrain_left_lift_temp < 140) {
         lv_obj_set_style(box_m3, box_yellow);
-      } else if (motor3Temp >= 140 || motor3Temp == -1) {
+      } else if (drivetrain_left_lift_temp >= 140 || drivetrain_left_lift_temp == -1) {
         lv_obj_set_style(box_m3, box_red);
       }
 
       // Motor 11
-      if (motor11Temp < 90 && motor11Temp != -1) {
+      if (drivetrain_right_a_temp < 90 && drivetrain_right_a_temp != -1) {
         lv_obj_set_style(box_m11, box_green);
-      } else if (motor11Temp >= 90 && motor11Temp < 140) {
+      } else if (drivetrain_right_a_temp >= 90 && drivetrain_right_a_temp < 140) {
         lv_obj_set_style(box_m11, box_yellow);
-      } else if (motor11Temp >= 140 || motor11Temp == -1) {
+      } else if (drivetrain_right_a_temp >= 140 || drivetrain_right_a_temp == -1) {
         lv_obj_set_style(box_m11, box_red);
       }
 
       // Motor 12
-      if (motor12Temp < 90 && motor12Temp != -1) {
+      if (drivetrain_right_b_temp < 90 && drivetrain_right_b_temp != -1) {
         lv_obj_set_style(box_m12, box_green);
-      } else if (motor12Temp >= 90 && motor12Temp < 140) {
+      } else if (drivetrain_right_b_temp >= 90 && drivetrain_right_b_temp < 140) {
         lv_obj_set_style(box_m12, box_yellow);
-      } else if (motor12Temp >= 140 || motor12Temp == -1) {
+      } else if (drivetrain_right_b_temp >= 140 || drivetrain_right_b_temp == -1) {
         lv_obj_set_style(box_m12, box_red);
       }
 
       // Motor 13
-      if (motor13Temp < 90 && motor13Temp != -1) {
+      if (drivetrain_right_lift_temp < 90 && drivetrain_right_lift_temp != -1) {
         lv_obj_set_style(box_m13, box_green);
-      } else if (motor13Temp >= 90 && motor13Temp < 140) {
+      } else if (drivetrain_right_lift_temp >= 90 && drivetrain_right_lift_temp < 140) {
         lv_obj_set_style(box_m13, box_yellow);
-      } else if (motor13Temp >= 140 || motor13Temp == -1) {
+      } else if (drivetrain_right_lift_temp >= 140 || drivetrain_right_lift_temp == -1) {
         lv_obj_set_style(box_m13, box_red);
       }
 
@@ -894,29 +902,29 @@ void task_updui(void *param) {
       }
 
       // Launcher
-      if (motorLauncherTemp < 90 && motorLauncherTemp != -1) {
+      if (ActiveVexNetConnection == 1) {
         lv_obj_set_style(box_launcher, box_green);
-      } else if (motorLauncherTemp >= 90 && motorLauncherTemp < 140) {
+      } else if (ActiveVexNetConnection == 2) {
         lv_obj_set_style(box_launcher, box_yellow);
-      } else if (motorLauncherTemp >= 140 || motorLauncherTemp == -1) {
+      } else if (ActiveVexNetConnection == 0) {
         lv_obj_set_style(box_launcher, box_red);
       }
 
       // Intake 1
-      if (motorIntakeTemp1 < 90 && motorIntakeTemp1 != -1) {
+      if (intake1_temp < 90 && intake1_temp != -1) {
         lv_obj_set_style(box_intake1, box_green);
-      } else if (motorIntakeTemp1 >= 100 && motorIntakeTemp1 < 140) {
+      } else if (intake1_temp >= 100 && intake1_temp < 140) {
         lv_obj_set_style(box_intake1, box_yellow);
-      } else if (motorIntakeTemp1 >= 140 || motorIntakeTemp1 == -1) {
+      } else if (intake1_temp >= 140 || intake1_temp == -1) {
         lv_obj_set_style(box_intake1, box_red);
       }
 
       // Intake 2
-      if (motorIntakeTemp2 < 90 && motorIntakeTemp2 != -1) {
+      if (intake2_temp < 90 && intake2_temp != -1) {
         lv_obj_set_style(box_intake2, box_green);
-      } else if (motorIntakeTemp2 >= 100 && motorIntakeTemp2 < 140) {
+      } else if (intake2_temp >= 100 && intake2_temp < 140) {
         lv_obj_set_style(box_intake2, box_yellow);
-      } else if (motorIntakeTemp2 >= 140 || motorIntakeTemp2 == -1) {
+      } else if (intake2_temp >= 140 || intake2_temp == -1) {
         lv_obj_set_style(box_intake2, box_red);
       }
     }
