@@ -18,6 +18,7 @@
 #include "Subsystems/MobileGoalGrabber.hpp"
 #include "Subsystems/Intake.hpp"
 #include "Subsystems/Drivetrain/Drivetrain.hpp"
+#include "Vex/things.h"
 
 ROBOTLOG::LOGGER logger();
 
@@ -58,6 +59,11 @@ void initialize() {
             << std::endl;
   std::cout << "Codebase Version: " << CODEBASE_VERSION << std::endl;
   std::cout << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
+
+
+  //vex things
+  std::cout << "Is Comp Switch??: " << to_string(pros::competition::is_competition_switch()) << std::endl;
+  std::cout << "IS Field Control??: " << to_string(pros::competition::is_field_control())  << std::endl;
 
 }
 
