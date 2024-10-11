@@ -8,10 +8,10 @@
  * is responsible for controlling the intake motors, lift motors, and the PTOs.
  */
 
-Intake::Intake(std::initializer_list<std::int8_t> motors,
-               std::initializer_list<std::int8_t> liftmotors,
-               std::uint8_t pneumaticLeft, std::uint8_t pneumaticRight,
-               const std::int8_t rotationPort)
+LCHS::Intake::Intake(std::initializer_list<std::int8_t> motors,
+                     std::initializer_list<std::int8_t> liftmotors,
+                     std::uint8_t pneumaticLeft, std::uint8_t pneumaticRight,
+                     const std::int8_t rotationPort)
     : intakeMotors(motors), liftMotors(liftmotors),
       ptoLeft(pneumaticLeft, true), ptoRight(pneumaticRight, true),
       liftPosition(rotationPort), ptoState(PTOState::LIFT) {
@@ -28,7 +28,7 @@ Intake::Intake(std::initializer_list<std::int8_t> motors,
  * and sets the brake mode to hold
  *
  */
-void Intake::pto_take() {
+void LCHS::Intake::pto_take() {
   // take the PTOs from the drivetrain
   ptoLeft.retract();
   ptoRight.retract();
@@ -38,7 +38,7 @@ void Intake::pto_take() {
   liftMotors.brake();
 }
 
-void Intake::pto_release() {
+void LCHS::Intake::pto_release() {
   ptoLeft.extend();
   ptoRight.extend();
   liftMotors.move(0); // Ensure that the lift motors are not moving, as this

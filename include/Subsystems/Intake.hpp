@@ -3,6 +3,7 @@
 #include "main.h" // IWYU pragma: keep
 #include <atomic>
 
+namespace LCHS {
 enum class PTOState { DRIVETRAIN, LIFT };
 
 /**
@@ -18,8 +19,8 @@ private:
   pros::adi::Pneumatics ptoLeft;
   pros::adi::Pneumatics ptoRight;
   pros::Rotation liftPosition;
-  PTOState ptoState = PTOState::LIFT;
-  std::atomic_bool ptoLock = false; // 
+  LCHS::PTOState ptoState = LCHS::PTOState::LIFT;
+  std::atomic_bool ptoLock = false; //
 
 public:
   /**
@@ -56,4 +57,5 @@ public:
    */
   void pto_release();
 };
+}; // namespace LCHS
 #endif

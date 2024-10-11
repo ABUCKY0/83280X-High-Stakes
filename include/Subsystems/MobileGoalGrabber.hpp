@@ -5,6 +5,7 @@
 #include "api.h" // IWYU pragma: keep
 #include "pros/adi.hpp"
 #include "pros/apix.h" // IWYu pragma: keep
+namespace LCHS {
 class MobileGoalGrabber {
     pros::Task mobileGoalTask;
     pros::adi::Pneumatics piston;
@@ -19,5 +20,5 @@ public:
     void mobileGoalTaskFunction();
     static void taskEntry(void* thisPtr);
 };
-
+};
 #endif
