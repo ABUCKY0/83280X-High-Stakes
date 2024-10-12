@@ -1,5 +1,6 @@
 #ifndef SUBSYSTEM_INTAKE_HPP
 #define SUBSYSTEM_INTAKE_HPP
+// //#include "Drivetrain/Drivetrain.hpp"
 #include "main.h" // IWYU pragma: keep
 #include <atomic>
 
@@ -19,8 +20,9 @@ private:
   pros::adi::Pneumatics ptoLeft;
   pros::adi::Pneumatics ptoRight;
   pros::Rotation liftPosition;
-  LCHS::PTOState ptoState = LCHS::PTOState::LIFT;
-  std::atomic_bool ptoLock = false; //
+  // LCHS::PTOState ptoState = LCHS::PTOState::LIFT;
+  std::atomic<LCHS::PTOState> ptoState =  LCHS::PTOState::LIFT;
+  std::atomic_bool ptoLock = false;
 
 public:
   /**
