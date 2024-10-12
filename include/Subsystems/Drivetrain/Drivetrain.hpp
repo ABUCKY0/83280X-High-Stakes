@@ -27,7 +27,8 @@ namespace LCHS {
             LCHS::MobileGoalGrabber mogoGrabber;
         
         public:
-
+        Drivetrain() = delete;
+        
         Drivetrain (std::initializer_list<std::int8_t> leftDrivePorts, std::initializer_list<std::int8_t> rightDrivePorts) : leftDrive(leftDrivePorts), rightDrive(rightDrivePorts), intake({MOTOR_PORT_INTAKE}, {MOTOR_PORT_LEFT_LIFT, MOTOR_PORT_RIGHT_LIFT}, PNEUMATIC_PORT_PTO_LEFT, PNEUMATIC_PORT_PTO_RIGHT, SENSOR_PORT_LIFT), mogoGrabber(PNEUMATIC_PORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH) {
             leftDrive.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
             rightDrive.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
@@ -37,15 +38,17 @@ namespace LCHS {
         void move(int leftSpeed, int rightSpeed);
         void brake();
 
+        void takeLiftMotors();
+        void releaseLiftMotors();
+        pros::MotorGroup getLeftDrive();
+        pros::MotorGroup getRightDrive();
         /*
         If the drivetrain motors get above a certain threshold for torque for a certain amount of time, the drivetrain will take the lift ptos. 
 
         TODO talk to Nick and Evan about wether they want that to be a feature. Personally, I feel that it'd be better to make it manually triggered.
         */
+        static void TaskDetectMotorStress();
+        static void taskEntry(void *thisPtr);
 
-
-
-
-            
     };
 };
