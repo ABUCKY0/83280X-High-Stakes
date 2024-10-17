@@ -1,11 +1,14 @@
 #ifndef SUBSYSTEM_INTAKE_HPP
 #define SUBSYSTEM_INTAKE_HPP
 // //#include "Drivetrain/Drivetrain.hpp"
+#include "lemlib/pid.hpp"
 #include "main.h" // IWYU pragma: keep
 #include <atomic>
 
 namespace LCHS {
 enum class PTOState { DRIVETRAIN, LIFT };
+enum class LIFTPositionPresets { MAX, MIN, WALL, ALLIANCE, E_STOP };
+enum class IntakeSpeedPresets { IN, OUT, SLOW_IN, SLOW_OUT, STOP };
 
 /**
  * @brief Intake subsystem
@@ -22,7 +25,10 @@ private:
   pros::Rotation liftPosition;
   // LCHS::PTOState ptoState = LCHS::PTOState::LIFT;
   std::atomic<LCHS::PTOState> ptoState =  LCHS::PTOState::LIFT;
+  std::atomic<LCHS::LIFTPositionPresets> liftPositionPreset = LCHS::LIFTPositionPresets::MIN;
   std::atomic_bool ptoLock = false;
+
+  //lemlib::PID liftPID;
 
 public:
   /**
@@ -58,6 +64,65 @@ public:
    * Sets the PTOs to the retracted position and sets the lift motors to hold
    */
   void pto_release();
+
+  /**
+   * @brief Moves lift motors at a given speed
+   *
+   * @param speed Speed to move the lift motors at (127 to -127)
+   * @note This function does not verify bounds of the lift. This should be done by the caller.
+   */
+  void moveLift(int32_t speed);
+
+  /**
+   * @brief Move the lift to a preset position
+   *
+   * @param preset The preset to move the lift to
+   */
+  void moveLiftPreset(LCHS::LIFTPositionPresets preset);
+
+  /**
+   * @brief Is the lift at the top?
+   * 
+   * @return true If the lift is at the top
+   * @return false If the lift is not at the top
+   */
+  bool isLiftAtTop();
+
+  /**
+   * @brief Is the lift at the bottom?
+   * 
+   * @return true If the lift is at the bottom
+   * @return false If the lift is not at the bottom
+   */
+  bool isLiftAtBottom();
+
+  /**
+   * @brief Set the Intake Speed object
+   * 
+   * @param speed The speed to set the intake motors to
+   */
+  void setIntakeSpeed(int speed);
+
+  /**
+   * @brief Sets the Intake speed to a given preset
+   * 
+   * @param preset The preset to set the intake speed to
+   */
+  void setIntakeSpeedPreset(LCHS::IntakeSpeedPresets preset);
+
+  /**
+   * @brief Get the Intake Speed object
+   * 
+   * @return double The speed of the intake motors
+   */
+  double getIntakeSpeed();
+
+  /**
+   * @brief Get the Lift Position object
+   * 
+   * @return double The position of the lift
+   */
+  LCHS::PTOState getPTOState();
 };
 }; // namespace LCHS
 #endif

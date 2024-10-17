@@ -1,5 +1,5 @@
 #include "MobileGoalGrabber.hpp"
-LCHS::tteMobileGoalGrabber::MobileGoalGrabber(std::uint8_t pneumaticPort,
+LCHS::MobileGoalGrabber::MobileGoalGrabber(std::uint8_t pneumaticPort,
                                            std::uint8_t limitSwitchPort)
     : piston(pneumaticPort, false), limitSwitch(limitSwitchPort),
       mobileGoalTask(&MobileGoalGrabber::taskEntry, this, "mogo") {}
