@@ -22,10 +22,77 @@
 
 ROBOTLOG::LOGGER logger();
 
-pros::Controller master(CONTROLLER_MASTER);
-pros::MotorGroup leftdt({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B});
-pros::MotorGroup rightdt({MOTOR_PORT_RIGHT_A, MOTOR_PORT_RIGHT_B});
+// pros::Controller master(CONTROLLER_MASTER);
+// pros::MotorGroup leftdt({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B});
+// pros::MotorGroup rightdt({MOTOR_PORT_RIGHT_A, MOTOR_PORT_RIGHT_B});
+LCHS::Drivetrain drivetrain({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B},
+                            {MOTOR_PORT_RIGHT_A, MOTOR_PORT_RIGHT_B});
 
+// #include "Subsystems/Drivetrain/LemLibDrivetrain.cpp"
+
+#include "Constants.hpp"
+#include "lemlib/api.hpp"
+#include "main.h"  // IWYU pragma: keep
+#include "pros/motor_group.hpp"
+
+pros::MotorGroup lemleft_drive({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B},
+                               pros::MotorGears::green);
+pros::MotorGroup lemright_drive({MOTOR_PORT_RIGHT_A, MOTOR_PORT_RIGHT_B},
+                                pros::MotorGears::green);
+
+// drivetrain settings
+lemlib::Drivetrain lemlib_drivetrain(
+    &lemleft_drive,              // left motor group
+    &lemright_drive,             // right motor group
+    10,                          // 10 inch track width
+    lemlib::Omniwheel::NEW_275,  // using new 4" omnis
+    360,                         // drivetrain rpm is 360
+    2                            // horizontal drift is 2 (for now)
+);
+
+pros::Imu inertial(SENSOR_PORT_IMU);
+pros::adi::Encoder front_back(ODOM_POD_LONGITUDINAL_INPUT,
+                              ODOM_POD_LONGITUDINAL_OUTPUT);
+pros::adi::Encoder left_right(ODOM_POD_LATERAL_INPUT, ODOM_POD_LATERAL_OUTPUT);
+
+//https://lemlib.readthedocs.io/en/stable/tutorials/2_configuration.html#vertical-tracking-wheel
+lemlib::TrackingWheel front_back_wheel(&front_back, 2.75, -3.25);
+lemlib::TrackingWheel left_right_wheel(&left_right, 2.75, -3.25);
+lemlib::OdomSensors sensors(&front_back_wheel, nullptr, &left_right_wheel,
+                            nullptr, &inertial);
+
+// lateral PID controller
+lemlib::ControllerSettings lateral_controller(
+    10,   // proportional gain (kP)
+    0,    // integral gain (kI)
+    3,    // derivative gain (kD)
+    3,    // anti windup
+    1,    // small error range, in inches
+    100,  // small error range timeout, in milliseconds
+    3,    // large error range, in inches
+    500,  // large error range timeout, in milliseconds
+    20    // maximum acceleration (slew)
+);
+
+// angular PID controller
+lemlib::ControllerSettings angular_controller(
+    2,    // proportional gain (kP)
+    0,    // integral gain (kI)
+    10,   // derivative gain (kD)
+    3,    // anti windup
+    1,    // small error range, in degrees
+    100,  // small error range timeout, in milliseconds
+    3,    // large error range, in degrees
+    500,  // large error range timeout, in milliseconds
+    0     // maximum acceleration (slew)
+);
+
+// create the chassis
+lemlib::Chassis chassis(lemlib_drivetrain,   // drivetrain settings
+                        lateral_controller,  // lateral PID settings
+                        angular_controller,  // angular PID settings
+                        sensors              // odometry sensors
+);
 // static LCHS::MobileGoalGrabber mogoGrabber(PNEUMATIC_PORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH);
 // static LCHS::Intake intake({MOTOR_PORT_INTAKE}, {MOTOR_PORT_LEFT_LIFT, MOTOR_PORT_RIGHT_LIFT}, PNEUMATIC_PORT_PTO_LEFT, PNEUMATIC_PORT_PTO_RIGHT, SENSOR_PORT_LIFT);
 
@@ -162,11 +229,6 @@ void autonomous() {
   }
 }
 
-uint32_t RGBToUint32(uint8_t red, uint8_t green, uint8_t blue) {
-  // Pack the RGB components into a 32-bit unsigned integer
-  return ((uint32_t)red << 16) | ((uint32_t)green << 8) | blue;
-}
-
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -182,8 +244,7 @@ uint32_t RGBToUint32(uint8_t red, uint8_t green, uint8_t blue) {
  */
 void opcontrol() {
   while (true) {
-    leftdt.move(master.get_analog(ANALOG_LEFT_Y));
-    rightdt.move(master.get_analog(ANALOG_RIGHT_Y));
+    drivetrain.driverControl(); // Drivetrain.cpp/Drivetrain.hpp
     pros::delay(20);
   }
 }

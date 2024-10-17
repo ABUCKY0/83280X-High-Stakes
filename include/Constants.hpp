@@ -41,7 +41,7 @@ extern lv_obj_t *skillsscr;
 *11: [X] MOTOR_PORT_RIGHT_A
 *12: [X] MOTOR_PORT_RIGHT_B
 !13: [ ]
-!14: [ ]
+*14: [X] SENSOR_PORT_IMU
 *15: [X] SENSOR_PORT_OPTICAL_COLOR
 todo 16: [-] ADIEXPANDER_LEDSTRIP_PORT // Future Use
 *17: [X] SENSOR_PORT_MOGO_LIMIT_SWITCH
@@ -62,42 +62,42 @@ todo 16: [-] ADIEXPANDER_LEDSTRIP_PORT // Future Use
 */
 
 //! MOTORS
-//* DRIVETRAIN
-    //? LEFT
+// * DRIVETRAIN
+    // ? LEFT
 #define MOTOR_PORT_LEFT_A               1
 #define MOTOR_PORT_LEFT_B               2
 
-    //? RIGHT
+    // ? RIGHT
 #define MOTOR_PORT_RIGHT_A              11
 #define MOTOR_PORT_RIGHT_B              12
 
-//* LIFT
+// * LIFT
 #define MOTOR_PORT_LEFT_LIFT            3
 #define MOTOR_PORT_RIGHT_LIFT           10
 
-//* INTAKE
+// * INTAKE
 #define MOTOR_PORT_INTAKE               9
 #define MOTOR_PORT_INTAKE2              8
 
-//! SENSORS
-#define SENSOR_PORT_IMU                 
+// ! SENSORS
+#define SENSOR_PORT_IMU                 14 
 #define SENSOR_PORT_LIFT                19
 #define SENSOR_PORT_INTAKE_LIMIT_SWITCH 18
 #define SENSOR_PORT_MOGO_LIMIT_SWITCH   17
 #define SENSOR_PORT_OPTICAL_COLOR       15
 
-//! PNEUMATICS
+// ! PNEUMATICS
 #define PNEUMATIC_PORT_MOBILE_GOAL      1 
 #define PNEUMATIC_PORT_PTO_LEFT         2
 #define PNEUMATIC_PORT_PTO_RIGHT        3
 
-//! VEXNET
+// ! VEXNET
 #define GEN_PORT_VEXNET_PRIMARY         21
 #define GEN_PORT_VEXNET_BACKUP          20
 
-//! ODOM-PODS
-//? LONGITUDINAL AXIS (FRONT TO BACK) - E F
-//? LATERAL AXIS (LEFT TO RIGHT) - G H
+// ! ODOM-PODS
+// ? LONGITUDINAL AXIS (FRONT TO BACK) - E F
+// ? LATERAL AXIS (LEFT TO RIGHT) - G H
 
 #define ODOM_POD_LONGITUDINAL_INPUT     5
 #define ODOM_POD_LONGITUDINAL_OUTPUT    6
@@ -105,13 +105,26 @@ todo 16: [-] ADIEXPANDER_LEDSTRIP_PORT // Future Use
 #define ODOM_POD_LATERAL_INPUT          7
 #define ODOM_POD_LATERAL_OUTPUT         8
 
-//! ADI EXPANDERS (LEDS)
+// ! ADI EXPANDERS (LEDS)
 #define ADIEXPANDER_LEDSTRIP_PORT        16 // Future Use
 
-#endif
-
-/*
+/** 
  * Defines what version of the UI to use (depricated)
  * 1 - Marble UI
  */
 #define USE_UI 1
+
+
+
+#define CONTROL_BUTTON_LIFT_UP          E_CONTROLLER_DIGITAL_L1
+#define CONTROL_BUTTON_LIFT_DOWN        E_CONTROLLER_DIGITAL_L2
+#define CONTROL_BUTTON_INTAKE_IN        E_CONTROLLER_DIGITAL_R1
+#define CONTROL_BUTTON_INTAKE_OUT       E_CONTROLLER_DIGITAL_R2
+
+#define CONTROL_AXIS_LEFT_DRIVE         E_CONTROLLER_ANALOG_LEFT_Y
+#define CONTROL_AXIS_RIGHT_DRIVE        E_CONTROLLER_ANALOG_RIGHT_Y
+
+
+
+#endif
+
