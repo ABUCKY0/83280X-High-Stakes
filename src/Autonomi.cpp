@@ -9,6 +9,7 @@
  */
 void redLeft() {
     // Red left autonomous code here
+    std::cout << pros::millis() << " - DEBUG: Red Left Auton\n";
 }
 
 /**
@@ -17,6 +18,7 @@ void redLeft() {
  */
 void redRight() {
     // Red right autonomous code here
+    std::cout << pros::millis() << " - DEBUG: Red Right Auton\n";
 }
 
 /**
@@ -25,6 +27,7 @@ void redRight() {
  */
 void blueLeft() {
     // Blue left autonomous code here
+    std::cout << pros::millis() << " - DEBUG: Blue Left Auton\n";
 }
 
 /**
@@ -33,6 +36,7 @@ void blueLeft() {
  */
 void blueRight() {
     // Blue right autonomous code here
+    std::cout << pros::millis() << " - DEBUG: Blue Right Auton\n";
 }
 
 /**
@@ -41,6 +45,7 @@ void blueRight() {
  */
 void skillsPrimary() {
     // Skills autonomous code here
+    std::cout << pros::millis() << " - DEBUG: Skills Primary Auton\n";
 }
 
 /**
@@ -49,6 +54,7 @@ void skillsPrimary() {
  */
 void skillsSecondary() {
     // Skills autonomous code here
+    std::cout << pros::millis() << " - DEBUG: Skills Secondary Auton\n";
 }
 
 /**
@@ -58,8 +64,10 @@ void skillsSecondary() {
  */
 void noSkills() {
     // Does Nothing, meant to control LED strips (to be setup at a later time)
+    std::cout << pros::millis() << " - DEBUG: No Skills Auton\n";
 }
 
 void noMatch() {
     // Does Nothing, meant to control LED strips (to be setup at a later time)
+    std::cout << pros::millis() << " - DEBUG: No Match Auton\n";
 }

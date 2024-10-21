@@ -20,8 +20,6 @@
 #include "Subsystems/Drivetrain/Drivetrain.hpp"
 #include "Vex/things.h"
 
-ROBOTLOG::LOGGER logger();
-
 // pros::Controller master(CONTROLLER_MASTER);
 // pros::MotorGroup leftdt({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B});
 // pros::MotorGroup rightdt({MOTOR_PORT_RIGHT_A, MOTOR_PORT_RIGHT_B});

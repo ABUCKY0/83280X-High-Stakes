@@ -369,23 +369,6 @@
                 "target": "v5",
                 "user_files": [],
                 "version": "5.0.0"
-            },
-            "vexlog": {
-                "location": "C:\\Users\\buckn\\AppData\\Roaming\\PROS\\templates\\vexlog@0.0.1-alpha5",
-                "metadata": {
-                    "origin": "local"
-                },
-                "name": "vexlog",
-                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
-                "supported_kernels": "^4.0.6",
-                "system_files": [
-                    "include\\robotlog\\robotlog.h",
-                    "include\\robotlog\\colors.h",
-                    "firmware\\vexlog.a"
-                ],
-                "target": "v5",
-                "user_files": [],
-                "version": "0.0.1-alpha5"
             }
         },
         "upload_options": {
