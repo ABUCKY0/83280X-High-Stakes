@@ -137,7 +137,7 @@ void initialize() {
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() { cout << "Disabled"; }
+void disabled() { cout << "[MAIN] (INFO): [STATUS] Disabled"; }
 
 void runMatchAuton(char auton) {
   // Run the selected match auton
