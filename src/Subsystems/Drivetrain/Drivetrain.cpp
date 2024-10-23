@@ -71,7 +71,7 @@ void LCHS::Drivetrain::driverControl() {
 
   bool isLiftMoving = false;
   // If the driver presses the L1 button, lift moves up.
-  if (master.get_digital(CONTROL_BUTTON_LIFT_UP)) {
+  if (this->master.get_digital(CONTROL_BUTTON_LIFT_UP)) {
     isLiftMoving = true;
     if (this->intake.getPTOState() == LCHS::PTOState::DRIVETRAIN) {
       takeLiftMotors();
@@ -82,7 +82,7 @@ void LCHS::Drivetrain::driverControl() {
     } else {
       this->intake.moveLift(0);
     }
-  } else if (master.get_digital(CONTROL_BUTTON_LIFT_DOWN)) {
+  } else if (this->master.get_digital(CONTROL_BUTTON_LIFT_DOWN)) {
     isLiftMoving = true;
     if (this->intake.getPTOState() == LCHS::PTOState::DRIVETRAIN) {
       takeLiftMotors();
@@ -97,7 +97,7 @@ void LCHS::Drivetrain::driverControl() {
     this->intake.moveLift(0);
   }
 
-  if (master.get_digital(CONTROL_BUTTON_INTAKE_IN)) {
+  if (this->master.get_digital(CONTROL_BUTTON_INTAKE_IN)) {
     this->intake.setIntakeSpeed(127);
   } else if (master.get_digital(CONTROL_BUTTON_INTAKE_OUT)) {
     this->intake.setIntakeSpeed(-127);
