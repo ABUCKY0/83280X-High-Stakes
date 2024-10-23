@@ -64,16 +64,16 @@ todo 16: [-] ADIEXPANDER_LEDSTRIP_PORT // Future Use
 //! MOTORS
 // * DRIVETRAIN
     // ? LEFT
-#define MOTOR_PORT_LEFT_A               1
-#define MOTOR_PORT_LEFT_B               2
+#define MOTOR_PORT_LEFT_A               11
+#define MOTOR_PORT_LEFT_B               12
 
     // ? RIGHT
-#define MOTOR_PORT_RIGHT_A              11
-#define MOTOR_PORT_RIGHT_B              12
+#define MOTOR_PORT_RIGHT_A              1
+#define MOTOR_PORT_RIGHT_B              2
 
 // * LIFT
-#define MOTOR_PORT_LEFT_LIFT            3
-#define MOTOR_PORT_RIGHT_LIFT           10
+#define MOTOR_PORT_LEFT_LIFT            -13
+#define MOTOR_PORT_RIGHT_LIFT           3
 
 // * INTAKE
 #define MOTOR_PORT_INTAKE               9
@@ -81,8 +81,8 @@ todo 16: [-] ADIEXPANDER_LEDSTRIP_PORT // Future Use
 
 // ! SENSORS
 #define SENSOR_PORT_IMU                 14 
-#define SENSOR_PORT_LIFT                19
-#define SENSOR_PORT_INTAKE_LIMIT_SWITCH 18
+#define SENSOR_PORT_LIFT                18
+#define SENSOR_PORT_INTAKE_LIMIT_SWITCH 
 #define SENSOR_PORT_MOGO_LIMIT_SWITCH   17
 #define SENSOR_PORT_OPTICAL_COLOR       15
 

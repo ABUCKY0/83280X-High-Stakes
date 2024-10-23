@@ -20,6 +20,7 @@ LCHS::Intake::Intake(std::initializer_list<std::int8_t> motors,
   liftMotors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ptoLeft.retract();
   ptoRight.retract();
+  liftPosition.reset_position();
 }
 
 /**
@@ -71,14 +72,14 @@ void LCHS::Intake::moveLift( std::int32_t speed) {
 }
 
 bool LCHS::Intake::isLiftAtBottom() {
-  if (liftPosition.get_angle() < 15) {
+  if (liftPosition.get_position()/100 < 15) {
     return true;
   }
   return false;
 }
 
 bool LCHS::Intake::isLiftAtTop() {
-  if (liftPosition.get_angle() > 135) { // 135 degrees is the top of the lift
+  if (liftPosition.get_position()/100 > 135) { // 135 degrees is the top of the lift
     return true;
   }
   return false;
@@ -94,16 +95,16 @@ void LCHS::Intake::setIntakeSpeed(int speed) {
 void LCHS::Intake::setIntakeSpeedPreset(LCHS::IntakeSpeedPresets preset) {
   switch (preset) {
   case IntakeSpeedPresets::IN:
-    intakeMotors.move_velocity(200);
-    break;
-  case IntakeSpeedPresets::OUT:
     intakeMotors.move_velocity(-200);
     break;
+  case IntakeSpeedPresets::OUT:
+    intakeMotors.move_velocity(200);
+    break;
   case IntakeSpeedPresets::SLOW_IN:
-    intakeMotors.move_velocity(100);
+    intakeMotors.move_velocity(-100);
     break;
   case IntakeSpeedPresets::SLOW_OUT:
-    intakeMotors.move_velocity(-100);
+    intakeMotors.move_velocity(100);
     break;
   case IntakeSpeedPresets::STOP:
     intakeMotors.move_velocity(0);

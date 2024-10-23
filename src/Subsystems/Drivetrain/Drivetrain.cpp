@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 #include "Subsystems/Drivetrain/Drivetrain.hpp"  // IWYU pragma: keep
-
+static bool reset = false;
 LCHS::Drivetrain::Drivetrain(
     std::initializer_list<std::int8_t> leftDrivePorts,
     std::initializer_list<std::int8_t> rightDrivePorts) :
@@ -18,13 +18,17 @@ LCHS::Drivetrain::Drivetrain(
     rightDrive(rightDrivePorts),
     intake({MOTOR_PORT_INTAKE}, {MOTOR_PORT_LEFT_LIFT, MOTOR_PORT_RIGHT_LIFT},
            PNEUMATIC_PORT_PTO_LEFT, PNEUMATIC_PORT_PTO_RIGHT, SENSOR_PORT_LIFT),
-    mogoGrabber(PNEUMATIC_PORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH) {}
+    mogoGrabber(PNEUMATIC_PORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH) {
+
+    }
 
 void LCHS::Drivetrain::move(std::int32_t voltageLeft,
                             std::int32_t voltageRight) {
+                              std::cout << to_string(voltageLeft) << " " << to_string(voltageRight) << std::endl;
   leftDrive.move_voltage(voltageLeft);
   rightDrive.move_voltage(voltageRight);
-}
+  std::cout << leftDrive.get_target_velocity() << " " << rightDrive.get_target_velocity() << std::endl;
+                            }
 
 void LCHS::Drivetrain::move_absolute(const double positionLeft,
                                      const double positionRight,
@@ -62,12 +66,19 @@ void LCHS::Drivetrain::brake() {
 }
 
 void LCHS::Drivetrain::driverControl() {
+  if (!reset) {
+    reset = true;
+    this->intake.liftPosition.set_position(0);
+  }
   // Get the voltage from the controller
-  std::int32_t leftVoltage = master.get_analog(CONTROL_AXIS_LEFT_DRIVE);
+  std::int32_t leftVoltage = -master.get_analog(CONTROL_AXIS_LEFT_DRIVE);
   std::int32_t rightVoltage = master.get_analog(CONTROL_AXIS_RIGHT_DRIVE);
 
   // Set the voltage for the drivetrain
-  move(leftVoltage, rightVoltage);
+  //move(leftVoltage, rightVoltage);
+  move_velocity(leftVoltage, rightVoltage);
+  // std::cout << "LiftPos: " << this->intake.liftPosition.get_position()
+  //            << std::endl;
 
   bool isLiftMoving = false;
   // If the driver presses the L1 button, lift moves up.
@@ -78,7 +89,7 @@ void LCHS::Drivetrain::driverControl() {
     }
 
     if (!this->intake.isLiftAtTop()) {
-      this->intake.moveLift(127);
+      this->intake.moveLift(-127);
     } else {
       this->intake.moveLift(0);
     }
@@ -89,7 +100,7 @@ void LCHS::Drivetrain::driverControl() {
     }
 
     if (!this->intake.isLiftAtBottom()) {
-      this->intake.moveLift(-127);
+      this->intake.moveLift(127);
     } else {
       this->intake.moveLift(0);
     }

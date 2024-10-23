@@ -234,7 +234,7 @@ void init_marble_ui() {
 
   // Team Name
   cout << "[UI] (INFO): [LABEL] [CREATION] teamName\n";
-  lv_obj_t *teamName = createLabel(matchscr, 38, 25, "83280W");
+  lv_obj_t *teamName = createLabel(matchscr, 38, 25, "83280X");
   lv_label_set_style(teamName, &style_teamname);
   // BG Boxes
   cout << "[UI] (INFO): [OBJ] [CREATION] rollerbg\n";
@@ -572,7 +572,7 @@ void init_marble_ui() {
   auto buildenv = "";
   if (string(BUILD_ENVIRONMENT).find("MSYS") != std::string::npos) {
     buildenv = "Built on Windows";
-  } else if (string(BUILD_ENVIRONMENT).find("linux") != std::string::npos) {
+  } else if (string(BUILD_ENVIRONMENT).find("zorinos") != std::string::npos) {
     buildenv = "Built on Linux";
   } else if (string(BUILD_ENVIRONMENT).find("darwin") != std::string::npos) {
     // Untested 	buildenv = "Built on Mac";
@@ -604,7 +604,7 @@ void init_marble_ui() {
   // else
   // {
   // 	logo = createImage(gamescr, 24, 24, 8, &Robotics_Logo_Huge);
-  // 	text = "83280W";
+  // 	text = "83280X";
   // }
 
   /*

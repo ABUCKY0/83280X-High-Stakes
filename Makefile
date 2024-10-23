@@ -36,8 +36,8 @@ APPLICATION_ENVIRONMENT:=alpha
 TEAM:=83280X
 TEAM_NAME:=CHA0S
 SEASON_NAME:=High Stakes
-ROBOT_NAME:=Kháos
-COMPETITION_NAME:=Bridgeland Skills Only
+ROBOT_NAME:=Khaos
+COMPETITION_NAME:=CySpringsTournament
 CODEBASE_VERSION:=0.0.5
 # Print build information
 $(info Build Date: $(BUILD_DATE))

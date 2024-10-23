@@ -17,7 +17,7 @@ enum class IntakeSpeedPresets { IN, OUT, SLOW_IN, SLOW_OUT, STOP };
  * is responsible for controlling the intake motors, lift motors, and the PTOs.
  */
 class Intake {
-private:
+public:
   pros::MotorGroup intakeMotors;
   pros::MotorGroup liftMotors;
   pros::adi::Pneumatics ptoLeft;
