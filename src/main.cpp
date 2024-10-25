@@ -16,7 +16,7 @@
 // Subsystems
 #include "AutonomousSelector/Selector.hpp"
 #include "Subsystems/MobileGoalGrabber.hpp"
-#include "Subsystems/Intake.hpp"
+#include "Subsystems/Intake/Intake.hpp"
 #include "Subsystems/Drivetrain/Drivetrain.hpp"
 #include "Vex/things.h"
 

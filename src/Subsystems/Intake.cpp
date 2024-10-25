@@ -1,6 +1,14 @@
 
-#include "Subsystems/Intake.hpp"
+#include "Subsystems/Intake/Intake.hpp"
+//#include "lemlib/pid.hpp"
+#include "Subsystems/Intake/IntakePID.hpp"
 
+static float kp_up = 10.0f;
+static float ki_up = 0.0f;
+static float kd_up = 100.0f;
+static float kp_down = 10.0f;
+static float ki_down = 0.0f;
+static float kd_down = 10.0f;
 
 /**
  * @brief Intake subsystem
@@ -8,14 +16,13 @@
  * This class is responsible for controlling the intake and lift subsystems. It
  * is responsible for controlling the intake motors, lift motors, and the PTOs.
  */
-
 LCHS::Intake::Intake(std::initializer_list<std::int8_t> motors,
                      std::initializer_list<std::int8_t> liftmotors,
                      std::uint8_t pneumaticLeft, std::uint8_t pneumaticRight,
                      const std::int8_t rotationPort)
     : intakeMotors(motors), liftMotors(liftmotors),
       ptoLeft(pneumaticLeft, true), ptoRight(pneumaticRight, true),
-      liftPosition(rotationPort), ptoState(PTOState::LIFT) {
+      liftPosition(rotationPort), ptoState(PTOState::LIFT), liftPID(kp_up, ki_up, kd_up, kp_down, ki_down, kd_down) {
   intakeMotors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   liftMotors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ptoLeft.retract();
@@ -71,6 +78,8 @@ void LCHS::Intake::moveLift( std::int32_t speed) {
   liftMotors.move(speed);
 }
 
+
+
 bool LCHS::Intake::isLiftAtBottom() {
   if (liftPosition.get_position()/100 < 15) {
     return true;
@@ -110,4 +119,68 @@ void LCHS::Intake::setIntakeSpeedPreset(LCHS::IntakeSpeedPresets preset) {
     intakeMotors.move_velocity(0);
     break;
   }
+}
+
+
+void LCHS::Intake::moveLiftPreset(LCHS::LIFTPositionPresets preset) {
+  this->liftPositionPreset = preset;
+}
+
+void LCHS::Intake::resetPID() {
+  liftPID.reset();
+}
+
+void LCHS::Intake::update() {
+  // Update the lift position
+  LCHS::LIFTPositionPresets current = liftPositionPreset;
+  int target_pos;
+  switch (current) {
+    case LCHS::LIFTPositionPresets::MAX:
+      target_pos = 135; // Max position
+      break;
+    case LCHS::LIFTPositionPresets::MIN:
+      target_pos = 0; // Mid position
+      break;
+    case LCHS::LIFTPositionPresets::WALL:
+      target_pos = 60; // Wall position
+      break;
+    case LCHS::LIFTPositionPresets::ALLIANCE:
+      target_pos = 90; // Alliance position
+      break;
+    case LCHS::LIFTPositionPresets::E_STOP:
+      target_pos = liftPosition.get_position(); // Stop at current position
+      break;
+  }
+  // Update the lift position based on the current preset
+  std::cout << "\033[2J";
+  int target = target_pos - (this->liftPosition.get_position() / 100);
+  int PIDOutput = liftPID.update(target);
+  std::cout << "PID Output: " << PIDOutput << std::endl;
+  std::cout << "Current Position: " << this->liftPosition.get_position() << std::endl;
+  std::cout << "Get Error: " << target << std::endl;
+  switch (current) {
+    case LCHS::LIFTPositionPresets::MAX:
+      std::cout << "Requested State: MAX" << std::endl;
+      break;
+    case LCHS::LIFTPositionPresets::MIN:
+      std::cout << "Requested State: MIN" << std::endl;
+      break;
+    case LCHS::LIFTPositionPresets::WALL:
+      std::cout << "Requested State: WALL" << std::endl;
+      break;
+    case LCHS::LIFTPositionPresets::ALLIANCE:
+      std::cout << "Requested State: ALLIANCE" << std::endl;
+      break;
+    case LCHS::LIFTPositionPresets::E_STOP:
+      std::cout << "Requested State: E_STOP" << std::endl;
+      break;
+  }
+
+  // Move the lift motors based on the PID output
+  //this->liftMotors.move_voltage(-PIDOutput);
+
+
+  //this->liftMotors.move(-PIDOutput);
+  //PIDOutput = std::clamp(PIDOutput, -100, 100);
+  this->liftMotors.move(-PIDOutput);
 }

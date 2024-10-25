@@ -1,9 +1,10 @@
 #ifndef SUBSYSTEM_INTAKE_HPP
 #define SUBSYSTEM_INTAKE_HPP
 // //#include "Drivetrain/Drivetrain.hpp"
-#include "lemlib/pid.hpp"
-#include "main.h" // IWYU pragma: keep
 #include <atomic>
+// // #include "lemlib/pid.hpp"
+#include "main.h"  // IWYU pragma: keep
+#include "Subsystems/Intake/IntakePID.hpp"
 
 namespace LCHS {
 enum class PTOState { DRIVETRAIN, LIFT };
@@ -17,20 +18,22 @@ enum class IntakeSpeedPresets { IN, OUT, SLOW_IN, SLOW_OUT, STOP };
  * is responsible for controlling the intake motors, lift motors, and the PTOs.
  */
 class Intake {
-public:
+ public:
   pros::MotorGroup intakeMotors;
   pros::MotorGroup liftMotors;
   pros::adi::Pneumatics ptoLeft;
   pros::adi::Pneumatics ptoRight;
   pros::Rotation liftPosition;
+  LCHS::IntakePID liftPID;
   // LCHS::PTOState ptoState = LCHS::PTOState::LIFT;
-  std::atomic<LCHS::PTOState> ptoState =  LCHS::PTOState::LIFT;
-  std::atomic<LCHS::LIFTPositionPresets> liftPositionPreset = LCHS::LIFTPositionPresets::MIN;
+  std::atomic<LCHS::PTOState> ptoState = LCHS::PTOState::LIFT;
+  std::atomic<LCHS::LIFTPositionPresets> liftPositionPreset =
+      LCHS::LIFTPositionPresets::MIN;
   std::atomic_bool ptoLock = false;
 
   //lemlib::PID liftPID;
 
-public:
+ public:
   /**
    * @brief Default constructor, deleted to prevent usage
    */
@@ -64,7 +67,7 @@ public:
    * Sets the PTOs to the retracted position and sets the lift motors to hold
    */
   void pto_release();
-
+private:
   /**
    * @brief Moves lift motors at a given speed
    *
@@ -72,7 +75,7 @@ public:
    * @note This function does not verify bounds of the lift. This should be done by the caller.
    */
   void moveLift(int32_t speed);
-
+public:
   /**
    * @brief Move the lift to a preset position
    *
@@ -123,6 +126,18 @@ public:
    * @return double The position of the lift
    */
   LCHS::PTOState getPTOState();
+
+  /**
+   * @brief Update the intake subsystem 
+   * 
+   */
+  void update();
+
+  /**
+   * @brief Reset the PID controller
+   * 
+   */
+  void resetPID();
 };
-}; // namespace LCHS
+};  // namespace LCHS
 #endif

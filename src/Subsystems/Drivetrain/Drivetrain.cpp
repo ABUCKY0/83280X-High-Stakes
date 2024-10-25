@@ -80,33 +80,72 @@ void LCHS::Drivetrain::driverControl() {
   // std::cout << "LiftPos: " << this->intake.liftPosition.get_position()
   //            << std::endl;
 
-  bool isLiftMoving = false;
-  // If the driver presses the L1 button, lift moves up.
-  if (this->master.get_digital(CONTROL_BUTTON_LIFT_UP)) {
-    isLiftMoving = true;
-    if (this->intake.getPTOState() == LCHS::PTOState::DRIVETRAIN) {
-      takeLiftMotors();
+  // bool isLiftMoving = false;
+  // // If the driver presses the L1 button, lift moves up.
+  // if (this->master.get_digital(CONTROL_BUTTON_LIFT_UP)) {
+  //   isLiftMoving = true;
+  //   if (this->intake.getPTOState() == LCHS::PTOState::DRIVETRAIN) {
+  //     takeLiftMotors();
+  //   }
+
+  //   if (!this->intake.isLiftAtTop()) {
+  //     this->intake.moveLift(-127);
+  //   } else {
+  //     this->intake.moveLift(0);
+  //   }
+  // } else if (this->master.get_digital(CONTROL_BUTTON_LIFT_DOWN)) {
+  //   isLiftMoving = true;
+  //   if (this->intake.getPTOState() == LCHS::PTOState::DRIVETRAIN) {
+  //     takeLiftMotors();
+  //   }
+
+  //   if (!this->intake.isLiftAtBottom()) {
+  //     this->intake.moveLift(127);
+  //   } else {
+  //     this->intake.moveLift(0);
+  //   }
+  // } else {
+  //   this->intake.moveLift(0);
+  // }
+  if (this->master.get_digital_new_press(CONTROL_BUTTON_LIFT_DOWN)) {
+    switch (this->intake.liftPositionPreset) {
+      // enum class LIFTPositionPresets { MAX, WALL, ALLIANCE, MIN, E_STOP };
+      case LCHS::LIFTPositionPresets::MAX:
+        this->intake.moveLiftPreset(LCHS::LIFTPositionPresets::WALL);
+        break;
+      case LCHS::LIFTPositionPresets::WALL:
+        this->intake.moveLiftPreset(LCHS::LIFTPositionPresets::ALLIANCE);
+        break;
+      case LCHS::LIFTPositionPresets::ALLIANCE:
+        this->intake.moveLiftPreset(LCHS::LIFTPositionPresets::MIN);
+        break;
+      case LCHS::LIFTPositionPresets::MIN:
+        // Do nothing
+        break;
+      default:
+        break; 
     }
 
-    if (!this->intake.isLiftAtTop()) {
-      this->intake.moveLift(-127);
-    } else {
-      this->intake.moveLift(0);
-    }
-  } else if (this->master.get_digital(CONTROL_BUTTON_LIFT_DOWN)) {
-    isLiftMoving = true;
-    if (this->intake.getPTOState() == LCHS::PTOState::DRIVETRAIN) {
-      takeLiftMotors();
-    }
-
-    if (!this->intake.isLiftAtBottom()) {
-      this->intake.moveLift(127);
-    } else {
-      this->intake.moveLift(0);
-    }
-  } else {
-    this->intake.moveLift(0);
   }
+  else if (this->master.get_digital_new_press(CONTROL_BUTTON_LIFT_UP)) {
+    switch (this->intake.liftPositionPreset) {
+      case LCHS::LIFTPositionPresets::MIN:
+        this->intake.moveLiftPreset(LCHS::LIFTPositionPresets::ALLIANCE);
+        break;
+      case LCHS::LIFTPositionPresets::ALLIANCE:
+        this->intake.moveLiftPreset(LCHS::LIFTPositionPresets::WALL);
+        break;
+      case LCHS::LIFTPositionPresets::WALL:
+        this->intake.moveLiftPreset(LCHS::LIFTPositionPresets::MAX);
+        break;
+      case LCHS::LIFTPositionPresets::MAX:
+        // Do nothing
+        break;
+      default:
+        break; 
+    }
+  }
+    this->intake.update();
 
   if (this->master.get_digital(CONTROL_BUTTON_INTAKE_IN)) {
     this->intake.setIntakeSpeed(127);

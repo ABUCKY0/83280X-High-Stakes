@@ -6,7 +6,7 @@
 #include "pros/motors.h"
 
 #include "Constants.hpp"
-#include "Subsystems/Intake.hpp"
+#include "Subsystems/Intake/Intake.hpp"
 #include "Subsystems/MobileGoalGrabber.hpp"
 
 // pros::MotorGroup left_drive({1, 2, 3}, pros::MotorGears::blue);
