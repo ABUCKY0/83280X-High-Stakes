@@ -67,7 +67,7 @@ class Intake {
    * Sets the PTOs to the retracted position and sets the lift motors to hold
    */
   void pto_release();
-private:
+
   /**
    * @brief Moves lift motors at a given speed
    *
@@ -75,7 +75,7 @@ private:
    * @note This function does not verify bounds of the lift. This should be done by the caller.
    */
   void moveLift(int32_t speed);
-public:
+
   /**
    * @brief Move the lift to a preset position
    *
@@ -138,6 +138,12 @@ public:
    * 
    */
   void resetPID();
+
+  /**
+   * @brief Brake the lift motors
+   * 
+   */
+  void brakeLift();
 };
 };  // namespace LCHS
 #endif

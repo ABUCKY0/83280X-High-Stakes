@@ -76,11 +76,11 @@ todo 16: [-] ADIEXPANDER_LEDSTRIP_PORT // Future Use
 #define MOTOR_PORT_RIGHT_LIFT           3
 
 // * INTAKE
-#define MOTOR_PORT_INTAKE               9
-#define MOTOR_PORT_INTAKE2              8
+#define MOTOR_PORT_INTAKE               -4
+#define MOTOR_PORT_INTAKE2              14
 
 // ! SENSORS
-#define SENSOR_PORT_IMU                 14 
+#define SENSOR_PORT_IMU                  8
 #define SENSOR_PORT_LIFT                18
 #define SENSOR_PORT_INTAKE_LIMIT_SWITCH 
 #define SENSOR_PORT_MOGO_LIMIT_SWITCH   17
@@ -124,7 +124,9 @@ todo 16: [-] ADIEXPANDER_LEDSTRIP_PORT // Future Use
 #define CONTROL_AXIS_LEFT_DRIVE         E_CONTROLLER_ANALOG_LEFT_Y
 #define CONTROL_AXIS_RIGHT_DRIVE        E_CONTROLLER_ANALOG_RIGHT_Y
 
+#define CONTROL_BUTTON_MOGO_TOGGLE      E_CONTROLLER_DIGITAL_Y
 
+#define USE_LIFT_PRESETS               0
 
 #endif
 
