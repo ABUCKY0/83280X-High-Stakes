@@ -1,8 +1,10 @@
 #include "AutonomousSelector/helpers.hpp"
 #include "Constants.hpp"
+#include "liblvgl/lv_draw/lv_draw_img.h"
 #include "main.h"
 #include "pros/apix.h" // IWYU pragma: keep
 #include <sstream>
+#include "AutonomousSelector/Themes/Marble.hpp"
 
 #if USE_UI == 1
 
@@ -76,6 +78,29 @@ char ActiveVexNetConnection = 9; // 0 = No Connection, 1 = Primary, 2 = Backup
 double estpsi = 100.0;
 double batteryCharge = 0.0;
 
+
+// Styles
+static lv_style_t style_bg;
+static lv_style_t style_btn;
+static lv_style_t style_btn_selected;
+static lv_style_t style_confirmbtn;
+static lv_style_t style_confirmbtn_selected;
+static lv_style_t style_teamname;
+static lv_style_t style_roller;
+static lv_style_t roller_style_selected;
+static lv_style_t roller_bg_style;
+static lv_style_t style_box;
+static lv_style_t style_smalltext;
+static lv_style_t style_largetext;
+static lv_style_t style_midtext;
+static lv_style_t style_buildtext;
+
+// Images
+static lv_img_dsc_t bg_image;
+
+
+
+
 // on press confirm
 lv_res_t onMatchConfirmPress(lv_obj_t *btn) {
   cout << "[UI] (INFO): Autonomous Selection Confirmed\n";
@@ -115,114 +140,25 @@ void init_marble_ui() {
   matchscr = lv_obj_create(NULL, NULL);
 
   /* ------------- Shared Styles ------------- */
-  cout << "[UI] (INFO): [STYLE] [CREATION] style_bg\n";
-  // Background
-  static lv_style_t style_bg;
-  lv_style_copy(&style_bg, &lv_style_plain);
-  style_bg.body.main_color = LV_COLOR_MAKE(0x1f, 0x28, 0x2f); // 1f282f
-  style_bg.body.grad_color =
-      LV_COLOR_MAKE(0x1f, 0x28, 0x2f); // RGB for bright blue
+  MarbleStyles::initStyles();
+  style_bg = MarbleStyles::style_bg;
+  style_btn = MarbleStyles::style_btn;
+  style_btn_selected = MarbleStyles::style_btn_selected;
+  style_confirmbtn = MarbleStyles::style_confirmbtn;
+  style_confirmbtn_selected = MarbleStyles::style_confirmbtn_selected;
+  style_teamname = MarbleStyles::style_teamname;
+  style_roller = MarbleStyles::style_roller;
+  roller_style_selected = MarbleStyles::roller_style_selected;
+  roller_bg_style = MarbleStyles::roller_bg_style;
+  style_box = MarbleStyles::style_box;
+  style_smalltext = MarbleStyles::style_smalltext;
+  style_largetext = MarbleStyles::style_largetext;
+  style_midtext = MarbleStyles::style_midtext;
+  style_buildtext = MarbleStyles::style_buildtext;
 
-  /* Create a style for the button */
-  cout << "[UI] (INFO): [STYLE] [CREATION] style_btn\n";
-  static lv_style_t style_btn;
-  lv_style_copy(&style_btn, &lv_style_plain); // copy from the plain style
-  style_btn.body.main_color = LV_COLOR_RED;   // set the main color to red
-  style_btn.body.grad_color = LV_COLOR_RED;   // set the gradient color to red
-  style_btn.body.radius = 8;                  // set the corner radius
-  style_btn.text.font =
-      &blackopsone_18;              // set the font (replace with your font)
-  style_btn.text.letter_space = .5; // set the space between letters
-  style_btn.text.color = LV_COLOR_WHITE;
+  bg_image = MarbleStyles::bg_image;
 
-  /* Button Selected */
-  cout << "[UI] (INFO): [STYLE] [CREATION] style_btn_selected\n";
-  static lv_style_t style_btn_selected;
-  lv_style_copy(&style_btn_selected,
-                &lv_style_plain); // copy from the plain style
-  style_btn_selected.body.main_color =
-      LV_COLOR_BLACK; // set the main color to red
-  style_btn_selected.body.grad_color =
-      LV_COLOR_BLACK;                 // set the gradient color to red
-  style_btn_selected.body.radius = 8; // set the corner radius
-  style_btn_selected.text.font =
-      &blackopsone_18; // set the font (replace with your font)
-  style_btn_selected.text.letter_space = .5; // set the space between letters
-  style_btn_selected.text.color = LV_COLOR_MAKE(0x8b, 0x8a, 0x8b); // #8b8a8b
 
-  // COnfirm Button Style
-  cout << "[UI] (INFO): [STYLE] [CREATION] style_confirmtbn\n";
-  static lv_style_t style_confirmbtn;
-  lv_style_copy(&style_confirmbtn, &lv_style_plain);
-  style_confirmbtn.body.main_color = LV_COLOR_RED; // set the main color to red
-  style_confirmbtn.body.grad_color =
-      LV_COLOR_RED;                 // set the gradient color to red
-  style_confirmbtn.body.radius = 8; // set the corner radius
-  style_confirmbtn.text.font =
-      &blackopsone_20; // set the font (replace with your font)
-  style_confirmbtn.text.letter_space = .5; // set the space between letters
-  style_confirmbtn.text.color = LV_COLOR_WHITE;
-
-  // confirm button selected
-  cout << "[UI] (INFO): [STYLE] [CREATION] style_confirmbtn_selected\n";
-  static lv_style_t style_confirmbtn_selected;
-  lv_style_copy(&style_confirmbtn_selected, &lv_style_plain);
-  style_confirmbtn_selected.body.main_color = LV_COLOR_BLACK;
-  style_confirmbtn_selected.body.grad_color = LV_COLOR_BLACK;
-  style_confirmbtn_selected.body.radius = 8; // set the corner radius
-  style_confirmbtn_selected.text.font =
-      &blackopsone_20; // set the font (replace with your font)
-  style_confirmbtn_selected.text.letter_space =
-      .5; // set the space between letters
-  style_confirmbtn_selected.text.color =
-      LV_COLOR_MAKE(0x8b, 0x8a, 0x8b); // #8b8a8b
-
-  // team name style
-  cout << "[UI] (INFO): [STYLE] [CREATION] style_teamname\n";
-  static lv_style_t style_teamname;
-  lv_style_copy(&style_teamname, &lv_style_plain);
-  style_teamname.text.font = &blackopsone_40;
-  style_teamname.text.color = LV_COLOR_MAKE(0xD0, 0xA9, 0x33); // #D0A933
-
-  // roller style
-  cout << "[UI] (INFO): [STYLE] [CREATION] style_roller\n";
-  static lv_style_t style_roller;
-  lv_style_copy(&style_roller, &lv_style_plain);
-  style_roller.text.font = &blackopsone_18;
-  style_roller.body.main_color = LV_COLOR_MAKE(0x92, 0x92, 0x92); // #929292
-  style_roller.body.grad_color = LV_COLOR_MAKE(0x92, 0x92, 0x92); // #929292
-  style_roller.body.opa = LV_OPA_0;
-  style_roller.text.color = LV_COLOR_WHITE;
-  style_roller.body.empty = 1;
-  style_roller.body.radius = 11;
-  style_roller.body.padding.hor = 15;
-  style_roller.body.padding.ver = 10;
-  style_roller.text.line_space = 5;
-
-  /* Create a style for the roller selected option */
-  cout << "[UI] (INFO): [STYLE] [CREATION] roller_style_selected\n";
-  static lv_style_t roller_style_selected;
-  lv_style_copy(&roller_style_selected, &lv_style_plain);
-  roller_style_selected.text.color =
-      LV_COLOR_BLACK; // set the text color to red
-  roller_style_selected.body.border.color = LV_COLOR_BLACK;
-  roller_style_selected.body.grad_color =
-      LV_COLOR_MAKE(0x92, 0x92, 0x92); // #929292
-  roller_style_selected.body.main_color =
-      LV_COLOR_MAKE(0x92, 0x92, 0x92); // #929292
-  roller_style_selected.body.border.width = 3;
-  roller_style_selected.body.radius = 11;
-  style_roller.body.padding.hor = 15;
-  style_roller.body.padding.ver = 10;
-  style_roller.text.line_space = 5;
-
-  // Roller Background Style
-  cout << "[UI] (INFO): [STYLE] [CREATION] roller_bg_style\n";
-  static lv_style_t roller_bg_style;
-  lv_style_copy(&roller_bg_style, &lv_style_plain);
-  roller_bg_style.body.opa = LV_OPA_70;
-  roller_bg_style.body.main_color = LV_COLOR_BLACK;
-  roller_bg_style.body.grad_color = LV_COLOR_BLACK;
   /* ----------- Begin Match Screen ---------- */
 
   cout << "[UI] (INFO): [SCREEN] [LOAD] matchscr\n";
@@ -230,7 +166,7 @@ void init_marble_ui() {
 
   // Image Background
   cout << "[UI] (INFO): [IMAGE] [CREATION] backgroundimage\n";
-  lv_obj_t *backgroundimage = createImage(matchscr, 0, 0, 1, &bg);
+  lv_obj_t *backgroundimage = createImage(matchscr, 0, 0, 1, &bg_image);
 
   // Team Name
   cout << "[UI] (INFO): [LABEL] [CREATION] teamName\n";
@@ -298,7 +234,7 @@ void init_marble_ui() {
 
   gamescr = lv_obj_create(NULL, NULL);
   cout << "[UI] (INFO): [IMAGE] [CREATION] Game Screen Background\n";
-  lv_obj_t *game_backgroundimage = createImage(gamescr, 0, 0, 1, &bg);
+  lv_obj_t *game_backgroundimage = createImage(gamescr, 0, 0, 1, &bg_image);
 
   // Create a style for the box
   static lv_style_t style_box;
