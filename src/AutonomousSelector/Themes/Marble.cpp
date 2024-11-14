@@ -36,6 +36,7 @@ void initStyles() {
   style_btn_selected.body.main_color = LV_COLOR_BLACK;
   style_btn_selected.body.grad_color = LV_COLOR_BLACK;
   style_btn_selected.body.radius = 8;
+  style_btn_selected.text.letter_space = .5;
   style_btn_selected.text.font = &blackopsone_18;
 
   lv_style_copy(&style_confirmbtn, &lv_style_plain);
@@ -104,6 +105,6 @@ void initStyles() {
   style_buildtext.text.font = &blackopsone_12;
   style_buildtext.text.color = LV_COLOR_WHITE;
 
-  bg_image = bg;
+  bg_image = marblebg;
 }
 }  // namespace Marble

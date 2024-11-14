@@ -124,7 +124,8 @@ LV_IMG_DECLARE(chicken_sandwich_nobg);
 LV_IMG_DECLARE(fire);
 LV_IMG_DECLARE(MiniChickenSandwich);
 
-LV_IMG_DECLARE(bg);
+LV_IMG_DECLARE(marblebg);
+LV_IMG_DECLARE(hellokitty_bg);
 
 LV_FONT_DECLARE(blackopsone_4);
 LV_FONT_DECLARE(blackopsone_6);

@@ -5,6 +5,7 @@
 #include "pros/apix.h" // IWYU pragma: keep
 #include <sstream>
 #include "AutonomousSelector/Themes/Marble.hpp"
+#include "AutonomousSelector/Themes/HelloKitty.hpp"
 
 #if USE_UI == 1
 
@@ -140,24 +141,23 @@ void init_marble_ui() {
   matchscr = lv_obj_create(NULL, NULL);
 
   /* ------------- Shared Styles ------------- */
-  MarbleStyles::initStyles();
-  style_bg = MarbleStyles::style_bg;
-  style_btn = MarbleStyles::style_btn;
-  style_btn_selected = MarbleStyles::style_btn_selected;
-  style_confirmbtn = MarbleStyles::style_confirmbtn;
-  style_confirmbtn_selected = MarbleStyles::style_confirmbtn_selected;
-  style_teamname = MarbleStyles::style_teamname;
-  style_roller = MarbleStyles::style_roller;
-  roller_style_selected = MarbleStyles::roller_style_selected;
-  roller_bg_style = MarbleStyles::roller_bg_style;
-  style_box = MarbleStyles::style_box;
-  style_smalltext = MarbleStyles::style_smalltext;
-  style_largetext = MarbleStyles::style_largetext;
-  style_midtext = MarbleStyles::style_midtext;
-  style_buildtext = MarbleStyles::style_buildtext;
+  HelloKittyStyles::initStyles();
+  style_bg = HelloKittyStyles::style_bg;
+  style_btn = HelloKittyStyles::style_btn;
+  style_btn_selected = HelloKittyStyles::style_btn_selected;
+  style_confirmbtn = HelloKittyStyles::style_confirmbtn;
+  style_confirmbtn_selected = HelloKittyStyles::style_confirmbtn_selected;
+  style_teamname = HelloKittyStyles::style_teamname;
+  style_roller = HelloKittyStyles::style_roller;
+  roller_style_selected = HelloKittyStyles::roller_style_selected;
+  roller_bg_style = HelloKittyStyles::roller_bg_style;
+  style_box = HelloKittyStyles::style_box;
+  style_smalltext = HelloKittyStyles::style_smalltext;
+  style_largetext = HelloKittyStyles::style_largetext;
+  style_midtext = HelloKittyStyles::style_midtext;
+  style_buildtext = HelloKittyStyles::style_buildtext;
 
-  bg_image = MarbleStyles::bg_image;
-
+  bg_image = HelloKittyStyles::bg_image;
 
   /* ----------- Begin Match Screen ---------- */
 
@@ -206,10 +206,10 @@ void init_marble_ui() {
   lv_roller_set_style(auton_selector, LV_ROLLER_STYLE_SEL,
                       &roller_style_selected);
 
-  // Chick-Fil-A Chicken Sandwich
-  cout << "[UI] (INFO): [IMAGE] [CREATION] chicken\n";
-  lv_obj_t *chicken =
-      createImage(matchscr, 40.5, 69.4, 5, &chicken_sandwich_nobg);
+  // // Chick-Fil-A Chicken Sandwich
+  // cout << "[UI] (INFO): [IMAGE] [CREATION] chicken\n";
+  // lv_obj_t *chicken =
+  //     createImage(matchscr, 40.5, 69.4, 5, &chicken_sandwich_nobg);
 
   // Apply Button Functions
   cout << "[UI] (INFO): [BUTTON] btn_skills [ACTIONSET] m_btn_action_skills\n";
@@ -295,10 +295,10 @@ void init_marble_ui() {
   style_midtext.text.font = &blackopsone_20;
   style_midtext.text.color = LV_COLOR_WHITE;
 
-  static lv_style_t style_buildtext;
-  lv_style_copy(&style_buildtext, &lv_style_plain);
-  style_buildtext.text.font = &blackopsone_12;
-  style_buildtext.text.color = LV_COLOR_WHITE;
+  // static lv_style_t style_buildtext;
+  // lv_style_copy(&style_buildtext, &lv_style_plain);
+  // style_buildtext.text.font = &blackopsone_12;
+  // style_buildtext.text.color = LV_COLOR_WHITE;
 
   // Set the size and position of the box
   lv_obj_set_size(box, 443, 211.4); // Replace with the size you want
