@@ -16,5 +16,5 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run LemLib/pros-build
-        id: test
+        id: build
         uses: LemLib/pros-build@v2.0.2
