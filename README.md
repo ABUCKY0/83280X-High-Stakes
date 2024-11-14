@@ -27,5 +27,4 @@ The main goals for the programming side of the robot is the following:
 # Quality of Life Features (for the programmer)
 - [ ] I'd like to have each robot subsystem split into different files, with easy interaction functions.
 - [ ] Motors and Subsystems defined in a ports.hpp file, incase the build team decides to yolo where the ports plug into. 
-- [ ] This code SHOULD NEVER USE COUT. It should instead use [VexLog](https://github.com/ABUCKY0/vexlog), a vex logging library. 
 - [ ] Git Workflows that automatically build the code on commit, to allow for a non-programmer to just download the latest commit to test.
