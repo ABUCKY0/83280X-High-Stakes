@@ -1,70 +1,71 @@
+#include <sstream>
+#include "AutonomousSelector/Themes/HelloKitty.hpp"
+#include "AutonomousSelector/Themes/Marble.hpp"
 #include "AutonomousSelector/helpers.hpp"
 #include "Constants.hpp"
 #include "liblvgl/lv_draw/lv_draw_img.h"
 #include "main.h"
-#include "pros/apix.h" // IWYU pragma: keep
-#include <sstream>
-#include "AutonomousSelector/Themes/Marble.hpp"
-#include "AutonomousSelector/Themes/HelloKitty.hpp"
+#include "pros/apix.h"  // IWYU pragma: keep
+
 
 #if USE_UI == 1
 
-lv_obj_t *auton_selector;
-lv_style_t *box_red;
-lv_style_t *box_green;
-lv_style_t *box_yellow;
-lv_style_t *box_blue;
-lv_style_t *box_midnightblue;
+lv_obj_t* auton_selector;
+lv_style_t* box_red;
+lv_style_t* box_green;
+lv_style_t* box_yellow;
+lv_style_t* box_blue;
+lv_style_t* box_midnightblue;
 
-static lv_obj_t *box_m1;
-static lv_obj_t *box_m2;
-static lv_obj_t *box_m3;
-static lv_obj_t *box_m11;
-static lv_obj_t *box_m12;
-static lv_obj_t *box_m13;
-static lv_obj_t *box_intake1;
-static lv_obj_t *box_intake2;
-static lv_obj_t *box_launcher;
-static lv_obj_t *box_logo;
-static lv_obj_t *box_battery;
-static lv_obj_t *box_psi;
-static lv_obj_t *box_autonsel;
+static lv_obj_t* box_m1;
+static lv_obj_t* box_m2;
+static lv_obj_t* box_m3;
+static lv_obj_t* box_m11;
+static lv_obj_t* box_m12;
+static lv_obj_t* box_m13;
+static lv_obj_t* box_intake1;
+static lv_obj_t* box_intake2;
+static lv_obj_t* box_launcher;
+static lv_obj_t* box_logo;
+static lv_obj_t* box_battery;
+static lv_obj_t* box_psi;
+static lv_obj_t* box_autonsel;
 
-static lv_obj_t *box_m1_label;
-static lv_obj_t *box_m2_label;
-static lv_obj_t *box_m3_label;
-static lv_obj_t *box_m11_label;
-static lv_obj_t *box_m12_label;
-static lv_obj_t *box_m13_label;
-static lv_obj_t *box_intake1_label;
-static lv_obj_t *box_intake2_label;
-static lv_obj_t *box_launcher_label;
-static lv_obj_t *box_logo_label;
-static lv_obj_t *box_battery_label;
-static lv_obj_t *box_psi_label;
-static lv_obj_t *box_autonsel_label;
+static lv_obj_t* box_m1_label;
+static lv_obj_t* box_m2_label;
+static lv_obj_t* box_m3_label;
+static lv_obj_t* box_m11_label;
+static lv_obj_t* box_m12_label;
+static lv_obj_t* box_m13_label;
+static lv_obj_t* box_intake1_label;
+static lv_obj_t* box_intake2_label;
+static lv_obj_t* box_launcher_label;
+static lv_obj_t* box_logo_label;
+static lv_obj_t* box_battery_label;
+static lv_obj_t* box_psi_label;
+static lv_obj_t* box_autonsel_label;
 
-static lv_obj_t *box_m1_val;
-static lv_obj_t *box_m2_val;
-static lv_obj_t *box_m3_val;
-static lv_obj_t *box_m11_val;
-static lv_obj_t *box_m12_val;
-static lv_obj_t *box_m13_val;
-static lv_obj_t *box_intake1_val;
-static lv_obj_t *box_intake2_val;
-static lv_obj_t *box_launcher_val;
-static lv_obj_t *box_logo_val;
-static lv_obj_t *box_battery_val;
-static lv_obj_t *box_psi_val;
+static lv_obj_t* box_m1_val;
+static lv_obj_t* box_m2_val;
+static lv_obj_t* box_m3_val;
+static lv_obj_t* box_m11_val;
+static lv_obj_t* box_m12_val;
+static lv_obj_t* box_m13_val;
+static lv_obj_t* box_intake1_val;
+static lv_obj_t* box_intake2_val;
+static lv_obj_t* box_launcher_val;
+static lv_obj_t* box_logo_val;
+static lv_obj_t* box_battery_val;
+static lv_obj_t* box_psi_val;
 
 // Auton Selection Arrays
-static const char *auton_options[] = {"BLU-C", "BLU-F", "RED-C", "RED-F"};
-static const char *skills_options[] = {"SKI-A", "SKI-B", "SKI-C", "SDRVR"};
+static const char* auton_options[] = {"BLU-C", "BLU-F", "RED-C", "RED-F"};
+static const char* skills_options[] = {"SKI-A", "SKI-B", "SKI-C", "SDRVR"};
 
 string match_autons = "Blue Close\nBlue Far\nRed Close\nRed Far";
 string skills_autons = "Auton A\nAuton B\nAuton C\nDriver";
 
-pros::Mutex dataMutex; // Mutex to protect shared data
+pros::Mutex dataMutex;  // Mutex to protect shared data
 
 double drivetrain_left_a_temp = 0.0;
 double drivetrain_left_b_temp = 0.0;
@@ -74,11 +75,10 @@ double drivetrain_right_b_temp = 0.0;
 double drivetrain_right_lift_temp = 0.0;
 double intake1_temp = 0.0;
 double intake2_temp = 0.0;
-char ActiveVexNetConnection = 9; // 0 = No Connection, 1 = Primary, 2 = Backup
+char ActiveVexNetConnection = 9;  // 0 = No Connection, 1 = Primary, 2 = Backup
 
 double estpsi = 100.0;
 double batteryCharge = 0.0;
-
 
 // Styles
 static lv_style_t style_bg;
@@ -95,15 +95,38 @@ static lv_style_t style_smalltext;
 static lv_style_t style_largetext;
 static lv_style_t style_midtext;
 static lv_style_t style_buildtext;
+static lv_style_t style_blue;
+static lv_style_t style_green;
+static lv_style_t style_red;
+static lv_style_t style_yellow;
+static lv_style_t style_midnightblue;
 
 // Images
 static lv_img_dsc_t bg_image;
+static lv_img_dsc_t big_image;
+static lv_img_dsc_t small_image;
 
+// // Screen
+// static lv_obj_t* matchscr;
+// static lv_obj_t* gamescr;
 
+// Everything on the screen
+static lv_obj_t* btn_match;
+static lv_obj_t* btn_skills;
+static lv_obj_t* confirm_btn;
+static lv_obj_t* teamName;
+static lv_obj_t* rollerbg;
+static lv_obj_t* buildtag;
+static lv_obj_t* box;
 
+// images
+static lv_obj_t* backgroundimage;
+static lv_obj_t* chicken;
+static lv_obj_t* game_backgroundimage;
+static lv_obj_t* logo;
 
 // on press confirm
-lv_res_t onMatchConfirmPress(lv_obj_t *btn) {
+lv_res_t onMatchConfirmPress(lv_obj_t* btn) {
   cout << "[UI] (INFO): Autonomous Selection Confirmed\n";
   cout << "[UI] (INFO): Switching to Game Screen\n";
   auton = lv_roller_get_selected(auton_selector);
@@ -118,7 +141,7 @@ lv_res_t onMatchConfirmPress(lv_obj_t *btn) {
   return LV_RES_OK;
 }
 
-lv_res_t m_btn_action_skills(lv_obj_t *btn) {
+lv_res_t m_btn_action_skills(lv_obj_t* btn) {
   // Get Roller
   cout << "[UI] (INFO): Skills Mode Switching\n";
   lv_roller_set_options(auton_selector, skills_autons.c_str());
@@ -127,7 +150,7 @@ lv_res_t m_btn_action_skills(lv_obj_t *btn) {
   return LV_RES_OK;
 }
 
-lv_res_t m_btn_action_match(lv_obj_t *btn) {
+lv_res_t m_btn_action_match(lv_obj_t* btn) {
   // Get Roller
   cout << "[UI] (INFO): Match Mode Switching @ " << millis() << "\n";
   lv_roller_set_options(auton_selector, match_autons.c_str());
@@ -136,12 +159,121 @@ lv_res_t m_btn_action_match(lv_obj_t *btn) {
   return LV_RES_OK;
 }
 
+enum class Theme { HELLOKITTY, MARBLE };
+
+void switchTheme(Theme theme) {
+  switch (theme) {
+    case Theme::HELLOKITTY:
+      style_bg = HelloKittyStyles::style_bg;
+      style_btn = HelloKittyStyles::style_btn;
+      style_btn_selected = HelloKittyStyles::style_btn_selected;
+      style_confirmbtn = HelloKittyStyles::style_confirmbtn;
+      style_confirmbtn_selected = HelloKittyStyles::style_confirmbtn_selected;
+      style_teamname = HelloKittyStyles::style_teamname;
+      style_roller = HelloKittyStyles::style_roller;
+      roller_style_selected = HelloKittyStyles::roller_style_selected;
+      roller_bg_style = HelloKittyStyles::roller_bg_style;
+      style_box = HelloKittyStyles::style_box;
+      style_smalltext = HelloKittyStyles::style_smalltext;
+      style_largetext = HelloKittyStyles::style_largetext;
+      style_midtext = HelloKittyStyles::style_midtext;
+      style_buildtext = HelloKittyStyles::style_buildtext;
+      box_blue = &HelloKittyStyles::box_blue;
+      box_green = &HelloKittyStyles::box_green;
+      box_red = &HelloKittyStyles::box_red;
+      box_yellow = &HelloKittyStyles::box_yellow;
+      box_midnightblue = &HelloKittyStyles::box_midnightblue;
+      bg_image = HelloKittyStyles::bg_image;
+      big_image = HelloKittyStyles::big_image;
+      small_image = HelloKittyStyles::small_image;
+      break;
+    case Theme::MARBLE:
+      style_bg = MarbleStyles::style_bg;
+      style_btn = MarbleStyles::style_btn;
+      style_btn_selected = MarbleStyles::style_btn_selected;
+      style_confirmbtn = MarbleStyles::style_confirmbtn;
+      style_confirmbtn_selected = MarbleStyles::style_confirmbtn_selected;
+      style_teamname = MarbleStyles::style_teamname;
+      style_roller = MarbleStyles::style_roller;
+      roller_style_selected = MarbleStyles::roller_style_selected;
+      roller_bg_style = MarbleStyles::roller_bg_style;
+      style_box = MarbleStyles::style_box;
+      style_smalltext = MarbleStyles::style_smalltext;
+      style_largetext = MarbleStyles::style_largetext;
+      style_midtext = MarbleStyles::style_midtext;
+      style_buildtext = MarbleStyles::style_buildtext;
+      box_blue = &MarbleStyles::box_blue;
+      box_green = &MarbleStyles::box_green;
+      box_red = &MarbleStyles::box_red;
+      box_yellow = &MarbleStyles::box_yellow;
+      box_midnightblue = &MarbleStyles::box_midnightblue;
+      bg_image = MarbleStyles::bg_image;
+      big_image = MarbleStyles::big_image;
+      small_image = MarbleStyles::small_image;
+      break;
+  }
+
+  // Update the UI elements with the new styles
+  lv_obj_set_style(matchscr, &style_bg);
+  lv_label_set_style(teamName, &style_teamname);
+  lv_obj_set_style(rollerbg, &roller_bg_style);
+  lv_btn_set_style(btn_match, LV_BTN_STYLE_REL, &style_btn);
+  lv_btn_set_style(btn_match, LV_BTN_STATE_PR, &style_btn_selected);
+  lv_btn_set_style(btn_skills, LV_BTN_STYLE_REL, &style_btn);
+  lv_btn_set_style(btn_skills, LV_BTN_STATE_PR, &style_btn_selected);
+  lv_btn_set_style(confirm_btn, LV_BTN_STATE_REL, &style_confirmbtn);
+  lv_btn_set_style(confirm_btn, LV_BTN_STATE_PR, &style_confirmbtn_selected);
+  lv_roller_set_style(auton_selector, LV_ROLLER_STYLE_BG, &style_roller);
+  lv_roller_set_style(auton_selector, LV_ROLLER_STYLE_SEL,
+                      &roller_style_selected);
+  lv_obj_set_style(box, &style_box);
+  lv_label_set_style(box_m1_label, &style_smalltext);
+  lv_label_set_style(box_m2_label, &style_smalltext);
+  lv_label_set_style(box_m3_label, &style_smalltext);
+  lv_label_set_style(box_m11_label, &style_smalltext);
+  lv_label_set_style(box_m12_label, &style_smalltext);
+  lv_label_set_style(box_m13_label, &style_smalltext);
+  lv_label_set_style(box_battery_label, &style_largetext);
+  lv_label_set_style(box_psi_label, &style_largetext);
+  lv_label_set_style(box_autonsel_label, &style_midtext);
+  lv_label_set_style(box_launcher_label, &style_smalltext);
+  lv_label_set_style(box_intake1_label, &style_smalltext);
+  lv_label_set_style(box_intake2_label, &style_smalltext);
+  lv_label_set_style(box_m1_val, &style_midtext);
+  lv_label_set_style(box_m2_val, &style_midtext);
+  lv_label_set_style(box_m3_val, &style_midtext);
+  lv_label_set_style(box_m11_val, &style_midtext);
+  lv_label_set_style(box_m12_val, &style_midtext);
+  lv_label_set_style(box_m13_val, &style_midtext);
+  lv_label_set_style(box_battery_val, &style_midtext);
+  lv_label_set_style(box_psi_val, &style_midtext);
+  lv_label_set_style(box_launcher_val, &style_midtext);
+  lv_label_set_style(box_intake1_val, &style_midtext);
+  lv_label_set_style(box_intake2_val, &style_midtext);
+  lv_obj_set_style(box_m1, box_green);
+  lv_obj_set_style(box_m2, box_green);
+  lv_obj_set_style(box_m3, box_green);
+  lv_obj_set_style(box_m11, box_green);
+  lv_obj_set_style(box_m12, box_green);
+  lv_obj_set_style(box_m13, box_green);
+  lv_obj_set_style(box_battery, box_green);
+  lv_obj_set_style(box_psi, box_green);
+  lv_obj_set_style(box_autonsel, box_midnightblue);
+  lv_obj_set_style(box_launcher, box_green);
+  lv_obj_set_style(box_intake1, box_green);
+  lv_obj_set_style(box_intake2, box_green);
+  lv_obj_set_style(box_logo, box_midnightblue);
+  lv_obj_set_style(buildtag, &style_buildtext);
+}
+
 void init_marble_ui() {
+
+  HelloKittyStyles::initStyles();
+  MarbleStyles::initStyles();
   cout << "[UI] (INFO): Initalizing matchscr\n";
   matchscr = lv_obj_create(NULL, NULL);
 
   /* ------------- Shared Styles ------------- */
-  HelloKittyStyles::initStyles();
   style_bg = HelloKittyStyles::style_bg;
   style_btn = HelloKittyStyles::style_btn;
   style_btn_selected = HelloKittyStyles::style_btn_selected;
@@ -156,8 +288,15 @@ void init_marble_ui() {
   style_largetext = HelloKittyStyles::style_largetext;
   style_midtext = HelloKittyStyles::style_midtext;
   style_buildtext = HelloKittyStyles::style_buildtext;
+  box_blue = &HelloKittyStyles::box_blue;
+  box_green = &HelloKittyStyles::box_green;
+  box_red = &HelloKittyStyles::box_red;
+  box_yellow = &HelloKittyStyles::box_yellow;
+  box_midnightblue = &HelloKittyStyles::box_midnightblue;
 
   bg_image = HelloKittyStyles::bg_image;
+  big_image = HelloKittyStyles::big_image;
+  small_image = HelloKittyStyles::small_image;
 
   /* ----------- Begin Match Screen ---------- */
 
@@ -166,31 +305,32 @@ void init_marble_ui() {
 
   // Image Background
   cout << "[UI] (INFO): [IMAGE] [CREATION] backgroundimage\n";
-  lv_obj_t *backgroundimage = createImage(matchscr, 0, 0, 1, &bg_image);
+  backgroundimage = createImage(matchscr, 0, 0, 1, &bg_image);
 
   // Team Name
   cout << "[UI] (INFO): [LABEL] [CREATION] teamName\n";
-  lv_obj_t *teamName = createLabel(matchscr, 38, 25, "83280X");
+  teamName = createLabel(matchscr, 38, 25, "83280X");
   lv_label_set_style(teamName, &style_teamname);
   // BG Boxes
   cout << "[UI] (INFO): [OBJ] [CREATION] rollerbg\n";
-  lv_obj_t *rollerbg = createBaseObject(matchscr, 240, 21);
+  rollerbg = createBaseObject(matchscr, 240, 21);
   lv_obj_set_size(rollerbg, 216, 197);
   lv_obj_set_style(rollerbg, &roller_bg_style);
 
   // Auton Selector
   // -- Screen Switch Buttons
   cout << "[UI] (INFO): [BUTTON] [CREATION] btn_match\n";
-  lv_obj_t *btn_match = createBtn(matchscr, 248, 29, 90, 40, 2, "MATCH");
+  btn_match = createBtn(matchscr, 248, 29, 90, 40, 2, "MATCH");
   lv_btn_set_style(btn_match, LV_BTN_STYLE_REL, &style_btn);
   lv_btn_set_style(btn_match, LV_BTN_STATE_PR, &style_btn_selected);
   cout << "[UI] (INFO): [BUTTON] [CREATION] btn_skills\n";
-  lv_obj_t *btn_skills = createBtn(matchscr, 355, 29, 90, 40, 3, "SKILLS");
+
+  btn_skills = createBtn(matchscr, 355, 29, 90, 40, 3, "SKILLS");
   lv_btn_set_style(btn_skills, LV_BTN_STYLE_REL, &style_btn);
   lv_btn_set_style(btn_skills, LV_BTN_STATE_PR, &style_btn_selected);
   // -- confirm button
   cout << "[UI] (INFO): [BUTTON] [CREATION] confirm_btn\n";
-  lv_obj_t *confirm_btn =
+  confirm_btn =
       createBtn(matchscr, 248, 167.8, 197.7, 40.9, 4, "CONFIRM");
   lv_btn_set_style(confirm_btn, LV_BTN_STATE_REL, &style_confirmbtn);
   lv_btn_set_style(confirm_btn, LV_BTN_STATE_PR, &style_confirmbtn_selected);
@@ -206,10 +346,9 @@ void init_marble_ui() {
   lv_roller_set_style(auton_selector, LV_ROLLER_STYLE_SEL,
                       &roller_style_selected);
 
-  // // Chick-Fil-A Chicken Sandwich
-  // cout << "[UI] (INFO): [IMAGE] [CREATION] chicken\n";
-  // lv_obj_t *chicken =
-  //     createImage(matchscr, 40.5, 69.4, 5, &chicken_sandwich_nobg);
+  // Chick-Fil-A Chicken Sandwich
+  cout << "[UI] (INFO): [IMAGE] [CREATION] chicken\n";
+  chicken = createImage(matchscr, 40.5, 69.4, 5, &big_image);
 
   // Apply Button Functions
   cout << "[UI] (INFO): [BUTTON] btn_skills [ACTIONSET] m_btn_action_skills\n";
@@ -234,18 +373,10 @@ void init_marble_ui() {
 
   gamescr = lv_obj_create(NULL, NULL);
   cout << "[UI] (INFO): [IMAGE] [CREATION] Game Screen Background\n";
-  lv_obj_t *game_backgroundimage = createImage(gamescr, 0, 0, 1, &bg_image);
-
-  // Create a style for the box
-  static lv_style_t style_box;
-  lv_style_copy(&style_box, &lv_style_plain);
-  style_box.body.main_color = LV_COLOR_MAKE(0xff, 0xf5, 0xf0);
-  style_box.body.grad_color = LV_COLOR_WHITE;
-  style_box.body.radius = 10; // Set the radius for rounded corners
-  style_box.body.opa = LV_OPA_100;
+  game_backgroundimage = createImage(gamescr, 0, 0, 1, &bg_image);
 
   // Create a base object for the box
-  lv_obj_t *box = lv_obj_create(gamescr, NULL);
+  box = lv_obj_create(gamescr, NULL);
   lv_obj_set_style(box, &style_box);
 
   // take mutex
@@ -253,47 +384,6 @@ void init_marble_ui() {
 
   // Set the Static Variable Box Styles
   // Red
-  box_red = new lv_style_t;
-  lv_style_copy(box_red, &style_box);
-  box_red->body.main_color = LV_COLOR_MAKE(0x77, 0x15, 0x16); // #771516
-  box_red->body.grad_color = LV_COLOR_MAKE(0x77, 0x15, 0x16); // #771516
-  // Green
-  box_green = new lv_style_t;
-  lv_style_copy(box_green, &style_box);
-  box_green->body.main_color = LV_COLOR_MAKE(0x42, 0x86, 0x2e); // #42862e
-  box_green->body.grad_color = LV_COLOR_MAKE(0x42, 0x86, 0x2e); // #42862e
-  // Yellow
-  box_yellow = new lv_style_t;
-  lv_style_copy(box_yellow, &style_box);
-  box_yellow->body.main_color = LV_COLOR_MAKE(0xab, 0x9b, 0x10); // #ab9b10
-  box_yellow->body.grad_color = LV_COLOR_MAKE(0xab, 0x9b, 0x10); // #ab9b10
-  // Blue #0097b2
-  box_blue = new lv_style_t;
-  lv_style_copy(box_blue, &style_box);
-  box_blue->body.main_color = LV_COLOR_MAKE(0x00, 0x97, 0xb2); // #0097b2
-  box_blue->body.grad_color = LV_COLOR_MAKE(0x00, 0x97, 0xb2); // #0097b2
-  box_midnightblue = new lv_style_t;
-  lv_style_copy(box_midnightblue, &style_box);
-  // 1f282f
-  box_midnightblue->body.main_color =
-      LV_COLOR_MAKE(0x1f, 0x28, 0x2f); // #1f282f
-  box_midnightblue->body.grad_color =
-      LV_COLOR_MAKE(0x1f, 0x28, 0x2f); // #1f282f
-
-  static lv_style_t style_smalltext;
-  lv_style_copy(&style_smalltext, &lv_style_plain);
-  style_smalltext.text.font = &blackopsone_10;
-  style_smalltext.text.color = LV_COLOR_WHITE;
-
-  static lv_style_t style_largetext;
-  lv_style_copy(&style_largetext, &lv_style_plain);
-  style_largetext.text.font = &blackopsone_12;
-  style_largetext.text.color = LV_COLOR_WHITE;
-
-  static lv_style_t style_midtext;
-  lv_style_copy(&style_midtext, &lv_style_plain);
-  style_midtext.text.font = &blackopsone_20;
-  style_midtext.text.color = LV_COLOR_WHITE;
 
   // static lv_style_t style_buildtext;
   // lv_style_copy(&style_buildtext, &lv_style_plain);
@@ -301,8 +391,8 @@ void init_marble_ui() {
   // style_buildtext.text.color = LV_COLOR_WHITE;
 
   // Set the size and position of the box
-  lv_obj_set_size(box, 443, 211.4); // Replace with the size you want
-  lv_obj_set_pos(box, 15.9, 17);    // Replace with the position you want
+  lv_obj_set_size(box, 443, 211.4);  // Replace with the size you want
+  lv_obj_set_pos(box, 15.9, 17);     // Replace with the position you want
 
   box_m1 = createBaseObject(gamescr, 72, 72);
   box_m2 = lv_obj_create(gamescr, NULL);
@@ -498,13 +588,13 @@ void init_marble_ui() {
   lv_obj_align(box_intake1_val, box_intake1, LV_ALIGN_CENTER, 0, -15);
   lv_obj_align(box_intake2_val, box_intake2, LV_ALIGN_CENTER, 0, -15);
 
-  // Chicken
-  lv_obj_t *logo = createImage(gamescr, 382.1, 152.3, 8, &MiniChickenSandwich);
+  // Icon
+  logo = createImage(gamescr, 382.1, 157, 8, &small_image);
 
   std::ostringstream buildtagstr;
   // if contains MSYS, then it is windows
   // if contains linux, then it is linux
-  // if contains darwin, then it is mac 
+  // if contains darwin, then it is mac
   auto buildenv = "";
   if (string(BUILD_ENVIRONMENT).find("MSYS") != std::string::npos) {
     buildenv = "Built on Windows";
@@ -513,19 +603,19 @@ void init_marble_ui() {
   } else if (string(BUILD_ENVIRONMENT).find("darwin") != std::string::npos) {
     // Untested 	buildenv = "Built on Mac";
   } else {
-    buildenv = "Unknown Build Environment"; 
+    buildenv = "Unknown Build Environment";
   }
   buildtagstr << "Build: " << BUILD_DATE << " -- v" << CODEBASE_VERSION << "@"
               << APPLICATION_ENVIRONMENT << "-" << BUILD_NUMBER << "+"
               << std::string(GIT_COMMIT).substr(0, 6) << "\n"
-              << buildenv << " - Git Branch: " << "(" << GIT_BRANCH
-              << ")" << " - " << ROBOT_NAME << COMPETITION_NAME;
+              << buildenv << " - Git Branch: " << "(" << GIT_BRANCH << ")"
+              << " - " << ROBOT_NAME << COMPETITION_NAME;
   // buildtagstr << BUILD_ENVIRONMENT;
-  lv_obj_t *buildtag = createLabel(matchscr, 0, 210, buildtagstr.str().c_str());
+  buildtag = createLabel(matchscr, 0, 220, buildtagstr.str().c_str());
   lv_obj_set_style(buildtag, &style_buildtext);
 
-  // return mutex 
-  dataMutex.give(); 
+  // return mutex
+  dataMutex.give();
   // lv_scr_load(gamescr);
   //  set id
   // lv_obj_set_free_num(gamescr, 1337);
@@ -560,13 +650,16 @@ void init_marble_ui() {
   // apply
   lv_obj_set_style(teamname, &style_teamname2);
   */
+
+  pros::delay(2500);
+  switchTheme(Theme::MARBLE);
 }
 
-void task_updvar(void *param) {
+void task_updvar(void* param) {
   while (true) {
-    pros::delay(250); // Delay to prevent overloading the CPU
+    pros::delay(250);  // Delay to prevent overloading the CPU
 
-    dataMutex.take(2000); // Try to take the mutex
+    dataMutex.take(2000);  // Try to take the mutex
 
     // Update the shared data
     // Update the shared data
@@ -611,28 +704,26 @@ void task_updvar(void *param) {
 
     if (pros::c::link_connected(GEN_PORT_VEXNET_PRIMARY)) {
       ActiveVexNetConnection = 0;
-    }
-    else if (pros::c::link_connected(GEN_PORT_VEXNET_BACKUP)) {
+    } else if (pros::c::link_connected(GEN_PORT_VEXNET_BACKUP)) {
       ActiveVexNetConnection = 1;
-    }
-    else {
+    } else {
       ActiveVexNetConnection = -1;
     }
 
-        batteryCharge = pros::battery::get_capacity();
+    batteryCharge = pros::battery::get_capacity();
     if (batteryCharge == PROS_ERR)
       batteryCharge = -1;
 
-    dataMutex.give(); // Release the mutex
+    dataMutex.give();  // Release the mutex
   }
 }
 
-void task_updui(void *param) {
+void task_updui(void* param) {
   while (true) {
-    pros::delay(100); // Delay to prevent overloading the CPU
+    pros::delay(100);  // Delay to prevent overloading the CPU
 
     // Make sure the mutex is available
-    dataMutex.take(2000); // Try to take the mutex
+    dataMutex.take(2000);  // Try to take the mutex
     // Make sure the Game Screen is loaded
     if (lv_scr_act() == gamescr) {
       // 7 is the offset for 4 digit numbers
@@ -770,7 +861,8 @@ void task_updui(void *param) {
         lv_obj_set_style(box_m1, box_green);
       } else if (drivetrain_left_a_temp >= 90 && drivetrain_left_a_temp < 140) {
         lv_obj_set_style(box_m1, box_yellow);
-      } else if (drivetrain_left_a_temp >= 140 || drivetrain_left_a_temp == -1) {
+      } else if (drivetrain_left_a_temp >= 140 ||
+                 drivetrain_left_a_temp == -1) {
         lv_obj_set_style(box_m1, box_red);
       }
 
@@ -779,43 +871,52 @@ void task_updui(void *param) {
         lv_obj_set_style(box_m2, box_green);
       } else if (drivetrain_left_b_temp >= 90 && drivetrain_left_b_temp < 140) {
         lv_obj_set_style(box_m2, box_yellow);
-      } else if (drivetrain_left_b_temp >= 140 || drivetrain_left_b_temp == -1) {
+      } else if (drivetrain_left_b_temp >= 140 ||
+                 drivetrain_left_b_temp == -1) {
         lv_obj_set_style(box_m2, box_red);
       }
 
       // Motor 3
       if (drivetrain_left_lift_temp < 90 && drivetrain_left_lift_temp != -1) {
         lv_obj_set_style(box_m3, box_green);
-      } else if (drivetrain_left_lift_temp >= 90 && drivetrain_left_lift_temp < 140) {
+      } else if (drivetrain_left_lift_temp >= 90 &&
+                 drivetrain_left_lift_temp < 140) {
         lv_obj_set_style(box_m3, box_yellow);
-      } else if (drivetrain_left_lift_temp >= 140 || drivetrain_left_lift_temp == -1) {
+      } else if (drivetrain_left_lift_temp >= 140 ||
+                 drivetrain_left_lift_temp == -1) {
         lv_obj_set_style(box_m3, box_red);
       }
 
       // Motor 11
       if (drivetrain_right_a_temp < 90 && drivetrain_right_a_temp != -1) {
         lv_obj_set_style(box_m11, box_green);
-      } else if (drivetrain_right_a_temp >= 90 && drivetrain_right_a_temp < 140) {
+      } else if (drivetrain_right_a_temp >= 90 &&
+                 drivetrain_right_a_temp < 140) {
         lv_obj_set_style(box_m11, box_yellow);
-      } else if (drivetrain_right_a_temp >= 140 || drivetrain_right_a_temp == -1) {
+      } else if (drivetrain_right_a_temp >= 140 ||
+                 drivetrain_right_a_temp == -1) {
         lv_obj_set_style(box_m11, box_red);
       }
 
       // Motor 12
       if (drivetrain_right_b_temp < 90 && drivetrain_right_b_temp != -1) {
         lv_obj_set_style(box_m12, box_green);
-      } else if (drivetrain_right_b_temp >= 90 && drivetrain_right_b_temp < 140) {
+      } else if (drivetrain_right_b_temp >= 90 &&
+                 drivetrain_right_b_temp < 140) {
         lv_obj_set_style(box_m12, box_yellow);
-      } else if (drivetrain_right_b_temp >= 140 || drivetrain_right_b_temp == -1) {
+      } else if (drivetrain_right_b_temp >= 140 ||
+                 drivetrain_right_b_temp == -1) {
         lv_obj_set_style(box_m12, box_red);
       }
 
       // Motor 13
       if (drivetrain_right_lift_temp < 90 && drivetrain_right_lift_temp != -1) {
         lv_obj_set_style(box_m13, box_green);
-      } else if (drivetrain_right_lift_temp >= 90 && drivetrain_right_lift_temp < 140) {
+      } else if (drivetrain_right_lift_temp >= 90 &&
+                 drivetrain_right_lift_temp < 140) {
         lv_obj_set_style(box_m13, box_yellow);
-      } else if (drivetrain_right_lift_temp >= 140 || drivetrain_right_lift_temp == -1) {
+      } else if (drivetrain_right_lift_temp >= 140 ||
+                 drivetrain_right_lift_temp == -1) {
         lv_obj_set_style(box_m13, box_red);
       }
 
@@ -865,7 +966,7 @@ void task_updui(void *param) {
       }
     }
 
-    dataMutex.give(); // Release the mutex
+    dataMutex.give();  // Release the mutex
   }
 }
 

@@ -24,6 +24,7 @@
  * E_CONTROLLER_MASTER is pedantically correct within the PROS styleguide, but
  * not convenient for most student programmers.
  */
+#include "liblvgl/lv_draw/lv_draw_img.h"
 #define PROS_USE_SIMPLE_NAMES
 
 /**
@@ -123,6 +124,9 @@ LV_IMG_DECLARE(chicken_sandwich);
 LV_IMG_DECLARE(chicken_sandwich_nobg);
 LV_IMG_DECLARE(fire);
 LV_IMG_DECLARE(MiniChickenSandwich);
+LV_IMG_DECLARE(hellokittyicon);
+LV_IMG_DECLARE(transparent);
+
 
 LV_IMG_DECLARE(marblebg);
 LV_IMG_DECLARE(hellokitty_bg);
