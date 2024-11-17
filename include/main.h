@@ -155,4 +155,9 @@ LV_IMG_DECLARE(ChristmasButton);
 
 LV_IMG_DECLARE(lobo);
 LV_IMG_DECLARE(mini_lobo);
+
+LV_IMG_DECLARE(christmasCookieBackground);
+LV_IMG_DECLARE(christmasTree);
+LV_IMG_DECLARE(minitree);
+
 #endif // _PROS_MAIN_H_

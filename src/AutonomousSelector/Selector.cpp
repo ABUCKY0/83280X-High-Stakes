@@ -2,6 +2,7 @@
 #include "AutonomousSelector/Themes/HelloKitty.hpp"
 #include "AutonomousSelector/Themes/Marble.hpp"
 #include "AutonomousSelector/Themes/OG.hpp"
+#include "AutonomousSelector/Themes/Christmas.hpp"
 #include "AutonomousSelector/helpers.hpp"
 #include "Constants.hpp"
 #include "main.h"
@@ -250,6 +251,32 @@ void switchTheme(Theme theme) {
       big_image = OGStyles::big_image;
       small_image = OGStyles::small_image;
       break;
+    case Theme::CHRISTMAS:
+      std::cout << "[UI] (INFO): Switching to Christmas Theme (SWITCHTHEME)\n";
+      style_bg = ChristmasStyles::style_bg;
+      style_btn = ChristmasStyles::style_btn;
+      style_btn_selected = ChristmasStyles::style_btn_selected;
+      style_confirmbtn = ChristmasStyles::style_confirmbtn;
+      style_confirmbtn_selected = ChristmasStyles::style_confirmbtn_selected;
+      style_teamname = ChristmasStyles::style_teamname;
+      style_roller = ChristmasStyles::style_roller;
+      roller_style_selected = ChristmasStyles::roller_style_selected;
+      roller_bg_style = ChristmasStyles::roller_bg_style;
+      style_box = ChristmasStyles::style_box;
+      style_smalltext = ChristmasStyles::style_smalltext;
+      style_largetext = ChristmasStyles::style_largetext;
+      style_midtext = ChristmasStyles::style_midtext;
+      style_buildtext = ChristmasStyles::style_buildtext;
+      box_blue = &ChristmasStyles::box_blue;
+      box_green = &ChristmasStyles::box_green;
+      box_red = &ChristmasStyles::box_red;
+      box_yellow = &ChristmasStyles::box_yellow;
+      box_midnightblue = &ChristmasStyles::box_midnightblue;
+      style_midnightblue = ChristmasStyles::box_midnightblue;
+      bg_image = ChristmasStyles::bg_image;
+      big_image = ChristmasStyles::big_image;
+      small_image = ChristmasStyles::small_image;
+      break;
     default:
       //switchTheme(Theme::MARBLE);
       return;
@@ -358,6 +385,7 @@ void init_marble_ui() {
   HelloKittyStyles::initStyles();
   MarbleStyles::initStyles();
   OGStyles::initStyles();
+  ChristmasStyles::initStyles();
   cout << "[UI] (INFO): Initalizing matchscr\n";
   matchscr = lv_obj_create(NULL, NULL);
   currentScreen = matchscr;
