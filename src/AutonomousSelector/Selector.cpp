@@ -144,6 +144,13 @@ lv_res_t onMatchConfirmPress(lv_obj_t* btn) {
   return LV_RES_OK;
 }
 
+lv_res_t m_btn_open_selector_screen_again(lv_obj_t* btn) {
+  cout << "[UI] (INFO): Opening Selector Screen Again\n";
+  lv_scr_load(matchscr);
+  currentScreen = matchscr;
+  return LV_RES_OK;
+}
+
 lv_res_t m_btn_action_skills(lv_obj_t* btn) {
   // Get Roller
   cout << "[UI] (INFO): Skills Mode Switching\n";
@@ -186,6 +193,7 @@ void switchTheme(Theme theme) {
       box_red = &HelloKittyStyles::box_red;
       box_yellow = &HelloKittyStyles::box_yellow;
       box_midnightblue = &HelloKittyStyles::box_midnightblue;
+      style_midnightblue = HelloKittyStyles::box_midnightblue;
       bg_image = HelloKittyStyles::bg_image;
       big_image = HelloKittyStyles::big_image;
       small_image = HelloKittyStyles::small_image;
@@ -211,6 +219,7 @@ void switchTheme(Theme theme) {
       box_red = &MarbleStyles::box_red;
       box_yellow = &MarbleStyles::box_yellow;
       box_midnightblue = &MarbleStyles::box_midnightblue;
+      style_midnightblue = MarbleStyles::box_midnightblue;
       bg_image = MarbleStyles::bg_image;
       big_image = MarbleStyles::big_image;
       small_image = MarbleStyles::small_image;
@@ -236,6 +245,7 @@ void switchTheme(Theme theme) {
       box_red = &OGStyles::box_red;
       box_yellow = &OGStyles::box_yellow;
       box_midnightblue = &OGStyles::box_midnightblue;
+      style_midnightblue = OGStyles::box_midnightblue;
       bg_image = OGStyles::bg_image;
       big_image = OGStyles::big_image;
       small_image = OGStyles::small_image;
@@ -409,11 +419,11 @@ void init_marble_ui() {
 
   // Apply Button Functions
   cout << "[UI] (INFO): [BUTTON] btn_skills [ACTIONSET] m_btn_action_skills\n";
-  lv_btn_set_action(btn_skills, LV_BTN_ACTION_PR, m_btn_action_skills);
+  lv_btn_set_action(btn_skills, LV_BTN_ACTION_CLICK, m_btn_action_skills);
   cout << "[UI] (INFO): [BUTTON] btn_match [ACTIONSET] m_btn_action_match\n";
-  lv_btn_set_action(btn_match, LV_BTN_ACTION_PR, m_btn_action_match);
+  lv_btn_set_action(btn_match, LV_BTN_ACTION_CLICK, m_btn_action_match);
   cout << "[UI] (INFO): [BUTTON] confirm_btn [ACTIONSET] onMatchConfirmPress\n";
-  lv_btn_set_action(confirm_btn, LV_BTN_ACTION_PR, onMatchConfirmPress);
+  lv_btn_set_action(confirm_btn, LV_BTN_ACTION_CLICK, onMatchConfirmPress);
   /* ---------- End Selections Screen ---------- */
   /* ----------- Begin Game Scr ----------- */
   /*
@@ -459,7 +469,7 @@ void init_marble_ui() {
   box_m13 = lv_obj_create(gamescr, NULL);
   box_battery = lv_obj_create(gamescr, NULL);
   box_psi = lv_obj_create(gamescr, NULL);
-  box_autonsel = lv_obj_create(gamescr, NULL);
+  box_autonsel = lv_btn_create(gamescr, NULL);
   box_launcher = lv_obj_create(gamescr, NULL);
   box_intake1 = lv_obj_create(gamescr, NULL);
   box_intake2 = lv_obj_create(gamescr, NULL);
@@ -514,6 +524,9 @@ void init_marble_ui() {
   lv_label_set_style(box_autonsel_label, &style_midtext);
   lv_label_set_text(box_autonsel_label, "DEF-A");
   lv_label_set_align(box_autonsel_label, LV_LABEL_ALIGN_CENTER);
+  // make clickthrough
+  lv_obj_set_click(box_autonsel_label, false);
+  
 
   lv_label_set_style(box_launcher_label, &style_smalltext);
   lv_label_set_text(box_launcher_label, "Launcher\nTemp");
@@ -535,12 +548,13 @@ void init_marble_ui() {
   lv_obj_set_style(box_m13, box_green);
   lv_obj_set_style(box_battery, box_green);
   lv_obj_set_style(box_psi, box_green);
-  lv_obj_set_style(box_autonsel, box_midnightblue);
+  //lv_obj_set_style(box_autonsel, box_midnightblue);
   lv_obj_set_style(box_launcher, box_green);
   lv_obj_set_style(box_intake1, box_green);
   lv_obj_set_style(box_intake2, box_green);
   lv_obj_set_style(box_logo, box_midnightblue);
 
+  
   // all motor boxes and logo are 72 by 72
   lv_obj_set_size(box_m1, 72, 72);
   lv_obj_set_size(box_m2, 72, 72);
@@ -648,9 +662,12 @@ void init_marble_ui() {
   // Icon
   //logo = createImage(gamescr, 382, 157, 8, &small_image);
   logo = createImageButton(gamescr, &small_image, 382, 157);
+  lv_imgbtn_set_src(logo, LV_BTN_STATE_REL, &small_image);
+  lv_imgbtn_set_src(logo, LV_BTN_STATE_PR, &small_image);
   lv_btn_set_style(logo, LV_BTN_STYLE_REL, &style_btn);
   lv_btn_set_style(logo, LV_BTN_STATE_PR, &style_btn_selected);
-  lv_btn_set_action(logo, LV_BTN_ACTION_PR, m_btn_open_theme_switcher);
+  lv_btn_set_action(logo, LV_BTN_ACTION_CLICK, m_btn_open_theme_switcher);
+  
 
   std::ostringstream buildtagstr;
   // if contains MSYS, then it is windows
@@ -713,6 +730,20 @@ void init_marble_ui() {
   lv_obj_set_style(teamname, &style_teamname2);
   */
 
+  lv_style_t style_newmidnightblue;
+  lv_style_copy(&style_newmidnightblue, &style_box);
+  style_newmidnightblue.body.main_color =
+      LV_COLOR_MAKE(0x1f, 0x28, 0x2f);  // #1f282f
+  style_newmidnightblue.body.grad_color =
+      LV_COLOR_MAKE(0x1f, 0x28, 0x2f);  // #1f282f
+  style_newmidnightblue.body.opa = LV_OPA_100;
+
+  lv_btn_set_action(box_autonsel, LV_BTN_ACTION_CLICK,
+                    m_btn_open_selector_screen_again);
+  lv_btn_set_style(box_autonsel, LV_BTN_STYLE_REL, &style_midnightblue);
+  lv_btn_set_style(box_autonsel, LV_BTN_STATE_PR, &style_midnightblue);
+  lv_obj_set_style(box_autonsel, &style_midnightblue);
+
   // ----------------- Switch Theme Screen -----------------
   switchscr = lv_obj_create(NULL, NULL);
 
@@ -758,27 +789,27 @@ void init_marble_ui() {
 
   lv_obj_t* switchscr_btn_hellokitty = createImgBtn(switchscr, 115, 66, 5, &helloKittyButton);
   lv_imgbtn_set_src(switchscr_btn_hellokitty, LV_BTN_STATE_PR, &helloKittyButton);
-  lv_btn_set_action(switchscr_btn_hellokitty, LV_BTN_ACTION_PR, m_btn_set_theme_hellokitty);
+  lv_btn_set_action(switchscr_btn_hellokitty, LV_BTN_ACTION_CLICK, m_btn_set_theme_hellokitty);
 
   lv_obj_t* switchscr_btn_marble = createImgBtn(switchscr, 293, 66, 6, &redMarbleButton);
   lv_imgbtn_set_src(switchscr_btn_marble, LV_BTN_STATE_PR, &redMarbleButton);
-  lv_btn_set_action(switchscr_btn_marble, LV_BTN_ACTION_PR, m_btn_set_theme_marble);
+  lv_btn_set_action(switchscr_btn_marble, LV_BTN_ACTION_CLICK, m_btn_set_theme_marble);
 
   lv_obj_t* switchscr_btn_darkknight = createImgBtn(switchscr, 204, 66, 7, &batmanButton);
   lv_imgbtn_set_src(switchscr_btn_darkknight, LV_BTN_STATE_PR, &batmanButton);
-  lv_btn_set_action(switchscr_btn_darkknight, LV_BTN_ACTION_PR, m_btn_set_theme_batman);
+  lv_btn_set_action(switchscr_btn_darkknight, LV_BTN_ACTION_CLICK, m_btn_set_theme_batman);
 
   lv_obj_t* switchscr_btn_og = createImgBtn(switchscr, 293, 148, 8, &ogButton);
   lv_imgbtn_set_src(switchscr_btn_og, LV_BTN_STATE_PR, &ogButton);
-  lv_btn_set_action(switchscr_btn_og, LV_BTN_ACTION_PR, m_btn_set_theme_og);
+  lv_btn_set_action(switchscr_btn_og, LV_BTN_ACTION_CLICK, m_btn_set_theme_og);
 
   lv_obj_t* switchscr_btn_christmas = createImgBtn(switchscr, 115, 148, 9, &ChristmasButton);
   lv_imgbtn_set_src(switchscr_btn_christmas, LV_BTN_STATE_PR, &ChristmasButton);
-  lv_btn_set_action(switchscr_btn_christmas, LV_BTN_ACTION_PR, m_btn_set_theme_christmas);
+  lv_btn_set_action(switchscr_btn_christmas, LV_BTN_ACTION_CLICK, m_btn_set_theme_christmas);
 
   lv_obj_t* switchscr_btn_thanksgiving = createImgBtn(switchscr, 204, 148, 10, &ThanksgivingButton);
   lv_imgbtn_set_src(switchscr_btn_thanksgiving, LV_BTN_STATE_PR, &ThanksgivingButton);
-  lv_btn_set_action(switchscr_btn_thanksgiving, LV_BTN_ACTION_PR, m_btn_set_theme_thanksgiving);
+  lv_btn_set_action(switchscr_btn_thanksgiving, LV_BTN_ACTION_CLICK, m_btn_set_theme_thanksgiving);
 
 
 

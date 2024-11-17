@@ -155,10 +155,12 @@ void initStyles() {
   box_blue.body.main_color = LV_COLOR_MAKE(0x00, 0x97, 0xb2);  // #0097b2
   box_blue.body.grad_color = LV_COLOR_MAKE(0x00, 0x97, 0xb2);  // #0097b2
 
-  lv_style_copy(&box_midnightblue, &style_box);
-  box_midnightblue.body.main_color =
-      LV_COLOR_MAKE(0x1f, 0x28, 0x2f);  // #1f282f
-  box_midnightblue.body.grad_color =
-      LV_COLOR_MAKE(0x1f, 0x28, 0x2f);  // #1f282f
+  lv_style_copy(&box_midnightblue, &style_confirmbtn);
+  box_midnightblue.body.main_color = LV_COLOR_MAKE(0x1f, 0x28, 0x2f);
+  box_midnightblue.body.grad_color = LV_COLOR_MAKE(0x1f, 0x28, 0x2f);
+  box_midnightblue.body.radius = 8;
+  box_midnightblue.text.font = &font_confirmbtn_text;
+  box_midnightblue.text.letter_space = .5;
+  box_midnightblue.text.color = LV_COLOR_WHITE;
 }
 }  // namespace MarbleStyles
