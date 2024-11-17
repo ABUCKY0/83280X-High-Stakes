@@ -1,6 +1,7 @@
 #include <sstream>
 #include "AutonomousSelector/Themes/HelloKitty.hpp"
 #include "AutonomousSelector/Themes/Marble.hpp"
+#include "AutonomousSelector/Themes/OG.hpp"
 #include "AutonomousSelector/helpers.hpp"
 #include "Constants.hpp"
 #include "main.h"
@@ -160,11 +161,12 @@ lv_res_t m_btn_action_match(lv_obj_t* btn) {
   gameMode = 0;
   return LV_RES_OK;
 }
-enum class Theme { HELLOKITTY, MARBLE };
+enum class Theme { HELLOKITTY, MARBLE, BATMAN, OG, CHRISTMAS, THANKSGIVING };
 
 void switchTheme(Theme theme) {
   switch (theme) {
     case Theme::HELLOKITTY:
+      std::cout << "[UI] (INFO): Switching to Hello Kitty Theme (SWITCHTHEME)\n";
       style_bg = HelloKittyStyles::style_bg;
       style_btn = HelloKittyStyles::style_btn;
       style_btn_selected = HelloKittyStyles::style_btn_selected;
@@ -189,6 +191,7 @@ void switchTheme(Theme theme) {
       small_image = HelloKittyStyles::small_image;
       break;
     case Theme::MARBLE:
+      std::cout << "[UI] (INFO): Switching to Marble Theme (SWITCHTHEME)\n";
       style_bg = MarbleStyles::style_bg;
       style_btn = MarbleStyles::style_btn;
       style_btn_selected = MarbleStyles::style_btn_selected;
@@ -212,7 +215,36 @@ void switchTheme(Theme theme) {
       big_image = MarbleStyles::big_image;
       small_image = MarbleStyles::small_image;
       break;
+    case Theme::OG:
+      std::cout << "[UI] (INFO): Switching to OG Theme (SWITCHTHEME)\n";
+      style_bg = OGStyles::style_bg;
+      style_btn = OGStyles::style_btn;
+      style_btn_selected = OGStyles::style_btn_selected;
+      style_confirmbtn = OGStyles::style_confirmbtn;
+      style_confirmbtn_selected = OGStyles::style_confirmbtn_selected;
+      style_teamname = OGStyles::style_teamname;
+      style_roller = OGStyles::style_roller;
+      roller_style_selected = OGStyles::roller_style_selected;
+      roller_bg_style = OGStyles::roller_bg_style;
+      style_box = OGStyles::style_box;
+      style_smalltext = OGStyles::style_smalltext;
+      style_largetext = OGStyles::style_largetext;
+      style_midtext = OGStyles::style_midtext;
+      style_buildtext = OGStyles::style_buildtext;
+      box_blue = &OGStyles::box_blue;
+      box_green = &OGStyles::box_green;
+      box_red = &OGStyles::box_red;
+      box_yellow = &OGStyles::box_yellow;
+      box_midnightblue = &OGStyles::box_midnightblue;
+      bg_image = OGStyles::bg_image;
+      big_image = OGStyles::big_image;
+      small_image = OGStyles::small_image;
+      break;
+    default:
+      //switchTheme(Theme::MARBLE);
+      return;
   }
+  std::cout << "[UI] (INFO): Theme Switched\n";
 
   // // Update the UI elements with the new styles
   // lv_obj_set_style(matchscr, &style_bg);
@@ -284,13 +316,25 @@ lv_res_t m_btn_set_theme_marble(lv_obj_t* btn) {
 
 lv_res_t m_btn_set_theme_batman(lv_obj_t* btn) {
   cout << "[UI] (INFO): Switching to Batman Theme\n";
-  // switchTheme(Theme::BATMAN);
+  switchTheme(Theme::BATMAN);
   return LV_RES_OK;
 }
 
 lv_res_t m_btn_set_theme_og(lv_obj_t* btn) {
   cout << "[UI] (INFO): Switching to OG Theme\n";
-  // switchTheme(Theme::STARWARS);
+  switchTheme(Theme::OG);
+  return LV_RES_OK;
+}
+
+lv_res_t m_btn_set_theme_christmas(lv_obj_t* btn) {
+  cout << "[UI] (INFO): Switching to Christmas Theme\n";
+  switchTheme(Theme::CHRISTMAS);
+  return LV_RES_OK;
+}
+
+lv_res_t m_btn_set_theme_thanksgiving(lv_obj_t* btn) {
+  cout << "[UI] (INFO): Switching to Thanksgiving Theme\n";
+  switchTheme(Theme::THANKSGIVING);
   return LV_RES_OK;
 }
 
@@ -303,12 +347,13 @@ void init_marble_ui() {
 
   HelloKittyStyles::initStyles();
   MarbleStyles::initStyles();
+  OGStyles::initStyles();
   cout << "[UI] (INFO): Initalizing matchscr\n";
   matchscr = lv_obj_create(NULL, NULL);
   currentScreen = matchscr;
 
   /* ------------- Shared Styles ------------- */
-  switchTheme(Theme::HELLOKITTY);
+  switchTheme(Theme::MARBLE);
 
   /* ----------- Begin Match Screen ---------- */
 
@@ -630,6 +675,7 @@ void init_marble_ui() {
   buildtag = createLabel(matchscr, 0, 220, buildtagstr.str().c_str());
   lv_obj_set_style(buildtag, &style_buildtext);
 
+  //lv_obj_t* stockingsOverlay = createImage(gamescr, 0, 0, 1, &ChristmasStockings);
   // return mutex
   dataMutex.give();
   // lv_scr_load(gamescr);
@@ -678,13 +724,13 @@ void init_marble_ui() {
 
   // Background Box
   lv_obj_t* switchscr_box = lv_obj_create(switchscr, NULL);
-  lv_obj_set_size(switchscr_box, 405, 125);
-  lv_obj_set_pos(switchscr_box, 37, 53);
+  lv_obj_set_size(switchscr_box, 273, 172);
+  lv_obj_set_pos(switchscr_box, 103, 57);
   lv_obj_set_style(switchscr_box, &roller_bg_style);
 
   // Theme Text (Top right of box)
-  lv_obj_t* switchscr_theme_text = createLabel(switchscr, 50, 60, "Theme");
-  lv_label_set_style(switchscr_theme_text, &style_midtext);
+  // lv_obj_t* switchscr_theme_text = createLabel(switchscr, 50, 60, "Theme");
+  // lv_label_set_style(switchscr_theme_text, &style_midtext);
 
   // Theme Switch Buttons
   // lv_obj_t* switchscr_btn_hellokitty = createBtn(switchscr, 72, 92, 72, 72, 5, "Hello Kitty");
@@ -710,18 +756,30 @@ void init_marble_ui() {
   // lv_btn_set_style(switchscr_btn_og, LV_BTN_STATE_PR, &style_btn_selected);
   // lv_btn_set_action(switchscr_btn_og, LV_BTN_ACTION_PR, m_btn_set_theme_og);
 
-  lv_obj_t* switchscr_btn_hellokitty = createImgBtn(switchscr, 72, 92, 5, &helloKittyButton);
+  lv_obj_t* switchscr_btn_hellokitty = createImgBtn(switchscr, 115, 66, 5, &helloKittyButton);
   lv_imgbtn_set_src(switchscr_btn_hellokitty, LV_BTN_STATE_PR, &helloKittyButton);
   lv_btn_set_action(switchscr_btn_hellokitty, LV_BTN_ACTION_PR, m_btn_set_theme_hellokitty);
-  lv_obj_t* switchscr_btn_marble = createImgBtn(switchscr, 159, 90, 6, &redMarbleButton);
+
+  lv_obj_t* switchscr_btn_marble = createImgBtn(switchscr, 293, 66, 6, &redMarbleButton);
   lv_imgbtn_set_src(switchscr_btn_marble, LV_BTN_STATE_PR, &redMarbleButton);
   lv_btn_set_action(switchscr_btn_marble, LV_BTN_ACTION_PR, m_btn_set_theme_marble);
-  lv_obj_t* switchscr_btn_darkknight = createImgBtn(switchscr, 247, 90, 7, &batmanButton);
+
+  lv_obj_t* switchscr_btn_darkknight = createImgBtn(switchscr, 204, 66, 7, &batmanButton);
   lv_imgbtn_set_src(switchscr_btn_darkknight, LV_BTN_STATE_PR, &batmanButton);
   lv_btn_set_action(switchscr_btn_darkknight, LV_BTN_ACTION_PR, m_btn_set_theme_batman);
-  lv_obj_t* switchscr_btn_og = createImgBtn(switchscr, 336, 90, 8, &ogButton);
+
+  lv_obj_t* switchscr_btn_og = createImgBtn(switchscr, 293, 148, 8, &ogButton);
   lv_imgbtn_set_src(switchscr_btn_og, LV_BTN_STATE_PR, &ogButton);
   lv_btn_set_action(switchscr_btn_og, LV_BTN_ACTION_PR, m_btn_set_theme_og);
+
+  lv_obj_t* switchscr_btn_christmas = createImgBtn(switchscr, 115, 148, 9, &ChristmasButton);
+  lv_imgbtn_set_src(switchscr_btn_christmas, LV_BTN_STATE_PR, &ChristmasButton);
+  lv_btn_set_action(switchscr_btn_christmas, LV_BTN_ACTION_PR, m_btn_set_theme_christmas);
+
+  lv_obj_t* switchscr_btn_thanksgiving = createImgBtn(switchscr, 204, 148, 10, &ThanksgivingButton);
+  lv_imgbtn_set_src(switchscr_btn_thanksgiving, LV_BTN_STATE_PR, &ThanksgivingButton);
+  lv_btn_set_action(switchscr_btn_thanksgiving, LV_BTN_ACTION_PR, m_btn_set_theme_thanksgiving);
+
 
 
   //lv_scr_load(switchscr);

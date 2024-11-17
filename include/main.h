@@ -129,6 +129,8 @@ LV_IMG_DECLARE(transparent);
 
 LV_IMG_DECLARE(marblebg);
 LV_IMG_DECLARE(hellokitty_bg);
+LV_IMG_DECLARE(ChristmasStockings);
+LV_IMG_DECLARE(OGBackground);
 
 LV_FONT_DECLARE(blackopsone_4);
 LV_FONT_DECLARE(blackopsone_6);
@@ -148,4 +150,9 @@ LV_IMG_DECLARE(ogButton);
 LV_IMG_DECLARE(helloKittyButton);
 LV_IMG_DECLARE(batmanButton);
 LV_IMG_DECLARE(redMarbleButton);
+LV_IMG_DECLARE(ThanksgivingButton);
+LV_IMG_DECLARE(ChristmasButton);
+
+LV_IMG_DECLARE(lobo);
+LV_IMG_DECLARE(mini_lobo);
 #endif // _PROS_MAIN_H_
