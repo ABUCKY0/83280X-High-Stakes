@@ -60,10 +60,10 @@ static lv_obj_t* box_battery_val;
 static lv_obj_t* box_psi_val;
 
 // Auton Selection Arrays
-static const char* auton_options[] = {"BLU-C", "BLU-F", "RED-C", "RED-F"};
+static const char* auton_options[] = {"BLU-L", "BLU-R", "RED-L", "RED-R"};
 static const char* skills_options[] = {"SKI-A", "SKI-B", "SKI-C", "SDRVR"};
 
-string match_autons = "Blue Close\nBlue Far\nRed Close\nRed Far";
+string match_autons = "Blue Left\nBlue Right\nRed Left\nRed Right";
 string skills_autons = "Auton A\nAuton B\nAuton C\nDriver";
 
 pros::Mutex dataMutex;  // Mutex to protect shared data
