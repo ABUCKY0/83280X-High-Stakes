@@ -160,4 +160,6 @@ LV_IMG_DECLARE(christmasCookieBackground);
 LV_IMG_DECLARE(christmasTree);
 LV_IMG_DECLARE(minitree);
 
+LV_IMG_DECLARE(nickBackground);
+
 #endif // _PROS_MAIN_H_

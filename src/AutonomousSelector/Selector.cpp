@@ -1,8 +1,13 @@
 #include <sstream>
+
+// Styles
 #include "AutonomousSelector/Themes/HelloKitty.hpp"
 #include "AutonomousSelector/Themes/Marble.hpp"
 #include "AutonomousSelector/Themes/OG.hpp"
 #include "AutonomousSelector/Themes/Christmas.hpp"
+#include "AutonomousSelector/Themes/Nick.hpp"
+
+// Regular Includes
 #include "AutonomousSelector/helpers.hpp"
 #include "Constants.hpp"
 #include "main.h"
@@ -169,7 +174,7 @@ lv_res_t m_btn_action_match(lv_obj_t* btn) {
   gameMode = 0;
   return LV_RES_OK;
 }
-enum class Theme { HELLOKITTY, MARBLE, BATMAN, OG, CHRISTMAS, THANKSGIVING };
+enum class Theme { HELLOKITTY, MARBLE, NICK, OG, CHRISTMAS, THANKSGIVING };
 
 void switchTheme(Theme theme) {
   switch (theme) {
@@ -277,6 +282,32 @@ void switchTheme(Theme theme) {
       big_image = ChristmasStyles::big_image;
       small_image = ChristmasStyles::small_image;
       break;
+    case Theme::NICK:
+      std::cout << "[UI] (INFO): Switching to Nick's Theme (SWITCHTHEME)\n";
+      style_bg = NickStyles::style_bg;
+      style_btn = NickStyles::style_btn;
+      style_btn_selected = NickStyles::style_btn_selected;
+      style_confirmbtn = NickStyles::style_confirmbtn;
+      style_confirmbtn_selected = NickStyles::style_confirmbtn_selected;
+      style_teamname = NickStyles::style_teamname;
+      style_roller = NickStyles::style_roller;
+      roller_style_selected = NickStyles::roller_style_selected;
+      roller_bg_style = NickStyles::roller_bg_style;
+      style_box = NickStyles::style_box;
+      style_smalltext = NickStyles::style_smalltext;
+      style_largetext = NickStyles::style_largetext;
+      style_midtext = NickStyles::style_midtext;
+      style_buildtext = NickStyles::style_buildtext;
+      box_blue = &NickStyles::box_blue;
+      box_green = &NickStyles::box_green;
+      box_red = &NickStyles::box_red;
+      box_yellow = &NickStyles::box_yellow;
+      box_midnightblue = &NickStyles::box_midnightblue;
+      style_midnightblue = NickStyles::box_midnightblue;
+      bg_image = NickStyles::bg_image;
+      big_image = NickStyles::big_image;
+      small_image = NickStyles::small_image;
+      break;
     default:
       //switchTheme(Theme::MARBLE);
       return;
@@ -351,9 +382,9 @@ lv_res_t m_btn_set_theme_marble(lv_obj_t* btn) {
   return LV_RES_OK;
 }
 
-lv_res_t m_btn_set_theme_batman(lv_obj_t* btn) {
-  cout << "[UI] (INFO): Switching to Batman Theme\n";
-  switchTheme(Theme::BATMAN);
+lv_res_t m_btn_set_theme_nick(lv_obj_t* btn) {
+  cout << "[UI] (INFO): Switching to Nick's Theme\n";
+  switchTheme(Theme::NICK);
   return LV_RES_OK;
 }
 
@@ -386,12 +417,13 @@ void init_marble_ui() {
   MarbleStyles::initStyles();
   OGStyles::initStyles();
   ChristmasStyles::initStyles();
+  NickStyles::initStyles();
   cout << "[UI] (INFO): Initalizing matchscr\n";
   matchscr = lv_obj_create(NULL, NULL);
   currentScreen = matchscr;
 
   /* ------------- Shared Styles ------------- */
-  switchTheme(Theme::MARBLE);
+  switchTheme(Theme::NICK);
 
   /* ----------- Begin Match Screen ---------- */
 
@@ -823,9 +855,10 @@ void init_marble_ui() {
   lv_imgbtn_set_src(switchscr_btn_marble, LV_BTN_STATE_PR, &redMarbleButton);
   lv_btn_set_action(switchscr_btn_marble, LV_BTN_ACTION_CLICK, m_btn_set_theme_marble);
 
-  lv_obj_t* switchscr_btn_darkknight = createImgBtn(switchscr, 204, 66, 7, &batmanButton);
-  lv_imgbtn_set_src(switchscr_btn_darkknight, LV_BTN_STATE_PR, &batmanButton);
-  lv_btn_set_action(switchscr_btn_darkknight, LV_BTN_ACTION_CLICK, m_btn_set_theme_batman);
+  lv_obj_t* switchscr_btn_nick = createImgBtn(switchscr, 204, 66, 7, &batmanButton);
+  lv_imgbtn_set_src(switchscr_btn_nick, LV_BTN_STATE_PR, &batmanButton);
+  lv_btn_set_action(switchscr_btn_nick, LV_BTN_ACTION_CLICK,
+                    m_btn_set_theme_nick);
 
   lv_obj_t* switchscr_btn_og = createImgBtn(switchscr, 293, 148, 8, &ogButton);
   lv_imgbtn_set_src(switchscr_btn_og, LV_BTN_STATE_PR, &ogButton);
