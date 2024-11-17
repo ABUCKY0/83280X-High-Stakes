@@ -308,29 +308,7 @@ void init_marble_ui() {
   currentScreen = matchscr;
 
   /* ------------- Shared Styles ------------- */
-  style_bg = HelloKittyStyles::style_bg;
-  style_btn = HelloKittyStyles::style_btn;
-  style_btn_selected = HelloKittyStyles::style_btn_selected;
-  style_confirmbtn = HelloKittyStyles::style_confirmbtn;
-  style_confirmbtn_selected = HelloKittyStyles::style_confirmbtn_selected;
-  style_teamname = HelloKittyStyles::style_teamname;
-  style_roller = HelloKittyStyles::style_roller;
-  roller_style_selected = HelloKittyStyles::roller_style_selected;
-  roller_bg_style = HelloKittyStyles::roller_bg_style;
-  style_box = HelloKittyStyles::style_box;
-  style_smalltext = HelloKittyStyles::style_smalltext;
-  style_largetext = HelloKittyStyles::style_largetext;
-  style_midtext = HelloKittyStyles::style_midtext;
-  style_buildtext = HelloKittyStyles::style_buildtext;
-  box_blue = &HelloKittyStyles::box_blue;
-  box_green = &HelloKittyStyles::box_green;
-  box_red = &HelloKittyStyles::box_red;
-  box_yellow = &HelloKittyStyles::box_yellow;
-  box_midnightblue = &HelloKittyStyles::box_midnightblue;
-
-  bg_image = HelloKittyStyles::bg_image;
-  big_image = HelloKittyStyles::big_image;
-  small_image = HelloKittyStyles::small_image;
+  switchTheme(Theme::HELLOKITTY);
 
   /* ----------- Begin Match Screen ---------- */
 

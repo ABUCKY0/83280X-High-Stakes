@@ -24,7 +24,6 @@
  * E_CONTROLLER_MASTER is pedantically correct within the PROS styleguide, but
  * not convenient for most student programmers.
  */
-#include "liblvgl/lv_draw/lv_draw_img.h"
 #define PROS_USE_SIMPLE_NAMES
 
 /**
