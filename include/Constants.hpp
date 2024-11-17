@@ -4,8 +4,8 @@
 extern int ui_id;
 extern int gameMode;
 extern int auton;
-extern lv_obj_t *gamescr;
-extern lv_obj_t *matchscr;
+// extern lv_obj_t *gamescr;
+// extern lv_obj_t *matchscr;
 extern lv_obj_t *skillsscr;
 
 /*

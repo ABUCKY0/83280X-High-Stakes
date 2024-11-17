@@ -145,4 +145,8 @@ LV_FONT_DECLARE(blackopsone_30);
 LV_FONT_DECLARE(blackopsone_40);
 LV_FONT_DECLARE(blackopsone_50);
 
+LV_IMG_DECLARE(ogButton);
+LV_IMG_DECLARE(helloKittyButton);
+LV_IMG_DECLARE(batmanButton);
+LV_IMG_DECLARE(redMarbleButton);
 #endif // _PROS_MAIN_H_

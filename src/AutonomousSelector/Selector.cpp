@@ -3,7 +3,6 @@
 #include "AutonomousSelector/Themes/Marble.hpp"
 #include "AutonomousSelector/helpers.hpp"
 #include "Constants.hpp"
-#include "liblvgl/lv_draw/lv_draw_img.h"
 #include "main.h"
 #include "pros/apix.h"  // IWYU pragma: keep
 
@@ -107,8 +106,9 @@ static lv_img_dsc_t big_image;
 static lv_img_dsc_t small_image;
 
 // // Screen
-// static lv_obj_t* matchscr;
-// static lv_obj_t* gamescr;
+static lv_obj_t* matchscr;
+static lv_obj_t* gamescr;
+static lv_obj_t* switchscr;
 
 // Everything on the screen
 static lv_obj_t* btn_match;
@@ -125,6 +125,7 @@ static lv_obj_t* chicken;
 static lv_obj_t* game_backgroundimage;
 static lv_obj_t* logo;
 
+static lv_obj_t* currentScreen;
 // on press confirm
 lv_res_t onMatchConfirmPress(lv_obj_t* btn) {
   cout << "[UI] (INFO): Autonomous Selection Confirmed\n";
@@ -138,6 +139,7 @@ lv_res_t onMatchConfirmPress(lv_obj_t* btn) {
     lv_label_set_text(box_autonsel_label, skills_options[auton]);
   }
   lv_scr_load(gamescr);
+  currentScreen = gamescr;
   return LV_RES_OK;
 }
 
@@ -158,7 +160,6 @@ lv_res_t m_btn_action_match(lv_obj_t* btn) {
   gameMode = 0;
   return LV_RES_OK;
 }
-
 enum class Theme { HELLOKITTY, MARBLE };
 
 void switchTheme(Theme theme) {
@@ -213,57 +214,89 @@ void switchTheme(Theme theme) {
       break;
   }
 
-  // Update the UI elements with the new styles
-  lv_obj_set_style(matchscr, &style_bg);
-  lv_label_set_style(teamName, &style_teamname);
-  lv_obj_set_style(rollerbg, &roller_bg_style);
-  lv_btn_set_style(btn_match, LV_BTN_STYLE_REL, &style_btn);
-  lv_btn_set_style(btn_match, LV_BTN_STATE_PR, &style_btn_selected);
-  lv_btn_set_style(btn_skills, LV_BTN_STYLE_REL, &style_btn);
-  lv_btn_set_style(btn_skills, LV_BTN_STATE_PR, &style_btn_selected);
-  lv_btn_set_style(confirm_btn, LV_BTN_STATE_REL, &style_confirmbtn);
-  lv_btn_set_style(confirm_btn, LV_BTN_STATE_PR, &style_confirmbtn_selected);
-  lv_roller_set_style(auton_selector, LV_ROLLER_STYLE_BG, &style_roller);
-  lv_roller_set_style(auton_selector, LV_ROLLER_STYLE_SEL,
-                      &roller_style_selected);
-  lv_obj_set_style(box, &style_box);
-  lv_label_set_style(box_m1_label, &style_smalltext);
-  lv_label_set_style(box_m2_label, &style_smalltext);
-  lv_label_set_style(box_m3_label, &style_smalltext);
-  lv_label_set_style(box_m11_label, &style_smalltext);
-  lv_label_set_style(box_m12_label, &style_smalltext);
-  lv_label_set_style(box_m13_label, &style_smalltext);
-  lv_label_set_style(box_battery_label, &style_largetext);
-  lv_label_set_style(box_psi_label, &style_largetext);
-  lv_label_set_style(box_autonsel_label, &style_midtext);
-  lv_label_set_style(box_launcher_label, &style_smalltext);
-  lv_label_set_style(box_intake1_label, &style_smalltext);
-  lv_label_set_style(box_intake2_label, &style_smalltext);
-  lv_label_set_style(box_m1_val, &style_midtext);
-  lv_label_set_style(box_m2_val, &style_midtext);
-  lv_label_set_style(box_m3_val, &style_midtext);
-  lv_label_set_style(box_m11_val, &style_midtext);
-  lv_label_set_style(box_m12_val, &style_midtext);
-  lv_label_set_style(box_m13_val, &style_midtext);
-  lv_label_set_style(box_battery_val, &style_midtext);
-  lv_label_set_style(box_psi_val, &style_midtext);
-  lv_label_set_style(box_launcher_val, &style_midtext);
-  lv_label_set_style(box_intake1_val, &style_midtext);
-  lv_label_set_style(box_intake2_val, &style_midtext);
-  lv_obj_set_style(box_m1, box_green);
-  lv_obj_set_style(box_m2, box_green);
-  lv_obj_set_style(box_m3, box_green);
-  lv_obj_set_style(box_m11, box_green);
-  lv_obj_set_style(box_m12, box_green);
-  lv_obj_set_style(box_m13, box_green);
-  lv_obj_set_style(box_battery, box_green);
-  lv_obj_set_style(box_psi, box_green);
-  lv_obj_set_style(box_autonsel, box_midnightblue);
-  lv_obj_set_style(box_launcher, box_green);
-  lv_obj_set_style(box_intake1, box_green);
-  lv_obj_set_style(box_intake2, box_green);
-  lv_obj_set_style(box_logo, box_midnightblue);
-  lv_obj_set_style(buildtag, &style_buildtext);
+  // // Update the UI elements with the new styles
+  // lv_obj_set_style(matchscr, &style_bg);
+  // lv_label_set_style(teamName, &style_teamname);
+  // lv_obj_set_style(rollerbg, &roller_bg_style);
+  // lv_btn_set_style(btn_match, LV_BTN_STYLE_REL, &style_btn);
+  // lv_btn_set_style(btn_match, LV_BTN_STATE_PR, &style_btn_selected);
+  // lv_btn_set_style(btn_skills, LV_BTN_STYLE_REL, &style_btn);
+  // lv_btn_set_style(btn_skills, LV_BTN_STATE_PR, &style_btn_selected);
+  // lv_btn_set_style(confirm_btn, LV_BTN_STATE_REL, &style_confirmbtn);
+  // lv_btn_set_style(confirm_btn, LV_BTN_STATE_PR, &style_confirmbtn_selected);
+  // lv_roller_set_style(auton_selector, LV_ROLLER_STYLE_BG, &style_roller);
+  // lv_roller_set_style(auton_selector, LV_ROLLER_STYLE_SEL,
+  //                     &roller_style_selected);
+  // lv_obj_set_style(box, &style_box);
+  // lv_label_set_style(box_m1_label, &style_smalltext);
+  // lv_label_set_style(box_m2_label, &style_smalltext);
+  // lv_label_set_style(box_m3_label, &style_smalltext);
+  // lv_label_set_style(box_m11_label, &style_smalltext);
+  // lv_label_set_style(box_m12_label, &style_smalltext);
+  // lv_label_set_style(box_m13_label, &style_smalltext);
+  // lv_label_set_style(box_battery_label, &style_largetext);
+  // lv_label_set_style(box_psi_label, &style_largetext);
+  // lv_label_set_style(box_autonsel_label, &style_midtext);
+  // lv_label_set_style(box_launcher_label, &style_smalltext);
+  // lv_label_set_style(box_intake1_label, &style_smalltext);
+  // lv_label_set_style(box_intake2_label, &style_smalltext);
+  // lv_label_set_style(box_m1_val, &style_midtext);
+  // lv_label_set_style(box_m2_val, &style_midtext);
+  // lv_label_set_style(box_m3_val, &style_midtext);
+  // lv_label_set_style(box_m11_val, &style_midtext);
+  // lv_label_set_style(box_m12_val, &style_midtext);
+  // lv_label_set_style(box_m13_val, &style_midtext);
+  // lv_label_set_style(box_battery_val, &style_midtext);
+  // lv_label_set_style(box_psi_val, &style_midtext);
+  // lv_label_set_style(box_launcher_val, &style_midtext);
+  // lv_label_set_style(box_intake1_val, &style_midtext);
+  // lv_label_set_style(box_intake2_val, &style_midtext);
+  // lv_obj_set_style(box_m1, box_green);
+  // lv_obj_set_style(box_m2, box_green);
+  // lv_obj_set_style(box_m3, box_green);
+  // lv_obj_set_style(box_m11, box_green);
+  // lv_obj_set_style(box_m12, box_green);
+  // lv_obj_set_style(box_m13, box_green);
+  // lv_obj_set_style(box_battery, box_green);
+  // lv_obj_set_style(box_psi, box_green);
+  // lv_obj_set_style(box_autonsel, box_midnightblue);
+  // lv_obj_set_style(box_launcher, box_green);
+  // lv_obj_set_style(box_intake1, box_green);
+  // lv_obj_set_style(box_intake2, box_green);
+  // lv_obj_set_style(box_logo, box_midnightblue);
+  // lv_obj_set_style(buildtag, &style_buildtext);
+
+  lv_scr_load(currentScreen);
+  
+}
+
+lv_res_t m_btn_set_theme_hellokitty(lv_obj_t* btn) {
+  cout << "[UI] (INFO): Switching to Hello Kitty Theme\n";
+  switchTheme(Theme::HELLOKITTY);
+  return LV_RES_OK;
+}
+
+lv_res_t m_btn_set_theme_marble(lv_obj_t* btn) {
+  cout << "[UI] (INFO): Switching to Marble Theme\n";
+  switchTheme(Theme::MARBLE);
+  return LV_RES_OK;
+}
+
+lv_res_t m_btn_set_theme_batman(lv_obj_t* btn) {
+  cout << "[UI] (INFO): Switching to Batman Theme\n";
+  // switchTheme(Theme::BATMAN);
+  return LV_RES_OK;
+}
+
+lv_res_t m_btn_set_theme_og(lv_obj_t* btn) {
+  cout << "[UI] (INFO): Switching to OG Theme\n";
+  // switchTheme(Theme::STARWARS);
+  return LV_RES_OK;
+}
+
+lv_res_t m_btn_open_theme_switcher(lv_obj_t* btn) {
+  lv_scr_load(switchscr);
+  return LV_RES_OK;
 }
 
 void init_marble_ui() {
@@ -272,6 +305,7 @@ void init_marble_ui() {
   MarbleStyles::initStyles();
   cout << "[UI] (INFO): Initalizing matchscr\n";
   matchscr = lv_obj_create(NULL, NULL);
+  currentScreen = matchscr;
 
   /* ------------- Shared Styles ------------- */
   style_bg = HelloKittyStyles::style_bg;
@@ -331,13 +365,13 @@ void init_marble_ui() {
   // -- confirm button
   cout << "[UI] (INFO): [BUTTON] [CREATION] confirm_btn\n";
   confirm_btn =
-      createBtn(matchscr, 248, 167.8, 197.7, 40.9, 4, "CONFIRM");
+      createBtn(matchscr, 248, 167, 197, 40, 4, "CONFIRM");
   lv_btn_set_style(confirm_btn, LV_BTN_STATE_REL, &style_confirmbtn);
   lv_btn_set_style(confirm_btn, LV_BTN_STATE_PR, &style_confirmbtn_selected);
 
   // roller
   cout << "[UI] (INFO): [ROLLER] [CREATION] auton_selector\n";
-  auton_selector = createRoller(matchscr, match_autons.c_str(), 248, 92.6);
+  auton_selector = createRoller(matchscr, match_autons.c_str(), 248, 92);
   lv_obj_set_free_num(auton_selector, 20);
   lv_roller_set_hor_fit(auton_selector, false);
   lv_obj_set_width(auton_selector, 198);
@@ -348,7 +382,7 @@ void init_marble_ui() {
 
   // Chick-Fil-A Chicken Sandwich
   cout << "[UI] (INFO): [IMAGE] [CREATION] chicken\n";
-  chicken = createImage(matchscr, 40.5, 69.4, 5, &big_image);
+  chicken = createImage(matchscr, 40, 69, 5, &big_image);
 
   // Apply Button Functions
   cout << "[UI] (INFO): [BUTTON] btn_skills [ACTIONSET] m_btn_action_skills\n";
@@ -391,8 +425,8 @@ void init_marble_ui() {
   // style_buildtext.text.color = LV_COLOR_WHITE;
 
   // Set the size and position of the box
-  lv_obj_set_size(box, 443, 211.4);  // Replace with the size you want
-  lv_obj_set_pos(box, 15.9, 17);     // Replace with the position you want
+  lv_obj_set_size(box, 443, 211);  // Replace with the size you want
+  lv_obj_set_pos(box, 15, 17);     // Replace with the position you want
 
   box_m1 = createBaseObject(gamescr, 72, 72);
   box_m2 = lv_obj_create(gamescr, NULL);
@@ -496,27 +530,27 @@ void init_marble_ui() {
   lv_obj_set_size(box_intake1, 72, 72);
   lv_obj_set_size(box_intake2, 72, 72);
 
-  // battery and psi are 161.5 by 42
-  lv_obj_set_size(box_battery, 161.5, 42);
-  lv_obj_set_size(box_psi, 161.5, 42);
+  // battery and psi are 161 by 42
+  lv_obj_set_size(box_battery, 161, 42);
+  lv_obj_set_size(box_psi, 161, 42);
 
   // auton seleector is 72 by 42
   lv_obj_set_size(box_autonsel, 72, 42);
 
   // Position the boxes
-  lv_obj_set_pos(box_m1, 25.2, 24);
-  lv_obj_set_pos(box_m2, 113.5, 24);
-  lv_obj_set_pos(box_m3, 201.5, 24);
+  lv_obj_set_pos(box_m1, 25, 24);
+  lv_obj_set_pos(box_m2, 113, 24);
+  lv_obj_set_pos(box_m3, 201, 24);
   lv_obj_set_pos(box_m11, 24, 151);
-  lv_obj_set_pos(box_m12, 113.5, 151);
-  lv_obj_set_pos(box_m13, 201.5, 151);
-  lv_obj_set_pos(box_battery, 25.2, 101.7);
-  lv_obj_set_pos(box_psi, 289.5, 101.7);
-  lv_obj_set_pos(box_autonsel, 201.5, 101.7);
-  lv_obj_set_pos(box_launcher, 289.5, 150.7);
-  lv_obj_set_pos(box_intake1, 289.5, 24);
-  lv_obj_set_pos(box_intake2, 377.5, 24);
-  lv_obj_set_pos(box_logo, 377.5, 149.7);
+  lv_obj_set_pos(box_m12, 113, 151);
+  lv_obj_set_pos(box_m13, 201, 151);
+  lv_obj_set_pos(box_battery, 25, 101);
+  lv_obj_set_pos(box_psi, 289, 101);
+  lv_obj_set_pos(box_autonsel, 201, 101);
+  lv_obj_set_pos(box_launcher, 289, 150);
+  lv_obj_set_pos(box_intake1, 289, 24);
+  lv_obj_set_pos(box_intake2, 377, 24);
+  lv_obj_set_pos(box_logo, 377, 149);
 
   // Position the labels in the boxes to below center
   lv_obj_align(box_m1_label, box_m1, LV_ALIGN_CENTER, 0, 15);
@@ -589,7 +623,11 @@ void init_marble_ui() {
   lv_obj_align(box_intake2_val, box_intake2, LV_ALIGN_CENTER, 0, -15);
 
   // Icon
-  logo = createImage(gamescr, 382.1, 157, 8, &small_image);
+  //logo = createImage(gamescr, 382, 157, 8, &small_image);
+  logo = createImageButton(gamescr, &small_image, 382, 157);
+  lv_btn_set_style(logo, LV_BTN_STYLE_REL, &style_btn);
+  lv_btn_set_style(logo, LV_BTN_STATE_PR, &style_btn_selected);
+  lv_btn_set_action(logo, LV_BTN_ACTION_PR, m_btn_open_theme_switcher);
 
   std::ostringstream buildtagstr;
   // if contains MSYS, then it is windows
@@ -642,7 +680,7 @@ void init_marble_ui() {
   // teamname
   lv_obj_t *teamname = lv_label_create(gamescr, NULL);
   lv_label_set_text(teamname, text);
-  lv_obj_set_pos(teamname, 240, 87.5);
+  lv_obj_set_pos(teamname, 240, 87);
   // custom style
   static lv_style_t style_teamname2;
   lv_style_copy(&style_teamname2, &style_teamname);
@@ -651,8 +689,66 @@ void init_marble_ui() {
   lv_obj_set_style(teamname, &style_teamname2);
   */
 
-  pros::delay(2500);
-  switchTheme(Theme::MARBLE);
+  // ----------------- Switch Theme Screen -----------------
+  switchscr = lv_obj_create(NULL, NULL);
+
+  lv_obj_set_style(switchscr, &style_bg);
+  lv_obj_t* switchscr_logo = createImage(switchscr, 0, 0, 1, &bg_image);
+  lv_obj_t* teamNumberTwo = createLabel(switchscr, 152, 8, "83280X");
+  lv_label_set_style(teamNumberTwo, &style_teamname);
+
+
+  // Background Box
+  lv_obj_t* switchscr_box = lv_obj_create(switchscr, NULL);
+  lv_obj_set_size(switchscr_box, 405, 125);
+  lv_obj_set_pos(switchscr_box, 37, 53);
+  lv_obj_set_style(switchscr_box, &roller_bg_style);
+
+  // Theme Text (Top right of box)
+  lv_obj_t* switchscr_theme_text = createLabel(switchscr, 50, 60, "Theme");
+  lv_label_set_style(switchscr_theme_text, &style_midtext);
+
+  // Theme Switch Buttons
+  // lv_obj_t* switchscr_btn_hellokitty = createBtn(switchscr, 72, 92, 72, 72, 5, "Hello Kitty");
+  // lv_btn_set_style(switchscr_btn_hellokitty, LV_BTN_STYLE_REL, &style_btn);
+  // lv_btn_set_style(switchscr_btn_hellokitty, LV_BTN_STATE_PR, &style_btn_selected);
+  // lv_btn_set_action(switchscr_btn_hellokitty, LV_BTN_ACTION_PR, m_btn_set_theme_hellokitty);
+
+  // lv_obj_t* switchscr_btn_marble =
+  //     createBtn(switchscr, 159, 90, 72, 72, 6, "Marble");
+  // lv_btn_set_style(switchscr_btn_marble, LV_BTN_STYLE_REL, &style_btn);
+  // lv_btn_set_style(switchscr_btn_marble, LV_BTN_STATE_PR, &style_btn_selected);
+  // lv_btn_set_action(switchscr_btn_marble, LV_BTN_ACTION_PR, m_btn_set_theme_marble);
+
+  // lv_obj_t* switchscr_btn_darkknight =
+  //     createBtn(switchscr, 247, 90, 72, 72, 7, "Dark Knight");
+  // lv_btn_set_style(switchscr_btn_darkknight, LV_BTN_STYLE_REL, &style_btn);
+  // lv_btn_set_style(switchscr_btn_darkknight, LV_BTN_STATE_PR, &style_btn_selected);
+  // lv_btn_set_action(switchscr_btn_darkknight, LV_BTN_ACTION_PR, m_btn_set_theme_batman);
+
+  // lv_obj_t* switchscr_btn_og =
+  //     createBtn(switchscr, 336, 90, 72, 72, 8, "OG");
+  // lv_btn_set_style(switchscr_btn_og, LV_BTN_STYLE_REL, &style_btn);
+  // lv_btn_set_style(switchscr_btn_og, LV_BTN_STATE_PR, &style_btn_selected);
+  // lv_btn_set_action(switchscr_btn_og, LV_BTN_ACTION_PR, m_btn_set_theme_og);
+
+  lv_obj_t* switchscr_btn_hellokitty = createImgBtn(switchscr, 72, 92, 5, &helloKittyButton);
+  lv_imgbtn_set_src(switchscr_btn_hellokitty, LV_BTN_STATE_PR, &helloKittyButton);
+  lv_btn_set_action(switchscr_btn_hellokitty, LV_BTN_ACTION_PR, m_btn_set_theme_hellokitty);
+  lv_obj_t* switchscr_btn_marble = createImgBtn(switchscr, 159, 90, 6, &redMarbleButton);
+  lv_imgbtn_set_src(switchscr_btn_marble, LV_BTN_STATE_PR, &redMarbleButton);
+  lv_btn_set_action(switchscr_btn_marble, LV_BTN_ACTION_PR, m_btn_set_theme_marble);
+  lv_obj_t* switchscr_btn_darkknight = createImgBtn(switchscr, 247, 90, 7, &batmanButton);
+  lv_imgbtn_set_src(switchscr_btn_darkknight, LV_BTN_STATE_PR, &batmanButton);
+  lv_btn_set_action(switchscr_btn_darkknight, LV_BTN_ACTION_PR, m_btn_set_theme_batman);
+  lv_obj_t* switchscr_btn_og = createImgBtn(switchscr, 336, 90, 8, &ogButton);
+  lv_imgbtn_set_src(switchscr_btn_og, LV_BTN_STATE_PR, &ogButton);
+  lv_btn_set_action(switchscr_btn_og, LV_BTN_ACTION_PR, m_btn_set_theme_og);
+
+
+  //lv_scr_load(switchscr);
+  // pros::delay(2500);
+  // switchTheme(Theme::MARBLE);
 }
 
 void task_updvar(void* param) {
