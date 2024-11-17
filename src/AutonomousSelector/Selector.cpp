@@ -689,7 +689,7 @@ void init_marble_ui() {
 
   // Icon
   //logo = createImage(gamescr, 382, 157, 8, &small_image);
-  logo = createImageButton(gamescr, &small_image, 382, 157);
+  logo = createImageButton(gamescr, &small_image, 384, 157);
   lv_imgbtn_set_src(logo, LV_BTN_STATE_REL, &small_image);
   lv_imgbtn_set_src(logo, LV_BTN_STATE_PR, &small_image);
   lv_btn_set_style(logo, LV_BTN_STYLE_REL, &style_btn);
