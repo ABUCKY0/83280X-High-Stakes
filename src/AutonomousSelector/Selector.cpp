@@ -432,17 +432,17 @@ void init_marble_ui() {
 
   // roller
   cout << "[UI] (INFO): [ROLLER] [CREATION] auton_selector\n";
-  auton_selector = createRoller(matchscr, match_autons.c_str(), 248, 92);
+  auton_selector = createRoller(matchscr, match_autons.c_str(), 248, 74);
   lv_obj_set_free_num(auton_selector, 20);
   lv_roller_set_hor_fit(auton_selector, false);
-  lv_obj_set_width(auton_selector, 198);
-  lv_obj_set_height(auton_selector, 54);
+  lv_obj_set_width(auton_selector, 202);
+  lv_obj_set_height(auton_selector, 84);
   lv_roller_set_style(auton_selector, LV_ROLLER_STYLE_BG, &style_roller);
   lv_roller_set_style(auton_selector, LV_ROLLER_STYLE_SEL,
                       &roller_style_selected);
 
   // Chick-Fil-A Chicken Sandwich
-  cout << "[UI] (INFO): [IMAGE] [CREATION] chicken\n";
+  cout << "[UI] (INFO): [IMAGE] [CREATION] large image\n";
   chicken = createImage(matchscr, 40, 69, 5, &big_image);
 
   // Apply Button Functions
