@@ -25,10 +25,10 @@ EXTRA_INCDIR=$(ROOT)/include/packages
 # const char* codebase_version = "0.0.5";
 
 BUILD_DATE:=$(shell date "+%Y-%m-%d %H:%M:%S")
-GIT_BRANCH:=$(shell git rev-parse --abbrev-ref HEAD | sed 's/[)(\\\#]/_/g')
+GIT_BRANCH:="$(shell git rev-parse --abbrev-ref HEAD | sed 's/[)(\\\#]/_/g')"
 GIT_COMMIT:=$(shell git rev-parse HEAD)
 COMPILER_VERSION:=arm-none-eabi_10.3-2021.10_release
-BUILD_ENVIRONMENT:=$(shell uname -a | sed 's/[)(\\\#]/_/g')
+BUILD_ENVIRONMENT:="$(shell uname -a | sed 's/[)(\\\#]/_/g')"
 BUILD_NUMBER:=$(shell cat $(SRCDIR)/AutonomousSelector/BuildInfo/build_number.txt)
 $(shell echo $$(($(BUILD_NUMBER) + 1)) > $(SRCDIR)/AutonomousSelector/BuildInfo/build_number.txt)
 DEVELOPER_NAME:=ABUCKY0
