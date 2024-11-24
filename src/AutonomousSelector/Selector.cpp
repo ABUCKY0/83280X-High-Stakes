@@ -645,7 +645,7 @@ void task_updvar(void *param) {
       drivetrain_left_b_temp = -1;
 
     drivetrain_left_lift_temp =
-        pros::c::motor_get_temperature(MOTOR_PORT_LEFT_LIFT) * 1.8 + 32;
+        pros::c::motor_get_temperature(MOTOR_PORT_THINGY) * 1.8 + 32;
     if (drivetrain_left_lift_temp == PROS_ERR_F)
       drivetrain_left_lift_temp = -1;
 
@@ -660,7 +660,7 @@ void task_updvar(void *param) {
       drivetrain_right_b_temp = -1;
 
     drivetrain_right_lift_temp =
-        pros::c::motor_get_temperature(MOTOR_PORT_RIGHT_LIFT) * 1.8 + 32;
+        pros::c::motor_get_temperature(MOTOR_PORT_THINGY) * 1.8 + 32;
     if (drivetrain_right_lift_temp == PROS_ERR_F)
       drivetrain_right_lift_temp = -1;
 
@@ -668,8 +668,7 @@ void task_updvar(void *param) {
     if (intake1_temp == PROS_ERR_F)
       intake1_temp = -1;
 
-    intake2_temp =
-        pros::c::motor_get_temperature(MOTOR_PORT_LEFT_LIFT) * 1.8 + 32;
+    intake2_temp = pros::c::motor_get_temperature(MOTOR_PORT_THINGY) * 1.8 + 32;
     if (intake2_temp == PROS_ERR_F)
       intake2_temp = -1;
 

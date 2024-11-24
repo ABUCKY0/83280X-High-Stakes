@@ -9,6 +9,8 @@
 #include "Subsystems/Intake/Intake.hpp"
 #include "Subsystems/MobileGoalGrabber.hpp"
 
+#include "VexboxController/VexboxController.hpp"
+
 // pros::MotorGroup left_drive({1, 2, 3}, pros::MotorGears::blue);
 // pros::MotorGroup right_drive({4, 5, 6}, pros::MotorGears::blue);
 
@@ -24,8 +26,8 @@ class Drivetrain {
   pros::MotorGroup rightDrive;
   LCHS::Intake intake;
   LCHS::MobileGoalGrabber mogoGrabber;
-  pros::Controller master{E_CONTROLLER_MASTER};
-
+  //pros::Controller master{E_CONTROLLER_MASTER};
+  VexboxController master{E_CONTROLLER_MASTER};
  public:
   [[deprecated("Use Drivetrain(std::initializer_list<std::int8_t> leftDrivePorts, std::initializer_list<std::int8_t> rightDrivePorts) instead")]]
   Drivetrain() = delete;

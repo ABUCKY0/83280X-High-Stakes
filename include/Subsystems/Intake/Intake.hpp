@@ -20,11 +20,10 @@ enum class IntakeSpeedPresets { IN, OUT, SLOW_IN, SLOW_OUT, STOP };
 class Intake {
  public:
   pros::MotorGroup intakeMotors;
-  pros::MotorGroup liftMotors;
   pros::adi::Pneumatics ptoLeft;
   pros::adi::Pneumatics ptoRight;
-  pros::Rotation liftPosition;
-  LCHS::IntakePID liftPID;
+  // pros::Rotation liftPosition;
+  // LCHS::IntakePID liftPID;
   // LCHS::PTOState ptoState = LCHS::PTOState::LIFT;
   std::atomic<LCHS::PTOState> ptoState = LCHS::PTOState::LIFT;
   std::atomic<LCHS::LIFTPositionPresets> liftPositionPreset =
@@ -52,7 +51,6 @@ class Intake {
    * @see pros::MotorGroup
    */
   Intake(std::initializer_list<std::int8_t> motors,
-         std::initializer_list<std::int8_t> liftmotors,
          std::uint8_t pneumaticLeft, std::uint8_t pneumaticRight,
          const std::int8_t rotationPort);
 
@@ -74,14 +72,14 @@ class Intake {
    * @param speed Speed to move the lift motors at (127 to -127)
    * @note This function does not verify bounds of the lift. This should be done by the caller.
    */
-  void moveLift(int32_t speed);
+  // void moveLift(int32_t speed);
 
   /**
    * @brief Move the lift to a preset position
    *
    * @param preset The preset to move the lift to
    */
-  void moveLiftPreset(LCHS::LIFTPositionPresets preset);
+  // void moveLiftPreset(LCHS::LIFTPositionPresets preset);
 
   /**
    * @brief Is the lift at the top?
@@ -89,7 +87,7 @@ class Intake {
    * @return true If the lift is at the top
    * @return false If the lift is not at the top
    */
-  bool isLiftAtTop();
+  // bool isLiftAtTop();
 
   /**
    * @brief Is the lift at the bottom?
@@ -97,7 +95,7 @@ class Intake {
    * @return true If the lift is at the bottom
    * @return false If the lift is not at the bottom
    */
-  bool isLiftAtBottom();
+  // bool isLiftAtBottom();
 
   /**
    * @brief Set the Intake Speed object
@@ -125,7 +123,7 @@ class Intake {
    * 
    * @return double The position of the lift
    */
-  LCHS::PTOState getPTOState();
+  // LCHS::PTOState getPTOState();
 
   /**
    * @brief Update the intake subsystem 
@@ -137,13 +135,13 @@ class Intake {
    * @brief Reset the PID controller
    * 
    */
-  void resetPID();
+  // void resetPID();
 
   /**
    * @brief Brake the lift motors
    * 
    */
-  void brakeLift();
+  // void brakeLift();
 };
 };  // namespace LCHS
 #endif
