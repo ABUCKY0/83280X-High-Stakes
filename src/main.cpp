@@ -101,6 +101,9 @@ LCHS::Drivetrain drivetrain({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B, MOTOR_PORT_LE
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+  // disable cobs
+  pros::c::serctl(SERCTL_DISABLE_COBS, NULL);
+
 #if USE_UI == 1
   cout << "[MAIN] (INFO): [UI_INIT] Marble UI\n";
   cout << "Running Marble UI\n";
