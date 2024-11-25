@@ -66,12 +66,12 @@ extern lv_obj_t *skillsscr;
     // ? LEFT
 #define MOTOR_PORT_LEFT_A               11
 #define MOTOR_PORT_LEFT_B               12
-#define MOTOR_PORT_LEFT_C               13
+#define MOTOR_PORT_LEFT_C               -13
 
     // ? RIGHT
 #define MOTOR_PORT_RIGHT_A              1
 #define MOTOR_PORT_RIGHT_B              2
-#define MOTOR_PORT_RIGHT_C              3
+#define MOTOR_PORT_RIGHT_C              -3
 
 // * INTAKE
 #define MOTOR_PORT_INTAKE               -4
