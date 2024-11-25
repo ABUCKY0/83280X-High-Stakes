@@ -18,9 +18,7 @@ LCHS::Drivetrain::Drivetrain(
     leftDrive(leftDrivePorts),
     rightDrive(rightDrivePorts),
     intake({MOTOR_PORT_INTAKE}),
-    mogoGrabber(PNEUMATIC_PORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH) {
-
-    }
+    mogoGrabber(PNEUMATIC_PORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH) {}
 
 void LCHS::Drivetrain::move(std::int32_t voltageLeft,
                             std::int32_t voltageRight) {
@@ -78,5 +76,15 @@ void LCHS::Drivetrain::driverControl() {
 
   move(leftVoltage, rightVoltage);
 
-  bool isLiftMoving = false;
+  if (master.get_digital(CONTROL_BUTTON_INTAKE_IN)) {
+    intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::IN);
+  } else if (master.get_digital(CONTROL_BUTTON_INTAKE_OUT)) {
+    intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::OUT);
+  } else {
+    intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::STOP);
+  }
+
+  if (master.get_digital(CONTROL_BUTTON_MOGO_TOGGLE)) {
+    mogoGrabber.toggle();
+  }
 }
