@@ -24,11 +24,9 @@ LCHS::Drivetrain::Drivetrain(
 
 void LCHS::Drivetrain::move(std::int32_t voltageLeft,
                             std::int32_t voltageRight) {
-                              std::cout << to_string(voltageLeft) << " " << to_string(voltageRight) << std::endl;
-  leftDrive.move_voltage(voltageLeft);
-  rightDrive.move_voltage(voltageRight);
-  std::cout << leftDrive.get_target_velocity() << " " << rightDrive.get_target_velocity() << std::endl;
-                            }
+  leftDrive.move(voltageLeft);
+  rightDrive.move(voltageRight);
+}
 
 void LCHS::Drivetrain::move_absolute(const double positionLeft,
                                      const double positionRight,
