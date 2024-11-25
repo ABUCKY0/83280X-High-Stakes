@@ -57,13 +57,26 @@ void LCHS::Drivetrain::brake() {
 
 void LCHS::Drivetrain::driverControl() {
 
-  // Get the voltage from the controller
-  std::int32_t leftVoltage = -master.get_analog(CONTROL_AXIS_LEFT_DRIVE);
-  std::int32_t rightVoltage = master.get_analog(CONTROL_AXIS_RIGHT_DRIVE);
+  std::int32_t leftVoltage = master.get_analog(CONTROL_AXIS_LEFT_DRIVE);
+  std::int32_t rightVoltage = -master.get_analog(CONTROL_AXIS_RIGHT_DRIVE);
 
-  // Set the voltage for the drivetrain
-  //move(leftVoltage, rightVoltage);
-  move_velocity(leftVoltage, rightVoltage);
+  // Deadzone between -5 and 5
+  if (leftVoltage > -10 && leftVoltage < 10) {
+    leftVoltage = 0;
+  }
+  if (rightVoltage > -10 && rightVoltage < 10) {
+    rightVoltage = 0;
+  }
+
+  // Deadzone above 124 and below -124
+  if (leftVoltage > 124) {
+    leftVoltage = 127;
+  }
+  if (leftVoltage < -124) {
+    leftVoltage = -127;
+  }
+
+  move(leftVoltage, rightVoltage);
 
   bool isLiftMoving = false;
 }
