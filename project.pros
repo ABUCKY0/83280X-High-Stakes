@@ -47,6 +47,24 @@
                 "user_files": [],
                 "version": "0.5.2"
             },
+            "VexboxController": {
+                "location": "C:\\Users\\buckn\\AppData\\Roaming\\PROS\\templates\\VexboxController@0.0.5",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "VexboxController",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^4.1.1",
+                "system_files": [
+                    "py\\controller.py",
+                    "include\\VexboxController\\VexboxController.hpp",
+                    "py\\mapping.py",
+                    "firmware\\VexboxController.a"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "0.0.5"
+            },
             "kernel": {
                 "location": "C:\\Users\\buckn\\AppData\\Roaming\\PROS\\templates\\kernel@4.1.1",
                 "metadata": {
