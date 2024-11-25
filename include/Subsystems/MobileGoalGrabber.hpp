@@ -17,6 +17,8 @@ public:
     
     void grab();
     void release();
+    void toggle();
+    bool getState();
     void mobileGoalTaskFunction();
     static void taskEntry(void* thisPtr);
 };

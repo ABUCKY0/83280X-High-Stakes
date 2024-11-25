@@ -12,6 +12,14 @@ void LCHS::MobileGoalGrabber::release() {
   piston.set_value(false); // Assuming false releases the mobile goal
 }
 
+void LCHS::MobileGoalGrabber::toggle() {
+  piston.set_value(!piston.is_extended());
+}
+
+bool LCHS::MobileGoalGrabber::getState() {
+  return piston.is_extended();
+}
+
 void LCHS::MobileGoalGrabber::mobileGoalTaskFunction() {
   // Task function logic here
   while (true) {
