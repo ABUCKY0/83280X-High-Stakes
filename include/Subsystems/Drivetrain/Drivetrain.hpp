@@ -1,4 +1,5 @@
 #pragma once
+#include "VexboxController/VexboxController.hpp"
 #include "main.h"
 #include "pros/abstract_motor.hpp"
 #include "pros/misc.hpp"
@@ -24,8 +25,8 @@ class Drivetrain {
   pros::MotorGroup rightDrive;
   LCHS::Intake intake;
   LCHS::MobileGoalGrabber mogoGrabber;
-  pros::Controller master{E_CONTROLLER_MASTER};
-
+  // pros::Controller master{E_CONTROLLER_MASTER};
+  VexboxController master{E_CONTROLLER_MASTER};
  public:
   [[deprecated("Use Drivetrain(std::initializer_list<std::int8_t> leftDrivePorts, std::initializer_list<std::int8_t> rightDrivePorts) instead")]]
   Drivetrain() = delete;
