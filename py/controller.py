@@ -32,16 +32,7 @@ def connect_serial(port_name, retries=5, delay=2):
             print(f"Failed to connect to {port_name}: {e}")
             time.sleep(delay)
     print(f"Failed to connect to {port_name} after {retries} attempts")
-    return None
-
-def read_console(ser):
-    buffer = ""
-    while True:
-        if ser and ser.is_open and ser.in_waiting > 0:
-            buffer += ser.read(ser.in_waiting).decode('utf-8')
-            while '\n' in buffer:
-                line, buffer = buffer.split('\n', 1)
-                print(line.strip())
+    return None      
 
 def initialize_controller():
     pygame.joystick.quit()
@@ -55,6 +46,24 @@ def initialize_controller():
     print(f"Number of axes: {joystick.get_numaxes()}")
     print(f"Number of buttons: {joystick.get_numbuttons()}")
     return joystick
+def read_console(ser, stop_event):
+    buffer = ""
+    while not stop_event.is_set():
+        try:
+            if ser and ser.is_open and ser.in_waiting > 0:
+                buffer += ser.read(ser.in_waiting).decode('utf-8')
+                while '\n' in buffer:
+                    line, buffer = buffer.split('\n', 1)
+                    print(line.strip())
+        except SerialException as e:
+            print(f"Serial exception in read_console: {e}")
+            break
+        except Exception as e:
+            print(f"Unexpected exception in read_console: {e}")
+            break
+        if not ser or not ser.is_open:
+            print("Serial connection closed in read_console")
+            break
 
 def main():
     port_name = find_vex_v5_port()
@@ -71,7 +80,8 @@ def main():
         time.sleep(1)
         joystick = initialize_controller()
     
-    console_thread = threading.Thread(target=read_console, args=(ser,))
+    stop_event = threading.Event()
+    console_thread = threading.Thread(target=read_console, args=(ser, stop_event))
     console_thread.daemon = True
     console_thread.start()
     
@@ -132,10 +142,16 @@ def main():
                 print(f"Serial exception: {se}. Attempting to reconnect...")
                 # keep attempting to reconnect
                 ser.close()
+                stop_event.set()
                 ser = connect_serial(find_vex_v5_port())
                 while (ser is None) or (not ser.is_open):
                     ser = connect_serial(find_vex_v5_port())
                     time.sleep(1)
+                # Now restart read_console thread
+                stop_event.clear()
+                console_thread = threading.Thread(target=read_console, args=(ser, stop_event))
+                console_thread.daemon = True
+                console_thread.start()
             except pygame.error as pe:
                 print(f"Pygame error: {pe}")
                 # keep attempting to reconnect
@@ -154,6 +170,7 @@ def main():
         pygame.quit()
         if ser and ser.is_open:
             ser.close()
+        stop_event.set()
 
 if __name__ == "__main__":
     main()

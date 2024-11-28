@@ -3,12 +3,11 @@
 // //#include "Drivetrain/Drivetrain.hpp"
 #include <atomic>
 // // #include "lemlib/pid.hpp"
-#include "main.h"  // IWYU pragma: keep
 #include "Subsystems/Intake/IntakePID.hpp"
+#include "main.h"  // IWYU pragma: keep
+
 
 namespace LCHS {
-enum class PTOState { DRIVETRAIN, LIFT };
-enum class LIFTPositionPresets { MAX, MIN, WALL, ALLIANCE, E_STOP };
 enum class IntakeSpeedPresets { IN, OUT, SLOW_IN, SLOW_OUT, STOP };
 
 /**
@@ -20,18 +19,6 @@ enum class IntakeSpeedPresets { IN, OUT, SLOW_IN, SLOW_OUT, STOP };
 class Intake {
  public:
   pros::MotorGroup intakeMotors;
-  pros::MotorGroup liftMotors;
-  pros::adi::Pneumatics ptoLeft;
-  pros::adi::Pneumatics ptoRight;
-  pros::Rotation liftPosition;
-  LCHS::IntakePID liftPID;
-  // LCHS::PTOState ptoState = LCHS::PTOState::LIFT;
-  std::atomic<LCHS::PTOState> ptoState = LCHS::PTOState::LIFT;
-  std::atomic<LCHS::LIFTPositionPresets> liftPositionPreset =
-      LCHS::LIFTPositionPresets::MIN;
-  std::atomic_bool ptoLock = false;
-
-  //lemlib::PID liftPID;
 
  public:
   /**
@@ -45,59 +32,10 @@ class Intake {
    * Creates a new instance of the intake subsystem.
    * @param motors The ports of the intake motors, named motors to prevent
    * collision with the actual MotorGroup, liftMotors
-   * @param liftmotors The ports of the lift motors
-   * @param pneumaticLeft The port of the left PTO
-   * @param pneumaticRight The port of the right PTO
    * @param rotationPort The port of the rotation sensor
    * @see pros::MotorGroup
    */
-  Intake(std::initializer_list<std::int8_t> motors,
-         std::initializer_list<std::int8_t> liftmotors,
-         std::uint8_t pneumaticLeft, std::uint8_t pneumaticRight,
-         const std::int8_t rotationPort);
-
-  /**
-   * @brief Release the PTOs and set the lift motors to coast
-   * Sets the PTOs to the extended position and sets the lift motors to coast
-   */
-  void pto_take();
-
-  /**
-   * @brief Retract the PTOs and set the lift motors to hold
-   * Sets the PTOs to the retracted position and sets the lift motors to hold
-   */
-  void pto_release();
-
-  /**
-   * @brief Moves lift motors at a given speed
-   *
-   * @param speed Speed to move the lift motors at (127 to -127)
-   * @note This function does not verify bounds of the lift. This should be done by the caller.
-   */
-  void moveLift(int32_t speed);
-
-  /**
-   * @brief Move the lift to a preset position
-   *
-   * @param preset The preset to move the lift to
-   */
-  void moveLiftPreset(LCHS::LIFTPositionPresets preset);
-
-  /**
-   * @brief Is the lift at the top?
-   * 
-   * @return true If the lift is at the top
-   * @return false If the lift is not at the top
-   */
-  bool isLiftAtTop();
-
-  /**
-   * @brief Is the lift at the bottom?
-   * 
-   * @return true If the lift is at the bottom
-   * @return false If the lift is not at the bottom
-   */
-  bool isLiftAtBottom();
+  Intake(std::initializer_list<std::int8_t> motors);
 
   /**
    * @brief Set the Intake Speed object
@@ -125,7 +63,7 @@ class Intake {
    * 
    * @return double The position of the lift
    */
-  LCHS::PTOState getPTOState();
+  // LCHS::PTOState getPTOState();
 
   /**
    * @brief Update the intake subsystem 
@@ -133,17 +71,6 @@ class Intake {
    */
   void update();
 
-  /**
-   * @brief Reset the PID controller
-   * 
-   */
-  void resetPID();
-
-  /**
-   * @brief Brake the lift motors
-   * 
-   */
-  void brakeLift();
 };
 };  // namespace LCHS
 #endif
