@@ -15,7 +15,10 @@ temp.log
 temp.errors
 *.ini
 .d/
-
+# ignore vexlog
+vexlog*.zip
+lemlib*.zip
+.VSCodeCounter/*
 */__pycache__/*
 *.pyc
 *.zip

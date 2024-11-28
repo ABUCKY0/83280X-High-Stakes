@@ -1,5 +1,5 @@
-#ifndef MARBLE_UI_H
-#define MARBLE_UI_H
+#ifndef SELECTOR_H
+#define SELECTOR_H
 
 #include "Constants.hpp"
 #include "main.h" // IWYU pragma: keep
@@ -18,4 +18,4 @@ void task_updui(void *param);
 void task_updvar(void *param);
 extern int estpsi;
 
-#endif // MARBLE_UI_H
+#endif // SELECTOR_H
