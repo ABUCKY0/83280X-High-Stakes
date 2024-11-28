@@ -25,6 +25,14 @@ lv_style_t box_red;
 lv_style_t box_yellow;
 lv_style_t box_midnightblue;
 
+lv_style_t box_color_temp_normal;
+lv_style_t box_color_temp_warning;
+lv_style_t box_color_temp_level1;
+lv_style_t box_color_temp_level2;
+lv_style_t box_color_temp_level3;
+lv_style_t box_color_temp_level4;
+lv_style_t box_color_temp_error;
+
 lv_font_t font_small_text_labels;
 lv_font_t font_large_text_labels;
 lv_font_t font_mid_text_labels;
@@ -52,20 +60,22 @@ void initStyles() {
   style_bg.body.grad_color = LV_COLOR_MAKE(0x1f, 0x28, 0x2f);
 
   lv_style_copy(&style_btn, &lv_style_plain);
-  style_btn.body.main_color = LV_COLOR_MAKE(0x4c, 0x7b, 0x59); // 4c7b59
-  style_btn.body.grad_color = LV_COLOR_MAKE(0x4c, 0x7b, 0x59); // 4c7b59
+  style_btn.body.main_color = LV_COLOR_MAKE(0x4c, 0x7b, 0x59);  // 4c7b59
+  style_btn.body.grad_color = LV_COLOR_MAKE(0x4c, 0x7b, 0x59);  // 4c7b59
   style_btn.body.radius = 8;
   style_btn.text.font = &font_btn_text;
   style_btn.text.letter_space = .5;
   style_btn.text.color = LV_COLOR_BLACK;
 
   lv_style_copy(&style_btn_selected, &lv_style_plain);
-  style_btn_selected.body.main_color = LV_COLOR_MAKE(0x2b, 0x47, 0x21); // 0x2b4721
-  style_btn_selected.body.grad_color = LV_COLOR_MAKE(0x2b, 0x47, 0x21); // 0x2b4721
+  style_btn_selected.body.main_color =
+      LV_COLOR_MAKE(0x2b, 0x47, 0x21);  // 0x2b4721
+  style_btn_selected.body.grad_color =
+      LV_COLOR_MAKE(0x2b, 0x47, 0x21);  // 0x2b4721
   style_btn_selected.body.radius = 8;
   style_btn_selected.text.font = &font_btn_text;
   style_btn_selected.text.letter_space = .5;
-  style_btn_selected.text.color = LV_COLOR_BLACK; 
+  style_btn_selected.text.color = LV_COLOR_BLACK;
 
   lv_style_copy(&style_confirmbtn, &lv_style_plain);
   style_confirmbtn.body.main_color = LV_COLOR_MAKE(0xa9, 0x95, 0x6a);  //a9956a
@@ -73,7 +83,7 @@ void initStyles() {
   style_confirmbtn.body.radius = 8;
   style_confirmbtn.text.font = &font_confirmbtn_text;
   style_confirmbtn.text.letter_space = .5;
-  style_confirmbtn.text.color = LV_COLOR_MAKE(0x5a, 0x3a, 0x18); // 0x5a3a18
+  style_confirmbtn.text.color = LV_COLOR_MAKE(0x5a, 0x3a, 0x18);  // 0x5a3a18
 
   lv_style_copy(&style_confirmbtn_selected, &lv_style_plain);
   style_confirmbtn_selected.body.main_color = LV_COLOR_MAKE(0x5a, 0x3a, 0x18);
@@ -81,7 +91,8 @@ void initStyles() {
   style_confirmbtn_selected.body.radius = 8;
   style_confirmbtn_selected.text.font = &font_confirmbtn_text;
   style_confirmbtn_selected.text.letter_space = .5;
-  style_confirmbtn_selected.text.color = LV_COLOR_MAKE(0xa9, 0x95, 0x6a);  //a9956a;
+  style_confirmbtn_selected.text.color =
+      LV_COLOR_MAKE(0xa9, 0x95, 0x6a);  //a9956a;
 
   lv_style_copy(&style_teamname, &lv_style_plain);
   style_teamname.text.font = &font_team_name_text;
@@ -134,7 +145,7 @@ void initStyles() {
 
   lv_style_copy(&style_buildtext, &lv_style_plain);
   style_buildtext.text.font = &font_small_text_labels;
-  style_buildtext.text.color = LV_COLOR_MAKE(0x25, 0x43, 0x3c); // 0x25433c
+  style_buildtext.text.color = LV_COLOR_MAKE(0x25, 0x43, 0x3c);  // 0x25433c
 
   bg_image = christmasCookieBackground;
   big_image = christmasTree;
@@ -162,5 +173,47 @@ void initStyles() {
       LV_COLOR_MAKE(0x1f, 0x28, 0x2f);  // #1f282f
   box_midnightblue.body.grad_color =
       LV_COLOR_MAKE(0x1f, 0x28, 0x2f);  // #1f282f
+
+  /*
+  Normal (<45°C): Green
+Warning (45°C to 55°C): Yellow
+L1 (55°C to 60°C): Orange
+L2 (60°C to 65°C): Amber (a deep yellow-orange)
+L3 (65°C to 70°C): Magenta (vivid pink-purple)
+L4 (>70°C): Violet (a strong purple)
+ */
+  // Normal is the same as box_green
+  lv_style_copy(&box_color_temp_normal, &box_green);
+  // warning is the same as box_yellow
+  lv_style_copy(&box_color_temp_warning, &box_yellow);
+  // L1 is orange
+  lv_style_copy(&box_color_temp_level1, &style_box);
+  box_color_temp_level1.body.main_color =
+      LV_COLOR_MAKE(0xFF, 0xA5, 0x00);  // #FFA500
+  box_color_temp_level1.body.grad_color =
+      LV_COLOR_MAKE(0xFF, 0xA5, 0x00);  // #FFA500
+  // L2 is light red
+  lv_style_copy(&box_color_temp_level2, &style_box);
+  box_color_temp_level2.body.main_color =
+      LV_COLOR_MAKE(0xFF, 0x00, 0x00);  // #FF0000
+  box_color_temp_level2.body.grad_color =
+      LV_COLOR_MAKE(0xFF, 0x00, 0x00);  // #FF0000
+  // L3 is magenta
+  lv_style_copy(&box_color_temp_level3, &style_box);
+  box_color_temp_level3.body.main_color =
+      LV_COLOR_MAKE(0xFF, 0x00, 0xFF);  //rgb(255, 0, 255)
+  box_color_temp_level3.body.grad_color =
+      LV_COLOR_MAKE(0xFF, 0x00, 0xFF);  // #FF00FF
+  // L4 is violet
+  lv_style_copy(&box_color_temp_level4, &style_box);
+  box_color_temp_level4.body.main_color =
+      LV_COLOR_MAKE(0x8A, 0x2B, 0xE2);  // #8A2BE2
+  box_color_temp_level4.body.grad_color =
+      LV_COLOR_MAKE(0x8A, 0x2B, 0xE2);  // #8A2BE2
+
+  // Error is black
+  lv_style_copy(&box_color_temp_error, &style_box);
+  box_color_temp_error.body.main_color = LV_COLOR_BLACK;
+  box_color_temp_error.body.grad_color = LV_COLOR_BLACK;
 }
 }  // namespace ChristmasStyles

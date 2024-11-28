@@ -34,6 +34,13 @@ extern lv_font_t font_roller_text;
 extern lv_img_dsc_t big_image;
 extern lv_img_dsc_t small_image;
 extern lv_img_dsc_t bg_image;
+extern lv_style_t box_color_temp_normal;
+extern lv_style_t box_color_temp_warning;
+extern lv_style_t box_color_temp_level1;
+extern lv_style_t box_color_temp_level2;
+extern lv_style_t box_color_temp_level3;
+extern lv_style_t box_color_temp_level4;
+extern lv_style_t box_color_temp_error;
 void initStyles();
 }  // namespace HelloKittyStyles
 

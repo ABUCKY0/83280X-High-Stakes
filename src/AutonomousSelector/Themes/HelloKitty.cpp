@@ -25,6 +25,14 @@ lv_style_t box_red;
 lv_style_t box_yellow;
 lv_style_t box_midnightblue;
 
+lv_style_t box_color_temp_normal;
+lv_style_t box_color_temp_warning;
+lv_style_t box_color_temp_level1;
+lv_style_t box_color_temp_level2;
+lv_style_t box_color_temp_level3;
+lv_style_t box_color_temp_level4;
+lv_style_t box_color_temp_error;
+
 lv_font_t font_small_text_labels;
 lv_font_t font_large_text_labels;
 lv_font_t font_mid_text_labels;
@@ -174,5 +182,47 @@ void initStyles() {
       LV_COLOR_MAKE(0x1f, 0x28, 0x2f);  // #1f282f
   box_midnightblue.body.grad_color =
       LV_COLOR_MAKE(0x1f, 0x28, 0x2f);  // #1f282f
+
+  /*
+  Normal (<45°C): Green
+Warning (45°C to 55°C): Yellow
+L1 (55°C to 60°C): Orange
+L2 (60°C to 65°C): Amber (a deep yellow-orange)
+L3 (65°C to 70°C): Magenta (vivid pink-purple)
+L4 (>70°C): Violet (a strong purple)
+ */
+  // Normal is the same as box_green
+  lv_style_copy(&box_color_temp_normal, &box_green);
+  // warning is the same as box_yellow
+  lv_style_copy(&box_color_temp_warning, &box_yellow);
+  // L1 is orange
+  lv_style_copy(&box_color_temp_level1, &style_box);
+  box_color_temp_level1.body.main_color =
+      LV_COLOR_MAKE(0xFF, 0xA5, 0x00);  // #FFA500
+  box_color_temp_level1.body.grad_color =
+      LV_COLOR_MAKE(0xFF, 0xA5, 0x00);  // #FFA500
+  // L2 is light red
+  lv_style_copy(&box_color_temp_level2, &style_box);
+  box_color_temp_level2.body.main_color =
+      LV_COLOR_MAKE(0xFF, 0x00, 0x00);  // #FF0000
+  box_color_temp_level2.body.grad_color =
+      LV_COLOR_MAKE(0xFF, 0x00, 0x00);  // #FF0000
+  // L3 is magenta
+  lv_style_copy(&box_color_temp_level3, &style_box);
+  box_color_temp_level3.body.main_color =
+      LV_COLOR_MAKE(0xFF, 0x00, 0xFF);  //rgb(255, 0, 255)
+  box_color_temp_level3.body.grad_color =
+      LV_COLOR_MAKE(0xFF, 0x00, 0xFF);  // #FF00FF
+  // L4 is violet
+  lv_style_copy(&box_color_temp_level4, &style_box);
+  box_color_temp_level4.body.main_color =
+      LV_COLOR_MAKE(0x8A, 0x2B, 0xE2);  // #8A2BE2
+  box_color_temp_level4.body.grad_color =
+      LV_COLOR_MAKE(0x8A, 0x2B, 0xE2);  // #8A2BE2
+
+  // Error is black
+  lv_style_copy(&box_color_temp_error, &style_box);
+  box_color_temp_error.body.main_color = LV_COLOR_BLACK;
+  box_color_temp_error.body.grad_color = LV_COLOR_BLACK;
 }
 }  // namespace HelloKittyStyles
