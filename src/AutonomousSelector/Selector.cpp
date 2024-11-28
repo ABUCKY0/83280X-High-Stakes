@@ -855,8 +855,8 @@ void init_marble_ui() {
   lv_imgbtn_set_src(switchscr_btn_marble, LV_BTN_STATE_PR, &redMarbleButton);
   lv_btn_set_action(switchscr_btn_marble, LV_BTN_ACTION_CLICK, m_btn_set_theme_marble);
 
-  lv_obj_t* switchscr_btn_nick = createImgBtn(switchscr, 204, 66, 7, &batmanButton);
-  lv_imgbtn_set_src(switchscr_btn_nick, LV_BTN_STATE_PR, &batmanButton);
+  lv_obj_t* switchscr_btn_nick = createImgBtn(switchscr, 204, 66, 7, &nicksthemeicon);
+  lv_imgbtn_set_src(switchscr_btn_nick, LV_BTN_STATE_PR, &nicksthemeicon);
   lv_btn_set_action(switchscr_btn_nick, LV_BTN_ACTION_CLICK,
                     m_btn_set_theme_nick);
 
@@ -868,9 +868,9 @@ void init_marble_ui() {
   lv_imgbtn_set_src(switchscr_btn_christmas, LV_BTN_STATE_PR, &ChristmasButton);
   lv_btn_set_action(switchscr_btn_christmas, LV_BTN_ACTION_CLICK, m_btn_set_theme_christmas);
 
-  lv_obj_t* switchscr_btn_thanksgiving = createImgBtn(switchscr, 204, 148, 10, &ThanksgivingButton);
-  lv_imgbtn_set_src(switchscr_btn_thanksgiving, LV_BTN_STATE_PR, &ThanksgivingButton);
-  lv_btn_set_action(switchscr_btn_thanksgiving, LV_BTN_ACTION_CLICK, m_btn_set_theme_thanksgiving);
+  // lv_obj_t* switchscr_btn_thanksgiving = createImgBtn(switchscr, 204, 148, 10, &ThanksgivingButton);
+  // lv_imgbtn_set_src(switchscr_btn_thanksgiving, LV_BTN_STATE_PR, &ThanksgivingButton);
+  // lv_btn_set_action(switchscr_btn_thanksgiving, LV_BTN_ACTION_CLICK, m_btn_set_theme_thanksgiving);
 
 
 

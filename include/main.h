@@ -161,5 +161,6 @@ LV_IMG_DECLARE(christmasTree);
 LV_IMG_DECLARE(minitree);
 
 LV_IMG_DECLARE(nickBackground);
+LV_IMG_DECLARE(nicksthemeicon);
 
 #endif // _PROS_MAIN_H_
