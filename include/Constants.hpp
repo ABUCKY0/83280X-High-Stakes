@@ -31,10 +31,10 @@ extern lv_obj_t *skillsscr;
 # 1: [X] MOTOR_PORT_LEFT_A
 # 2: [X] MOTOR_PORT_LEFT_B
 # 3: [X] MOTOR_PORT_LEFT_C
-# 4: [x] MOTOR_PORT_INTAKE
-  5: [ ]
-# 6: [X] SENSOR_PORT_IMU
-# 7: [X] ADI_EXPANDER_PNEUMATICS
+# 4: [X] SENSOR_PORT_IMU
+# 5: [X] ADI_EXPANDER_PNEUMATICS
+  6: [ ]
+  7: [ ]
   8: [ ]
   9: [ ] 
  10: [ ] 
@@ -42,7 +42,7 @@ extern lv_obj_t *skillsscr;
 #12: [X] MOTOR_PORT_RIGHT_B
 #13: [X] MOTOR_PORT_RIGHT_C
 #14: [X] MOTOR_PORT_FISHMECH
- 15: [ ]
+#15: [X] MOTOR_PORT_INTAKE
 !16: [-] ADIEXPANDER_LEDSTRIP_PORT // Future Use
 !17: [-] MOTOR_PORT_UNUSED // Reserved to use in place of actual motors in the auton selector
  18: [ ] 
@@ -64,17 +64,17 @@ extern lv_obj_t *skillsscr;
 // ! MOTORS
 // * DRIVETRAIN
     // ? LEFT
-#define MOTOR_PORT_LEFT_A               11
-#define MOTOR_PORT_LEFT_B               12
-#define MOTOR_PORT_LEFT_C               -13
+#define MOTOR_PORT_LEFT_A               -1
+#define MOTOR_PORT_LEFT_B               2
+#define MOTOR_PORT_LEFT_C               3
 
     // ? RIGHT
-#define MOTOR_PORT_RIGHT_A              1
-#define MOTOR_PORT_RIGHT_B              2
-#define MOTOR_PORT_RIGHT_C              -3
+#define MOTOR_PORT_RIGHT_A              -11
+#define MOTOR_PORT_RIGHT_B              12
+#define MOTOR_PORT_RIGHT_C              13
 
 // * INTAKE
-#define MOTOR_PORT_INTAKE               -4
+#define MOTOR_PORT_INTAKE               -15
 
 // * Fish Mech
 #define MOTOR_PORT_FISHMECH             14
@@ -88,14 +88,16 @@ extern lv_obj_t *skillsscr;
 
 
 // ! SENSORS
-#define SENSOR_PORT_IMU                 8
+#define SENSOR_PORT_IMU                 4
 #define SENSOR_PORT_MOGO_LIMIT_SWITCH   17
-#define SENSOR_PORT_OPTICAL_COLOR       15
+#define SENSOR_PORT_OPTICAL_COLOR       17//15
 
 // ! PNEUMATICS
-#define PNEUMATIC_PORT_MOBILE_GOAL      1 
-#define PNEUMATIC_PORT_PTO_LEFT         2
-#define PNEUMATIC_PORT_PTO_RIGHT        3
+#define PNEUMATIC_SMARTPORT_MOBILE_GOAL  5
+#define PNEUMATIC_ADIPORT_MOBILE_GOAL    'a'
+
+#define PNEUMATIC_SMARTPORT_SWEEPER      6
+#define PNEUMATIC_ADIPORT_SWEEPER        2
 
 // ! VEXNET
 #define GEN_PORT_VEXNET_PRIMARY         21
@@ -129,6 +131,17 @@ extern lv_obj_t *skillsscr;
 #define CONTROL_AXIS_RIGHT_DRIVE        E_CONTROLLER_ANALOG_RIGHT_Y
 
 #define CONTROL_BUTTON_MOGO_TOGGLE      E_CONTROLLER_DIGITAL_Y
+#define CONTROL_BUTTON_MOGO_RELEASE     E_CONTROLLER_DIGITAL_RIGHT
+#define CONTROL_BUTTON_MOGO_GRAB        E_CONTROLLER_DIGITAL_LEFT
+
+#define CONTROL_BUTTON_FISHMECH_UP      E_CONTROLLER_DIGITAL_UP
+#define CONTROL_BUTTON_FISHMECH_DOWN    E_CONTROLLER_DIGITAL_DOWN
+
+#define CONTROL_BUTTON_SWEEPER_TOGGLE   E_CONTROLLER_DIGITAL_L1
+#define CONTROL_BUTTON_SWEEPER_OUT      E_CONTROLLER_DIGITAL_L1
+#define CONTROL_BUTTON_SWEEPER_IN       E_CONTROLLER_DIGITAL_L2
+
+
 
 #define USE_LIFT_PRESETS               0
 

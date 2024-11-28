@@ -1,14 +1,22 @@
-#pragma once
-#include "VexboxController/VexboxController.hpp"
+#ifndef DRIVETRAIN_HPP
+#define DRIVETRAIN_HPP
+
+// !PROS
 #include "main.h"
 #include "pros/abstract_motor.hpp"
 #include "pros/misc.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/motors.h"
 
+// !LC SUBSYSTEMS
 #include "Constants.hpp"
 #include "Subsystems/Intake/Intake.hpp"
-#include "Subsystems/MobileGoalGrabber.hpp"
+#include "Subsystems/MogoMech/MobileGoalGrabber.hpp"
+#include "Subsystems/SweeperMech/Sweeper.hpp"
+#include "Subsystems/FishMech/FishMech.hpp"
+
+// !LIBRARIES
+#include "VexboxController/VexboxController.hpp"
 
 // pros::MotorGroup left_drive({1, 2, 3}, pros::MotorGears::blue);
 // pros::MotorGroup right_drive({4, 5, 6}, pros::MotorGears::blue);
@@ -21,14 +29,24 @@ namespace LCHS {
 // the drivetrain during autonomous
 class Drivetrain {
  private:
+  // Motors
   pros::MotorGroup leftDrive;
   pros::MotorGroup rightDrive;
+  
+  // Subsystems
   LCHS::Intake intake;
   LCHS::MobileGoalGrabber mogoGrabber;
+  LCHS::SweeperMech sweeperMech;
+  LCHS::FishMech fishMech;
+
+  // Controller
   // pros::Controller master{E_CONTROLLER_MASTER};
   VexboxController master{E_CONTROLLER_MASTER};
+
  public:
-  [[deprecated("Use Drivetrain(std::initializer_list<std::int8_t> leftDrivePorts, std::initializer_list<std::int8_t> rightDrivePorts) instead")]]
+  [[deprecated(
+      "Use Drivetrain(std::initializer_list<std::int8_t> leftDrivePorts, "
+      "std::initializer_list<std::int8_t> rightDrivePorts) instead")]]
   Drivetrain() = delete;
 
   /**
@@ -83,3 +101,4 @@ class Drivetrain {
   void driverControl();
 };
 };  // namespace LCHS
+#endif

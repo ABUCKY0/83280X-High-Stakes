@@ -1,9 +1,11 @@
 #include "Constants.hpp"
 #include "main.h"  // IWYU pragma: keep
 #include "pros/adi.hpp"
+#include "pros/ext_adi.h"
 #include "pros/motors.h"
 
 #include <atomic>
+#include <cerrno>
 #include <cstdint>
 #include <initializer_list>
 #include <iostream>
@@ -12,13 +14,23 @@
 #include <vector>
 #include "Subsystems/Drivetrain/Drivetrain.hpp"  // IWYU pragma: keep
 static bool reset = false;
+
+static inline const pros::adi::ext_adi_port_pair_t sweeperport = {
+    PNEUMATIC_SMARTPORT_SWEEPER, PNEUMATIC_ADIPORT_SWEEPER};
+static inline const pros::adi::ext_adi_port_pair_t mogoport = {
+    5, PNEUMATIC_ADIPORT_MOBILE_GOAL};
+
 LCHS::Drivetrain::Drivetrain(
     std::initializer_list<std::int8_t> leftDrivePorts,
     std::initializer_list<std::int8_t> rightDrivePorts) :
     leftDrive(leftDrivePorts),
     rightDrive(rightDrivePorts),
     intake({MOTOR_PORT_INTAKE}),
-    mogoGrabber(PNEUMATIC_PORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH) {}
+    mogoGrabber(PNEUMATIC_ADIPORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH),
+    fishMech({MOTOR_PORT_FISHMECH}),
+    sweeperMech(PNEUMATIC_ADIPORT_SWEEPER) {
+      
+    }
 
 void LCHS::Drivetrain::move(std::int32_t voltageLeft,
                             std::int32_t voltageRight) {
@@ -54,7 +66,7 @@ void LCHS::Drivetrain::brake() {
 }
 
 void LCHS::Drivetrain::driverControl() {
-
+  // # Movement
   std::int32_t leftVoltage = master.get_analog(CONTROL_AXIS_LEFT_DRIVE);
   std::int32_t rightVoltage = -master.get_analog(CONTROL_AXIS_RIGHT_DRIVE);
 
@@ -76,6 +88,7 @@ void LCHS::Drivetrain::driverControl() {
 
   move(leftVoltage, rightVoltage);
 
+  // # Intake
   if (master.get_digital(CONTROL_BUTTON_INTAKE_IN)) {
     intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::IN);
   } else if (master.get_digital(CONTROL_BUTTON_INTAKE_OUT)) {
@@ -84,7 +97,53 @@ void LCHS::Drivetrain::driverControl() {
     intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::STOP);
   }
 
-  if (master.get_digital(CONTROL_BUTTON_MOGO_TOGGLE)) {
+  // # MOGO
+  if (master.get_digital_new_press(CONTROL_BUTTON_MOGO_TOGGLE)) {
+    std::cout << "Toggling mogo\n" << std::flush;
     mogoGrabber.toggle();
+    // print state
+    std::cout << "Mogo state: " << mogoGrabber.getState() << std::endl;
   }
+
+  // if (master.get_digital_new_press(CONTROL_BUTTON_MOGO_RELEASE)) {
+  //   std::cout << "Toggling mogo\n" << std::flush;
+  //   //std::cout << mogoGrabber.grab() << std::endl;
+  //   // print state
+  //   //std::cout << "Mogo state: " << mogoGrabber.getState() << std::endl;
+  //   mogotwo.extend();
+  //   std::cout << errno << std::endl;
+  //   // pros::c::ext_adi_digital_write(5, 1, true);
+  // } else if (master.get_digital_new_press(CONTROL_BUTTON_MOGO_GRAB)) {
+  //   std::cout << "Toggling mogo\n" << std::flush;
+  //   //std::cout << mogoGrabber.release() << std::endl;
+  //   // print state
+  //   //std::cout << "Mogo state: " << mogoGrabber.getState() << std::endl;
+  //   mogotwo.retract();
+  //   std::cout << errno  << std::endl;
+  //   //pros::c::ext_adi_digital_write(5, 1, false);
+  // }
+
+  // # Sweeper
+  // if (master.get_digital(CONTROL_BUTTON_SWEEPER_OUT)) {
+  //   sweeperMech.swingout();
+  // } else if (master.get_digital(CONTROL_BUTTON_SWEEPER_IN)) {
+  //   sweeperMech.swingin();
+  // }
+  if (master.get_digital_new_press(CONTROL_BUTTON_SWEEPER_TOGGLE)) {
+    std::cout << "Toggling sweeper\n" << std::flush;
+    sweeperMech.toggle();
+    // print state
+    std::cout << "Sweeper state: " << int(sweeperMech.getState()) << std::endl;
+  }
+
+  // # FishMech
+  if (master.get_digital(CONTROL_BUTTON_FISHMECH_UP)) {
+    fishMech.spinUp();
+  } else if (master.get_digital(CONTROL_BUTTON_FISHMECH_DOWN)) {
+    fishMech.spinDown();
+  } else {
+    fishMech.stop();
+  }
+
+
 }
