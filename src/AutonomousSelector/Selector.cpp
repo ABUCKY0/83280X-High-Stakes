@@ -1312,4 +1312,12 @@ void create_tasks() {
                             TASK_STACK_DEPTH_DEFAULT, "UpdateUITask");
 }
 
+void mogoActuation() {
+  estpsi -= 2;
+}
+
+void sweeperActuation() {
+  estpsi -= 2;
+}
+
 #endif

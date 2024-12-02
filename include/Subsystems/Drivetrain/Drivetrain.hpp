@@ -40,8 +40,11 @@ class Drivetrain {
   LCHS::FishMech fishMech;
 
   // Controller
-  // pros::Controller master{E_CONTROLLER_MASTER};
-  VexboxController master{E_CONTROLLER_MASTER};
+  pros::Controller master{E_CONTROLLER_MASTER};
+  //VexboxController master{E_CONTROLLER_MASTER};
+
+  std::function<void()> mogoAct;
+  std::function<void()> sweeperAct;
 
  public:
   [[deprecated(
@@ -56,7 +59,7 @@ class Drivetrain {
    * @param rightDrivePorts - The ports for the right side of the drivetrain
    */
   Drivetrain(std::initializer_list<std::int8_t> leftDrivePorts,
-             std::initializer_list<std::int8_t> rightDrivePorts);
+             std::initializer_list<std::int8_t> rightDrivePorts, std::function<void()> mogoAct, std::function<void()> sweeperAct);
   /**
    * @brief Sets the voltage for the drivetrain from -127 to 127.
    *

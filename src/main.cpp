@@ -28,7 +28,8 @@
 LCHS::Drivetrain drivetrain({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B,
                              MOTOR_PORT_LEFT_C},
                             {MOTOR_PORT_RIGHT_A, MOTOR_PORT_RIGHT_B,
-                             MOTOR_PORT_RIGHT_C});
+                             MOTOR_PORT_RIGHT_C},
+                             mogoActuation, sweeperActuation);
 
 // #include "Subsystems/Drivetrain/LemLibDrivetrain.cpp"
 
@@ -50,8 +51,8 @@ void initialize() {
 
   pros::c::serctl(SERCTL_DISABLE_COBS, NULL);
 #if USE_UI == 1
-  cout << "[MAIN] (INFO): [UI_INIT] Marble UI\n";
-  cout << "Running Marble UI\n";
+  std::cout << "[MAIN] (INFO): [UI_INIT] Marble UI\n";
+  std::cout << "Running Marble UI\n";
   init_marble_ui();
   create_tasks();
 
@@ -197,6 +198,11 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+  // set position to x:0, y:0, heading:0
+  chassis.setPose(0, 0, 0);
+  // turn to face heading 90 with a very long timeout
+  //chassis.turnToHeading(90, 100000);
+  chassis.moveToPoint(0, 48, 10000);
   while (true) {
     drivetrain.driverControl();  // Drivetrain.cpp/Drivetrain.hpp
     pros::delay(20);

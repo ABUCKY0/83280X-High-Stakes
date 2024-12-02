@@ -20,17 +20,18 @@ static inline const pros::adi::ext_adi_port_pair_t sweeperport = {
 static inline const pros::adi::ext_adi_port_pair_t mogoport = {
     5, PNEUMATIC_ADIPORT_MOBILE_GOAL};
 
-LCHS::Drivetrain::Drivetrain(
-    std::initializer_list<std::int8_t> leftDrivePorts,
-    std::initializer_list<std::int8_t> rightDrivePorts) :
+LCHS::Drivetrain::Drivetrain(std::initializer_list<std::int8_t> leftDrivePorts,
+                             std::initializer_list<std::int8_t> rightDrivePorts,
+                             std::function<void()> mogoAct,
+                             std::function<void()> sweeperAct) :
     leftDrive(leftDrivePorts),
     rightDrive(rightDrivePorts),
     intake({MOTOR_PORT_INTAKE}),
     mogoGrabber(PNEUMATIC_ADIPORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH),
     fishMech({MOTOR_PORT_FISHMECH}),
-    sweeperMech(PNEUMATIC_ADIPORT_SWEEPER) {
-      
-    }
+    sweeperMech(PNEUMATIC_ADIPORT_SWEEPER),
+    mogoAct(mogoAct),
+    sweeperAct(sweeperAct) {}
 
 void LCHS::Drivetrain::move(std::int32_t voltageLeft,
                             std::int32_t voltageRight) {

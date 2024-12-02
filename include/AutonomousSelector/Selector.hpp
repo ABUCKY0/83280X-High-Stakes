@@ -5,6 +5,10 @@
 #include "main.h" // IWYU pragma: keep
 
 
+void mogoActuation();
+void sweeperActuation();
+
+
 // Function declarations
 lv_res_t mar_onMatchConfirmPress(lv_obj_t *btn);
 lv_res_t mar_onSkillsConfirmPress(lv_obj_t *btn);
