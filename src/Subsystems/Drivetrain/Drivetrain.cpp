@@ -68,8 +68,8 @@ void LCHS::Drivetrain::brake() {
 
 void LCHS::Drivetrain::driverControl() {
   // # Movement
-  std::int32_t leftVoltage = master.get_analog(CONTROL_AXIS_LEFT_DRIVE);
-  std::int32_t rightVoltage = -master.get_analog(CONTROL_AXIS_RIGHT_DRIVE);
+  std::int32_t leftVoltage = -master.get_analog(CONTROL_AXIS_LEFT_DRIVE);
+  std::int32_t rightVoltage = master.get_analog(CONTROL_AXIS_RIGHT_DRIVE);
 
   // Deadzone between -5 and 5
   if (leftVoltage > -10 && leftVoltage < 10) {
@@ -101,6 +101,7 @@ void LCHS::Drivetrain::driverControl() {
   // # MOGO
   if (master.get_digital_new_press(CONTROL_BUTTON_MOGO_TOGGLE)) {
     std::cout << "Toggling mogo\n" << std::flush;
+    mogoAct();
     mogoGrabber.toggle();
     // print state
     std::cout << "Mogo state: " << mogoGrabber.getState() << std::endl;
@@ -132,6 +133,7 @@ void LCHS::Drivetrain::driverControl() {
   // }
   if (master.get_digital_new_press(CONTROL_BUTTON_SWEEPER_TOGGLE)) {
     std::cout << "Toggling sweeper\n" << std::flush;
+    sweeperAct();
     sweeperMech.toggle();
     // print state
     std::cout << "Sweeper state: " << int(sweeperMech.getState()) << std::endl;
