@@ -7,6 +7,7 @@ class FishMech {
   FishMech() = delete;
   FishMech(std::initializer_list<std::int8_t> motors);
 
+  void onStartMatchSetup();
   void spinUp();
   void spinDown();
   void spin(int velocity);
