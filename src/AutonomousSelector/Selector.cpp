@@ -480,7 +480,7 @@ void init_marble_ui() {
   currentScreen = matchscr;
 
   /* ------------- Shared Styles ------------- */
-  switchTheme(Theme::NICK);
+  switchTheme(Theme::CHRISTMAS);
 
   /* ----------- Begin Match Screen ---------- */
 
