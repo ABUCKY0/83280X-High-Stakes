@@ -32,13 +32,13 @@ BUILD_ENVIRONMENT:=$(shell uname -a | sed 's/[()#]/_/g')
 BUILD_NUMBER:=$(shell cat $(SRCDIR)/AutonomousSelector/BuildInfo/build_number.txt)
 $(shell echo $$(($(BUILD_NUMBER) + 1)) > $(SRCDIR)/AutonomousSelector/BuildInfo/build_number.txt)
 DEVELOPER_NAME:=ABUCKY0
-APPLICATION_ENVIRONMENT:=alpha
+APPLICATION_ENVIRONMENT:=comp
 TEAM:=83280X
 TEAM_NAME:=CHA0S
 SEASON_NAME:=High Stakes
 ROBOT_NAME:=Khaos
-COMPETITION_NAME:=CySpringsTournament
-CODEBASE_VERSION:=0.0.5
+COMPETITION_NAME:=CyRidgeOpen
+CODEBASE_VERSION:=3.0.0
 # Print build information
 $(info Build Date: $(BUILD_DATE))
 $(info Git Branch: $(GIT_BRANCH))
@@ -80,7 +80,7 @@ EXCLUDE_COLD_LIBRARIES:=
 # TODO: SET TO 1 FOR LIBRARY
 IS_LIBRARY:=0
 LIBNAME:=highstakes
-VERSION:=0.0.1-precompalpha
+VERSION:=3.0.0
 EXTRA_CXXFLAGS+=-DLIBNAME="\"$(LIBNAME)\""
 # EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/unpublishedfile.c
 # this line excludes opcontrol.c and similar files
