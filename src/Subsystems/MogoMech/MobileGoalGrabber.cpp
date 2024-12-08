@@ -2,13 +2,13 @@
 
 LCHS::MobileGoalGrabber::MobileGoalGrabber(std::uint8_t pneumaticPort,
                                            std::uint8_t limitSwitchPort)
-    : piston(pneumaticPort, false, false), limitSwitch(limitSwitchPort){}
-      //mobileGoalTask(&MobileGoalGrabber::taskEntry, this, "mogo") {}
+    : piston(pneumaticPort, false, false), limitSwitch(limitSwitchPort),
+      mobileGoalTask(&MobileGoalGrabber::taskEntry, this, "mogo") {}
 
-LCHS::MobileGoalGrabber::MobileGoalGrabber(pros::adi::ext_adi_port_pair_t portPair,
-                                           std::uint8_t limitSwitchPort) :
+LCHS::MobileGoalGrabber::MobileGoalGrabber(
+    pros::adi::ext_adi_port_pair_t portPair, std::uint8_t limitSwitchPort) :
     piston(portPair, false, false),
-    limitSwitch(limitSwitchPort){}
+    limitSwitch(limitSwitchPort), mobileGoalTask(&MobileGoalGrabber::taskEntry, this, "mogo") {}
 
 std::int32_t LCHS::MobileGoalGrabber::grab() {
   return piston.extend(); // Assuming true grabs the mobile goal
@@ -28,12 +28,13 @@ bool LCHS::MobileGoalGrabber::getState() {
 
 void LCHS::MobileGoalGrabber::mobileGoalTaskFunction() {
   // Task function logic here
-  // while (true) {
-  //   if (limitSwitch.get_value()) {
-  //     piston.set_value(true);
-  //   }
-  //   pros::delay(100); // Prevent busy waiting
-  // }
+  while (true) {
+    if (limitSwitch.get_new_press()) {
+      this->grab();
+      std::cout << "mogotask" << std::endl;
+    }
+    pros::delay(30); 
+  }
 }
 
 void LCHS::MobileGoalGrabber::taskEntry(void *thisPtr) {
