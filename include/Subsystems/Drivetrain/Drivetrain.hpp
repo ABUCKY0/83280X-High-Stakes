@@ -28,7 +28,7 @@ namespace LCHS {
 // Drivetrain class for managing drivetrain during driver control LemLib handles
 // the drivetrain during autonomous
 class Drivetrain {
- private:
+ public:
   // Motors
   pros::MotorGroup leftDrive;
   pros::MotorGroup rightDrive;

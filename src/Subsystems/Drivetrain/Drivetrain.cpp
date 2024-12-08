@@ -97,7 +97,7 @@ void LCHS::Drivetrain::driverControl() {
   } else {
     intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::STOP);
   }
-
+  
   // # MOGO
   if (master.get_digital_new_press(CONTROL_BUTTON_MOGO_TOGGLE)) {
     std::cout << "Toggling mogo\n" << std::flush;
@@ -105,7 +105,7 @@ void LCHS::Drivetrain::driverControl() {
     mogoGrabber.toggle();
     // print state
     std::cout << "Mogo state: " << mogoGrabber.getState() << std::endl;
-  }
+  } 
 
   // if (master.get_digital_new_press(CONTROL_BUTTON_MOGO_RELEASE)) {
   //   std::cout << "Toggling mogo\n" << std::flush;
@@ -140,13 +140,23 @@ void LCHS::Drivetrain::driverControl() {
   }
 
   // # FishMech
-  if (master.get_digital(CONTROL_BUTTON_FISHMECH_UP)) {
-    fishMech.spinUp();
-  } else if (master.get_digital(CONTROL_BUTTON_FISHMECH_DOWN)) {
-    fishMech.spinDown();
-  } else {
+  if (master.get_digital(CONTROL_BUTTON_FISHMECH_UP) && !master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
+    fishMech.spin(100);
+  } else if (master.get_digital(CONTROL_BUTTON_FISHMECH_DOWN) && !master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
+    fishMech.spin(-100);
+  } 
+  
+  else if (master.get_digital(CONTROL_BUTTON_FISHMECH_UP) &&  master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
+    fishMech.overrideSpin(100);
+  } else if (master.get_digital(CONTROL_BUTTON_FISHMECH_DOWN) && master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
+    fishMech.overrideSpin(-100);
+  }
+
+  else {
     fishMech.stop();
   }
 
-
+  if (master.get_digital_new_press(CONTROL_BUTTON_FISHMECH_RESET) && master.get_digital_new_press(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
+    fishMech.calibrate();
+  }
 }

@@ -7,7 +7,7 @@
 #include "pros/apix.h" // IWYu pragma: keep
 namespace LCHS {
 class MobileGoalGrabber {
-    //pros::Task mobileGoalTask;
+    pros::Task mobileGoalTask;
     pros::adi::Pneumatics piston;
     pros::adi::DigitalIn limitSwitch;
 

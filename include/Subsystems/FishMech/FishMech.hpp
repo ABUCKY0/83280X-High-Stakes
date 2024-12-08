@@ -12,6 +12,8 @@ class FishMech {
   void spinDown();
   void spin(int velocity);
   void stop();
+  void overrideSpin(int velocity);
+  void calibrate();
 
   protected:
   pros::MotorGroup motors;

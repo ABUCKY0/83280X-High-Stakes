@@ -20,6 +20,7 @@
 #include "Subsystems/Intake/Intake.hpp"
 #include "Subsystems/MogoMech/MobileGoalGrabber.hpp"
 #include "Vex/things.h"
+#include "pros/rtos.hpp"
 
 
 // pros::Controller master(CONTROLLER_MASTER);
@@ -49,7 +50,7 @@ extern lemlib::Chassis chassis;
 void initialize() {
   // disable cobs
 
-  pros::c::serctl(SERCTL_DISABLE_COBS, NULL);
+  //pros::c::serctl(SERCTL_DISABLE_COBS, NULL);
 #if USE_UI == 1
   std::cout << "[MAIN] (INFO): [UI_INIT] Marble UI\n";
   std::cout << "Running Marble UI\n";
@@ -203,6 +204,12 @@ void opcontrol() {
   // // turn to face heading 90 with a very long timeout
   // //chassis.turnToHeading(90, 100000);
   // chassis.moveToPoint(0, 48, 10000);
+  drivetrain.fishMech.onStartMatchSetup();
+  drivetrain.fishMech.stop();
+  // pros::delay(2500);
+  // drivetrain.fishMech.spinUp();
+  // pros::delay(2500);
+  // drivetrain.fishMech.spinDown();
   while (true) {
     drivetrain.driverControl();  // Drivetrain.cpp/Drivetrain.hpp
     pros::delay(20);
