@@ -92,7 +92,8 @@ void initStyles() {
 
   lv_style_copy(&style_teamname, &lv_style_plain);
   style_teamname.text.font = &font_team_name_text;
-  style_teamname.text.color = LV_COLOR_MAKE(0xF5, 0x05, 0x04);
+  style_teamname.text.color = LV_COLOR_MAKE(0xF5, 0x05, 0x04); // #F50504
+  style_teamname.text.opa = LV_OPA_0;
 
   lv_style_copy(&style_roller, &lv_style_plain);
   style_roller.text.font = &font_roller_text;
