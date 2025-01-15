@@ -1,0 +1,37 @@
+-46.883, -9.833, 77.313
+-46.867, -11.833, 73.955
+-46.834, -13.833, 70.437
+-46.777, -15.832, 66.734
+-46.685, -17.83, 62.812
+-46.546, -19.825, 58.629
+-46.353, -21.815, 54.124
+-46.087, -23.797, 49.209
+-45.7, -25.759, 43.746
+-45.14, -27.677, 37.497
+-44.254, -29.463, 29.992
+-42.75, -30.731, 20
+-40.79, -30.808, 43.944
+-38.941, -30.064, 81.962
+-37.249, -28.999, 84.401
+-35.65, -27.798, 81.336
+-34.1, -26.534, 78.151
+-32.576, -25.239, 74.831
+-31.061, -23.933, 71.356
+-29.544, -22.63, 67.702
+-28.016, -21.34, 63.841
+-26.471, -20.07, 59.73
+-24.898, -18.835, 55.314
+-23.295, -17.639, 50.514
+-21.657, -16.491, 45.208
+-19.982, -15.4, 39.189
+-18.264, -14.376, 32.06
+-16.496, -13.441, 22.801
+-14.642, -12.573, 0
+-14.642, -12.573, 0
+3.471, -4.094, 0
+endData
+127
+100
+200
+-46.883, -9.833, -46.883, -50.571, -35.087, -21.356, -14.642, -12.573
+#PATH.JERRYIO-DATA {"appVersion":"0.8.3","format":"LemLib v0.5","gc":{"robotWidth":18,"robotHeight":18,"robotIsHolonomic":false,"showRobot":true,"uol":2.54,"pointDensity":2,"controlMagnetDistance":1.968503937007874,"fieldImage":{"displayName":"V5RC 2025 - High Stakes","signature":"V5RC 2025 - High Stakes","origin":{"__type":"built-in"}},"coordinateSystem":"VEX Gaming Positioning System"},"paths":[{"segments":[{"controls":[{"uid":"G35jwzx5gP","x":-46.882705760258354,"y":-9.832971818504031,"lock":false,"visible":true,"heading":0,"__type":"end-point"},{"uid":"pM8z2ZLdAD","x":-46.882705760258354,"y":-50.570791259558085,"lock":false,"visible":true,"__type":"control"},{"uid":"nchePxWsZU","x":-35.08719829644917,"y":-21.356419895635895,"lock":false,"visible":true,"__type":"control"},{"uid":"zH9F0TSsEu","x":-14.642484840097056,"y":-12.572765225499433,"lock":false,"visible":true,"heading":0,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"DrVlCd5tWN"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":127,"label":"127"},"step":1,"from":20,"to":100},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1},"maxDecelerationRate":127},"name":"ContactBar","uid":"OiDtc7KvGC","lock":false,"visible":true}]}

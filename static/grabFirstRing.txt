@@ -1,0 +1,22 @@
+-14.037, -24.082, 77.218
+-14.888, -25.892, 73.857
+-15.9, -27.615, 70.336
+-17.126, -29.193, 66.63
+-18.571, -30.573, 62.706
+-20.122, -31.836, 58.515
+-21.487, -33.29, 54.013
+-22.416, -35.055, 55.256
+-22.978, -36.972, 50.455
+-23.316, -38.943, 45.143
+-23.524, -40.932, 39.114
+-23.646, -42.928, 31.968
+-23.71, -44.927, 22.671
+-23.729, -46.95, 0
+-23.729, -46.95, 0
+-23.915, -66.949, 0
+endData
+127
+100
+200
+-14.037, -24.082, -18.883, -35.516, -23.729, -27.111, -23.729, -46.95
+#PATH.JERRYIO-DATA {"appVersion":"0.8.3","format":"LemLib v0.5","gc":{"robotWidth":18,"robotHeight":18,"robotIsHolonomic":false,"showRobot":true,"uol":2.54,"pointDensity":2,"controlMagnetDistance":1.968503937007874,"fieldImage":{"displayName":"V5RC 2025 - High Stakes","signature":"V5RC 2025 - High Stakes","origin":{"__type":"built-in"}},"coordinateSystem":"VEX Gaming Positioning System"},"paths":[{"segments":[{"controls":[{"uid":"bT88H1cI4G","x":-14.03671555250144,"y":-24.082381689816174,"lock":false,"visible":true,"heading":0,"__type":"end-point"},{"uid":"Tmo0bgSaWQ","x":-18.88286985326638,"y":-35.51627699318347,"lock":false,"visible":true,"__type":"control"},{"uid":"vLSBkylLF1","x":-23.729024154031325,"y":-27.111228127794266,"lock":false,"visible":true,"__type":"control"},{"uid":"PB1gnwEiYm","x":-23.729024154031325,"y":-46.950172296550754,"lock":false,"visible":true,"heading":0,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"NuPZRVkkoF"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":127,"label":"127"},"step":1,"from":20,"to":100},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1},"maxDecelerationRate":127},"name":"GrabFirstRing","uid":"hi1EObeoTO","lock":false,"visible":true}]}
