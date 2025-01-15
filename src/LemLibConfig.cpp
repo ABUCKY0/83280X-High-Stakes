@@ -1,19 +1,24 @@
 #include "Constants.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
-#include "main.h"
+#include "main.h"  // IWYU pragma: keep
 
 // left motor group
-pros::MotorGroup left_motor_group({-MOTOR_PORT_LEFT_A, -MOTOR_PORT_LEFT_B, -MOTOR_PORT_LEFT_C}, pros::MotorGears::green);
+pros::MotorGroup left_motor_group({-MOTOR_PORT_LEFT_A, -MOTOR_PORT_LEFT_B,
+                                   -MOTOR_PORT_LEFT_C},
+                                  pros::MotorGears::green);
 // right motor group
-pros::MotorGroup right_motor_group({MOTOR_PORT_RIGHT_A, MOTOR_PORT_RIGHT_B, MOTOR_PORT_RIGHT_C}, pros::MotorGears::green);
+pros::MotorGroup right_motor_group({MOTOR_PORT_RIGHT_A, MOTOR_PORT_RIGHT_B,
+                                    MOTOR_PORT_RIGHT_C},
+                                   pros::MotorGears::green);
 
 // drivetrain settings
-lemlib::Drivetrain lemdrivetrain(&left_motor_group,         // left motor group
-                              &right_motor_group,        // right motor group
-                              15.25,                        // 10 inch track width
-                              lemlib::Omniwheel::NEW_325,  // using new 4" omnis
-                              400,  // drivetrain rpm is 360
-                              8     // horizontal drift is 2 (for now)
+lemlib::Drivetrain lemdrivetrain(
+    &left_motor_group,           // left motor group
+    &right_motor_group,          // right motor group
+    15.25,                       // 10 inch track width
+    lemlib::Omniwheel::NEW_325,  // using new 4" omnis
+    400,                         // drivetrain rpm is 360
+    8                            // horizontal drift is 2 (for now)
 );
 
 // imu
@@ -32,8 +37,8 @@ pros::Imu imu(SENSOR_PORT_IMU);
 
 // odometry settings
 lemlib::OdomSensors sensors(
-    nullptr,   // vertical tracking wheel 1, set to null
-    nullptr,   // vertical tracking wheel 2, set to nullptr as we are using IMEs
+    nullptr,  // vertical tracking wheel 1, set to null
+    nullptr,  // vertical tracking wheel 2, set to nullptr as we are using IMEs
     nullptr,  // horizontal tracking wheel 1
     nullptr,  // horizontal tracking wheel 2, set to nullptr as we don't have a second one
     &imu  // inertial sensor

@@ -6,10 +6,6 @@
 
 // PROS
 #include "main.h"
-#include "pros/device.hpp"
-#include "pros/misc.h"
-#include "pros/misc.hpp"
-#include "pros/motor_group.hpp"
 
 // Constants
 #include "Constants.hpp"
@@ -17,11 +13,8 @@
 // Subsystems
 #include "AutonomousSelector/Selector.hpp"
 #include "Subsystems/Drivetrain/Drivetrain.hpp"
-#include "Subsystems/Intake/Intake.hpp"
-#include "Subsystems/MogoMech/MobileGoalGrabber.hpp"
 #include "Vex/things.h"
 #include "pros/rtos.hpp"
-
 
 // pros::Controller master(CONTROLLER_MASTER);
 // pros::MotorGroup leftdt({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B});
@@ -30,14 +23,11 @@ LCHS::Drivetrain drivetrain({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B,
                              MOTOR_PORT_LEFT_C},
                             {MOTOR_PORT_RIGHT_A, MOTOR_PORT_RIGHT_B,
                              MOTOR_PORT_RIGHT_C},
-                             mogoActuation, sweeperActuation);
+                            mogoActuation, sweeperActuation);
 
 // #include "Subsystems/Drivetrain/LemLibDrivetrain.cpp"
 
 #include "Constants.hpp"
-#include "lemlib/api.hpp"
-#include "main.h"  // IWYU pragma: keep
-#include "pros/motor_group.hpp"
 
 extern lemlib::Chassis chassis;
 
@@ -147,8 +137,6 @@ void runSkillsAuton(char auton) {
       // run 0
       break;
   }
-
-
 }
 
 /**
