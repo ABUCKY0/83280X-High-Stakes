@@ -3,13 +3,12 @@
 #include "Subsystems/Drivetrain/Drivetrain.hpp"
 #include "lemlib/api.hpp"  // IWYU pragma: keep
 
-void redLeft(lemlib::Drivetrain& drivetrain, LCHS::Drivetrain& robotsubs);
-void redRight(lemlib::Drivetrain& drivetrain, LCHS::Drivetrain& robotsubs);
-void blueLeft(lemlib::Drivetrain& drivetrain, LCHS::Drivetrain& robotsubs);
-void blueRight(lemlib::Drivetrain& drivetrain, LCHS::Drivetrain& robotsubs);
-void skillsPrimary(lemlib::Drivetrain& drivetrain, LCHS::Drivetrain& robotsubs);
-void skillsSecondary(lemlib::Drivetrain& drivetrain,
-                     LCHS::Drivetrain& robotsubs);
+void redLeft(lemlib::Chassis& chassis, LCHS::Drivetrain& drivetrain);
+void redRight(lemlib::Chassis& chassis, LCHS::Drivetrain& drivetrain);
+void blueLeft(lemlib::Chassis& chassis, LCHS::Drivetrain& drivetrain);
+void blueRight(lemlib::Chassis& chassis, LCHS::Drivetrain& drivetrain);
+void skillsPrimary(lemlib::Chassis& chassis, LCHS::Drivetrain& drivetrain);
+void skillsSecondary(lemlib::Chassis& chassis, LCHS::Drivetrain& drivetrain);
 void noSkills();
 void noMatch();
 
