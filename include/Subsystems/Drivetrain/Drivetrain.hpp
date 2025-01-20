@@ -37,7 +37,7 @@ class Drivetrain {
   LCHS::Intake intake;
   LCHS::MobileGoalGrabber mogoGrabber;
   LCHS::SweeperMech sweeperMech;
-  LCHS::FishMech fishMech;
+  //LCHS::FishMech fishMech;
 
   // Controller
   pros::Controller master{E_CONTROLLER_MASTER};

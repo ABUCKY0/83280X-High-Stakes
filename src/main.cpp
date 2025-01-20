@@ -3,6 +3,7 @@
 #include <cstddef>    // IWYU pragma: keep
 #include <iostream>
 #include <optional>  // IWYU pragma: keep
+#include <string>
 
 // PROS
 #include "main.h"
@@ -15,6 +16,7 @@
 #include "Subsystems/Drivetrain/Drivetrain.hpp"
 #include "Vex/things.h"
 #include "pros/rtos.hpp"
+#include "autonomi.hpp"
 
 // pros::Controller master(CONTROLLER_MASTER);
 // pros::MotorGroup leftdt({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B});
@@ -87,26 +89,23 @@ void runMatchAuton(char auton) {
   // Run the selected match auton
   switch (auton) {
     case 0:
-      cout << "[MAIN] (INFO): [AUTONRUN] Preload Only Autonomous (ID:0)\n";
-      // Preload Only Auton
+      cout << "[MAIN] (INFO): [AUTONRUN] Blue Left (ID:0)\n";
+      blueLeft(chassis, drivetrain);
       break;
     case 1:
-      cout << "[MAIN] (INFO): [AUTONRUN] Load Side Autonomous (ID:1)\n";
-
-      // Load Side Auton
+      cout << "[MAIN] (INFO): [AUTONRUN] Blue Right (ID:1)\n";
+      blueRight(chassis, drivetrain);
       break;
     case 2:
-      cout << "[MAIN] (INFO): [AUTONRUN] Goal Side Autonomous (ID:2)\n";
-      // Goal Side Auton
+      cout << "[MAIN] (INFO): [AUTONRUN] Red Left (ID:2)\n";
+      redLeft(chassis, drivetrain);
       break;
     case 3:
-      cout << "[MAIN] (INFO): [AUTONRUN] No Autonomous (ID:3)\n";
-      // No Autonomous
+      cout << "[MAIN] (INFO): [AUTONRUN] Red Right (ID:3)\n";
+      redRight(chassis, drivetrain);
       break;
     default:
-      cout << "[MAIN] (INFO): [AUTONRUN] Preload Only Autonomous [Default "
-              "State] "
-              "(ID:0 [-1])\n";
+      cout << "[MAIN] (INFO): [AUTONRUN] None (ID:0 [-1])\n";
       // run 0
       break;
   }
@@ -165,6 +164,15 @@ void competition_initialize() {
  */
 void autonomous() {
   cout << "[MAIN] (INFO): [AUTON] Running Autonomous\n";
+
+  std::cout << "Game Mode: " << gameMode << std::endl;
+  std::cout << "Auton: " << auton << std::endl;
+  if (std::string(APPLICATION_ENVIRONMENT).compare("dev") == 0) {
+    std::cout << "Running Test Auton\n";
+    // run test auton
+    runMatchAuton(2);
+    return;
+  }
   // Run the selected auton
   if (gameMode == 1) {
     runSkillsAuton(auton);
@@ -187,19 +195,10 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  // // set position to x:0, y:0, heading:0
-  // chassis.setPose(0, 0, 0);
-  // // turn to face heading 90 with a very long timeout
-  // //chassis.turnToHeading(90, 100000);
-  // chassis.moveToPoint(0, 48, 10000);
-  drivetrain.fishMech.onStartMatchSetup();
-  drivetrain.fishMech.stop();
-  // pros::delay(2500);
-  // drivetrain.fishMech.spinUp();
-  // pros::delay(2500);
-  // drivetrain.fishMech.spinDown();
   while (true) {
     drivetrain.driverControl();  // Drivetrain.cpp/Drivetrain.hpp
     pros::delay(20);
   }
 }
+
+

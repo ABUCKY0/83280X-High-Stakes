@@ -3,8 +3,8 @@
 #include "main.h"  // IWYU pragma: keep
 
 // left motor group
-pros::MotorGroup left_motor_group({-MOTOR_PORT_LEFT_A, -MOTOR_PORT_LEFT_B,
-                                   -MOTOR_PORT_LEFT_C},
+pros::MotorGroup left_motor_group({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B,
+                                   MOTOR_PORT_LEFT_C},
                                   pros::MotorGears::green);
 // right motor group
 pros::MotorGroup right_motor_group({MOTOR_PORT_RIGHT_A, MOTOR_PORT_RIGHT_B,
@@ -17,7 +17,7 @@ lemlib::Drivetrain lemdrivetrain(
     &right_motor_group,          // right motor group
     15.25,                       // 10 inch track width
     lemlib::Omniwheel::NEW_325,  // using new 4" omnis
-    400,                         // drivetrain rpm is 360
+    480,                         // drivetrain rpm is 360
     8                            // horizontal drift is 2 (for now)
 );
 
@@ -54,7 +54,7 @@ lemlib::ControllerSettings lateral_controller(
     0,   // small error range timeout, in milliseconds
     0,   // large error range, in inches
     0,   // large error range timeout, in milliseconds
-    0    // maximum acceleration (slew)
+    20    // maximum acceleration (slew)
 );
 
 // angular PID controller

@@ -76,7 +76,7 @@ void opcontrol(void);
 /**
  * You can add C++-only headers here
  */
-#include "packages/lemlib/api.hpp" // IWYU pragma: keep
+#include "lemlib/api.hpp" // IWYU pragma: keep
 #include <iostream>                // IWYU pragma: keep
 #include <random>                  // IWYU pragma: keep
 #include <string>                  // IWYU pragma: keep

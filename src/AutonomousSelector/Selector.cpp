@@ -480,7 +480,7 @@ void init_marble_ui() {
   currentScreen = matchscr;
 
   /* ------------- Shared Styles ------------- */
-  switchTheme(Theme::CHRISTMAS);
+  switchTheme(Theme::MARBLE);
 
   /* ----------- Begin Match Screen ---------- */
 
@@ -644,7 +644,7 @@ void init_marble_ui() {
   lv_obj_set_click(box_autonsel_label, false);
 
   lv_label_set_style(box_fishmech_label, &style_smalltext);
-  lv_label_set_text(box_fishmech_label, "Fish Mech\nTemp");
+  lv_label_set_text(box_fishmech_label, "Intake2\nTemp");
   lv_label_set_align(box_fishmech_label, LV_LABEL_ALIGN_CENTER);
 
   lv_label_set_style(box_intake_label, &style_smalltext);
@@ -976,7 +976,7 @@ void task_updvar(void* param) {
     if (intake_temp == PROS_ERR_F)
       intake_temp = -1;
 
-    fishmech_temp = pros::c::motor_get_temperature(MOTOR_PORT_FISHMECH);
+    fishmech_temp = pros::c::motor_get_temperature(MOTOR_PORT_INTAKE2);
     if (fishmech_temp == PROS_ERR_F)
       intake_temp = -1;
 

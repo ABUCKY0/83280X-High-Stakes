@@ -26,9 +26,9 @@ LCHS::Drivetrain::Drivetrain(std::initializer_list<std::int8_t> leftDrivePorts,
                              std::function<void()> sweeperAct) :
     leftDrive(leftDrivePorts),
     rightDrive(rightDrivePorts),
-    intake({MOTOR_PORT_INTAKE}),
+    intake({MOTOR_PORT_INTAKE, MOTOR_PORT_INTAKE2}),
     mogoGrabber(PNEUMATIC_ADIPORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH),
-    fishMech({MOTOR_PORT_FISHMECH}),
+    //fishMech({MOTOR_PORT_FISHMECH}),
     sweeperMech(PNEUMATIC_ADIPORT_SWEEPER),
     mogoAct(mogoAct),
     sweeperAct(sweeperAct) {}
@@ -68,7 +68,7 @@ void LCHS::Drivetrain::brake() {
 
 void LCHS::Drivetrain::driverControl() {
   // # Movement
-  std::int32_t leftVoltage = -master.get_analog(CONTROL_AXIS_LEFT_DRIVE);
+  std::int32_t leftVoltage = master.get_analog(CONTROL_AXIS_LEFT_DRIVE);
   std::int32_t rightVoltage = master.get_analog(CONTROL_AXIS_RIGHT_DRIVE);
 
   // Deadzone between -5 and 5
@@ -131,32 +131,32 @@ void LCHS::Drivetrain::driverControl() {
   // } else if (master.get_digital(CONTROL_BUTTON_SWEEPER_IN)) {
   //   sweeperMech.swingin();
   // }
-  if (master.get_digital_new_press(CONTROL_BUTTON_SWEEPER_TOGGLE)) {
-    std::cout << "Toggling sweeper\n" << std::flush;
-    sweeperAct();
-    sweeperMech.toggle();
-    // print state
-    std::cout << "Sweeper state: " << int(sweeperMech.getState()) << std::endl;
-  }
+  // if (master.get_digital_new_press(CONTROL_BUTTON_SWEEPER_TOGGLE)) {
+  //   std::cout << "Toggling sweeper\n" << std::flush;
+  //   sweeperAct();
+  //   sweeperMech.toggle();
+  //   // print state
+  //   std::cout << "Sweeper state: " << int(sweeperMech.getState()) << std::endl;
+  // }
 
-  // # FishMech
-  if (master.get_digital(CONTROL_BUTTON_FISHMECH_UP) && !master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
-    fishMech.spin(100);
-  } else if (master.get_digital(CONTROL_BUTTON_FISHMECH_DOWN) && !master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
-    fishMech.spin(-100);
-  } 
+  // // # FishMech
+  // if (master.get_digital(CONTROL_BUTTON_FISHMECH_UP) && !master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
+  //   fishMech.spin(100);
+  // } else if (master.get_digital(CONTROL_BUTTON_FISHMECH_DOWN) && !master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
+  //   fishMech.spin(-100);
+  // } 
   
-  else if (master.get_digital(CONTROL_BUTTON_FISHMECH_UP) &&  master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
-    fishMech.overrideSpin(100);
-  } else if (master.get_digital(CONTROL_BUTTON_FISHMECH_DOWN) && master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
-    fishMech.overrideSpin(-100);
-  }
+  // else if (master.get_digital(CONTROL_BUTTON_FISHMECH_UP) &&  master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
+  //   fishMech.overrideSpin(100);
+  // } else if (master.get_digital(CONTROL_BUTTON_FISHMECH_DOWN) && master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
+  //   fishMech.overrideSpin(-100);
+  // }
 
-  else {
-    fishMech.stop();
-  }
+  // else {
+  //   fishMech.stop();
+  // }
 
-  if (master.get_digital_new_press(CONTROL_BUTTON_FISHMECH_RESET) && master.get_digital_new_press(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
-    fishMech.calibrate();
-  }
+  // if (master.get_digital_new_press(CONTROL_BUTTON_FISHMECH_RESET) && master.get_digital_new_press(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
+  //   fishMech.calibrate();
+  // }
 }

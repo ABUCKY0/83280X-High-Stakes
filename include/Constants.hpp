@@ -64,31 +64,31 @@ extern lv_obj_t *skillsscr;
 // ! MOTORS
 // * DRIVETRAIN
     // ? LEFT
-#define MOTOR_PORT_LEFT_A               -1
-#define MOTOR_PORT_LEFT_B               2
-#define MOTOR_PORT_LEFT_C               3
+#define MOTOR_PORT_LEFT_A               -11
+#define MOTOR_PORT_LEFT_B               -12
+#define MOTOR_PORT_LEFT_C               -13
 
     // ? RIGHT
-#define MOTOR_PORT_RIGHT_A              -11
-#define MOTOR_PORT_RIGHT_B              12
-#define MOTOR_PORT_RIGHT_C              13
+#define MOTOR_PORT_RIGHT_A              1
+#define MOTOR_PORT_RIGHT_B              2
+#define MOTOR_PORT_RIGHT_C              3
 
 // * INTAKE
-#define MOTOR_PORT_INTAKE               -15
+#define MOTOR_PORT_INTAKE               -4
 
 // * Fish Mech
-#define MOTOR_PORT_FISHMECH             -14
+#define MOTOR_PORT_INTAKE2            14
 
 // Legacy Motors Redefinition to please auton selector (to avoid scope creep for the auton selector)
 #define MOTOR_PORT_UNUSED               17
 #define MOTOR_PORT_LEFT_LIFT            MOTOR_PORT_UNUSED
 #define MOTOR_PORT_RIGHT_LIFT           MOTOR_PORT_UNUSED
-#define MOTOR_PORT_INTAKE2              MOTOR_PORT_UNUSED
+//#define MOTOR_PORT_INTAKE2              MOTOR_PORT_UNUSED
           
 
 
 // ! SENSORS
-#define SENSOR_PORT_IMU                 4
+#define SENSOR_PORT_IMU                 5
 #define SENSOR_PORT_MOGO_LIMIT_SWITCH   'c'
 #define SENSOR_PORT_OPTICAL_COLOR       17//15
 
@@ -130,7 +130,7 @@ extern lv_obj_t *skillsscr;
 #define CONTROL_AXIS_LEFT_DRIVE         E_CONTROLLER_ANALOG_LEFT_Y
 #define CONTROL_AXIS_RIGHT_DRIVE        E_CONTROLLER_ANALOG_RIGHT_Y
 
-#define CONTROL_BUTTON_MOGO_TOGGLE      E_CONTROLLER_DIGITAL_L1
+#define CONTROL_BUTTON_MOGO_TOGGLE      E_CONTROLLER_DIGITAL_L2
 #define CONTROL_BUTTON_MOGO_RELEASE     E_CONTROLLER_DIGITAL_RIGHT
 #define CONTROL_BUTTON_MOGO_GRAB        E_CONTROLLER_DIGITAL_LEFT
 

@@ -2,6 +2,8 @@
 #include "Subsystems/Intake/Intake.hpp"
 //#include "lemlib/pid.hpp"
 #include "Subsystems/Intake/IntakePID.hpp"
+#include "pros/abstract_motor.hpp"
+#include "pros/motors.h"
 
 static float kp_up = 6.0f;
 static float ki_up = 0.0f;
@@ -16,7 +18,7 @@ static float kd_down = 0.0f;
  * This class is responsible for controlling the intake and lift subsystems. It
  * is responsible for controlling the intake motors, lift motors, and the PTOs.
  */
-LCHS::Intake::Intake(std::initializer_list<std::int8_t> motors): intakeMotors(motors) {}
+LCHS::Intake::Intake(std::initializer_list<std::int8_t> motors): intakeMotors(motors, pros::v5::MotorGears::blue) {}
 
 /**
  * @brief Move the intake motors at a given speed
@@ -36,16 +38,16 @@ void LCHS::Intake::setIntakeSpeed(int speed) {
 void LCHS::Intake::setIntakeSpeedPreset(LCHS::IntakeSpeedPresets preset) {
   switch (preset) {
   case IntakeSpeedPresets::IN:
-    intakeMotors.move_velocity(-200);
+    intakeMotors.move(127);
     break;
   case IntakeSpeedPresets::OUT:
-    intakeMotors.move_velocity(200);
+    intakeMotors.move(-127);
     break;
   case IntakeSpeedPresets::SLOW_IN:
-    intakeMotors.move_velocity(-100);
+    intakeMotors.move(-60);
     break;
   case IntakeSpeedPresets::SLOW_OUT:
-    intakeMotors.move_velocity(100);
+    intakeMotors.move_velocity(60);
     break;
   case IntakeSpeedPresets::STOP:
     intakeMotors.move_velocity(0);

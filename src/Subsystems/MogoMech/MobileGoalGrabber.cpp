@@ -7,7 +7,7 @@ LCHS::MobileGoalGrabber::MobileGoalGrabber(std::uint8_t pneumaticPort,
 
 LCHS::MobileGoalGrabber::MobileGoalGrabber(
     pros::adi::ext_adi_port_pair_t portPair, std::uint8_t limitSwitchPort) :
-    piston(portPair, false, false),
+    piston(portPair, true, false),
     limitSwitch(limitSwitchPort), mobileGoalTask(&MobileGoalGrabber::taskEntry, this, "mogo") {}
 
 std::int32_t LCHS::MobileGoalGrabber::grab() {
