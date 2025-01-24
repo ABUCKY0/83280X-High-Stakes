@@ -13,7 +13,9 @@
 #include "Constants.hpp"
 #include "main.h"
 #include "pros/apix.h"  // IWYU pragma: keep
+#include "Logger/Logger.hpp"
 
+LCHS::Logger guilogger(__FILE_NAME__, std::cout);
 #if USE_UI == 1
 
 lv_obj_t* auton_selector;
@@ -153,17 +155,18 @@ static lv_obj_t* game_backgroundimage;
 static lv_obj_t* logo;
 
 static lv_obj_t* currentScreen;
+
 // on press confirm
 lv_res_t onMatchConfirmPress(lv_obj_t* btn) {
-  cout << "[UI] (INFO): Autonomous Selection Confirmed\n";
-  cout << "[UI] (INFO): Switching to Game Screen\n";
+  guilogger << "Autonomous Selection Confirmed" << std::endl;
+  guilogger << "Switching to Game Screen" << std::endl;
   auton = lv_roller_get_selected(auton_selector);
   if (gameMode == 0) {
-    cout << "[UI] (INFO): Setting Match Auton Value\n";
+    guilogger << "Setting Match Auton Value " << auton << "" << std::endl;
     lv_label_set_text(box_autonsel_label, auton_options[auton]);
   } else {
-    cout << "[UI] (INFO): Setting Skills Auton Value\n";
-    lv_label_set_text(box_autonsel_label, skills_options[auton]);
+    guilogger << "Setting Skills Auton Value " << auton << "\n ";
+        lv_label_set_text(box_autonsel_label, skills_options[auton]);
   }
   lv_scr_load(gamescr);
   currentScreen = gamescr;
@@ -171,7 +174,7 @@ lv_res_t onMatchConfirmPress(lv_obj_t* btn) {
 }
 
 lv_res_t m_btn_open_selector_screen_again(lv_obj_t* btn) {
-  cout << "[UI] (INFO): Opening Selector Screen Again\n";
+  guilogger << "Opening Selector Screen Again" << std::endl;
   lv_scr_load(matchscr);
   currentScreen = matchscr;
   return LV_RES_OK;
@@ -179,18 +182,18 @@ lv_res_t m_btn_open_selector_screen_again(lv_obj_t* btn) {
 
 lv_res_t m_btn_action_skills(lv_obj_t* btn) {
   // Get Roller
-  cout << "[UI] (INFO): Skills Mode Switching\n";
+  guilogger << "Skills Mode Switching" << std::endl;
   lv_roller_set_options(auton_selector, skills_autons.c_str());
-  cout << "[UI] (INFO): Setting gameMode to 1\n";
+  guilogger << "Setting gameMode to 1" << std::endl;
   gameMode = 1;
   return LV_RES_OK;
 }
 
 lv_res_t m_btn_action_match(lv_obj_t* btn) {
   // Get Roller
-  cout << "[UI] (INFO): Match Mode Switching @ " << millis() << "\n";
+  guilogger << "Match Mode Switching @ " << millis() << "" << std::endl;
   lv_roller_set_options(auton_selector, match_autons.c_str());
-  cout << "[UI] (INFO): Setting gameMode to 0\n";
+  guilogger << "Setting gameMode to 0" << std::endl;
   gameMode = 0;
   return LV_RES_OK;
 }
@@ -199,8 +202,8 @@ enum class Theme { HELLOKITTY, MARBLE, NICK, OG, CHRISTMAS, THANKSGIVING };
 void switchTheme(Theme theme) {
   switch (theme) {
     case Theme::HELLOKITTY:
-      std::cout
-          << "[UI] (INFO): Switching to Hello Kitty Theme (SWITCHTHEME)\n";
+      guilogger
+          << "Switching to Hello Kitty Theme (SWITCHTHEME)" << std::endl;
       style_bg = HelloKittyStyles::style_bg;
       style_btn = HelloKittyStyles::style_btn;
       style_btn_selected = HelloKittyStyles::style_btn_selected;
@@ -233,7 +236,7 @@ void switchTheme(Theme theme) {
       box_color_temp_error = HelloKittyStyles::box_color_temp_error;
       break;
     case Theme::MARBLE:
-      std::cout << "[UI] (INFO): Switching to Marble Theme (SWITCHTHEME)\n";
+      guilogger << "Switching to Marble Theme (SWITCHTHEME)" << std::endl;
       style_bg = MarbleStyles::style_bg;
       style_btn = MarbleStyles::style_btn;
       style_btn_selected = MarbleStyles::style_btn_selected;
@@ -267,7 +270,7 @@ void switchTheme(Theme theme) {
 
       break;
     case Theme::OG:
-      std::cout << "[UI] (INFO): Switching to OG Theme (SWITCHTHEME)\n";
+      guilogger << "Switching to OG Theme (SWITCHTHEME)" << std::endl;
       style_bg = OGStyles::style_bg;
       style_btn = OGStyles::style_btn;
       style_btn_selected = OGStyles::style_btn_selected;
@@ -300,7 +303,7 @@ void switchTheme(Theme theme) {
       box_color_temp_error = OGStyles::box_color_temp_error;
       break;
     case Theme::CHRISTMAS:
-      std::cout << "[UI] (INFO): Switching to Christmas Theme (SWITCHTHEME)\n";
+      guilogger << "Switching to Christmas Theme (SWITCHTHEME)" << std::endl;
       style_bg = ChristmasStyles::style_bg;
       style_btn = ChristmasStyles::style_btn;
       style_btn_selected = ChristmasStyles::style_btn_selected;
@@ -333,7 +336,7 @@ void switchTheme(Theme theme) {
       box_color_temp_error = ChristmasStyles::box_color_temp_error;
       break;
     case Theme::NICK:
-      std::cout << "[UI] (INFO): Switching to Nick's Theme (SWITCHTHEME)\n";
+      guilogger << "Switching to Nick's Theme (SWITCHTHEME)" << std::endl;
       style_bg = NickStyles::style_bg;
       style_btn = NickStyles::style_btn;
       style_btn_selected = NickStyles::style_btn_selected;
@@ -370,7 +373,7 @@ void switchTheme(Theme theme) {
       //switchTheme(Theme::MARBLE);
       return;
   }
-  std::cout << "[UI] (INFO): Theme Switched\n";
+  guilogger << "Theme Switched" << std::endl;
 
   // // Update the UI elements with the new styles
   // lv_obj_set_style(matchscr, &style_bg);
@@ -428,37 +431,37 @@ void switchTheme(Theme theme) {
 }
 
 lv_res_t m_btn_set_theme_hellokitty(lv_obj_t* btn) {
-  cout << "[UI] (INFO): Switching to Hello Kitty Theme\n";
+  guilogger << "Switching to Hello Kitty Theme" << std::endl;
   switchTheme(Theme::HELLOKITTY);
   return LV_RES_OK;
 }
 
 lv_res_t m_btn_set_theme_marble(lv_obj_t* btn) {
-  cout << "[UI] (INFO): Switching to Marble Theme\n";
+  guilogger << "Switching to Marble Theme" << std::endl;
   switchTheme(Theme::MARBLE);
   return LV_RES_OK;
 }
 
 lv_res_t m_btn_set_theme_nick(lv_obj_t* btn) {
-  cout << "[UI] (INFO): Switching to Nick's Theme\n";
+  guilogger << "Switching to Nick's Theme" << std::endl;
   switchTheme(Theme::NICK);
   return LV_RES_OK;
 }
 
 lv_res_t m_btn_set_theme_og(lv_obj_t* btn) {
-  cout << "[UI] (INFO): Switching to OG Theme\n";
+  guilogger << "Switching to OG Theme" << std::endl;
   switchTheme(Theme::OG);
   return LV_RES_OK;
 }
 
 lv_res_t m_btn_set_theme_christmas(lv_obj_t* btn) {
-  cout << "[UI] (INFO): Switching to Christmas Theme\n";
+  guilogger << "Switching to Christmas Theme" << std::endl;
   switchTheme(Theme::CHRISTMAS);
   return LV_RES_OK;
 }
 
 lv_res_t m_btn_set_theme_thanksgiving(lv_obj_t* btn) {
-  cout << "[UI] (INFO): Switching to Thanksgiving Theme\n";
+  guilogger << "Switching to Thanksgiving Theme" << std::endl;
   switchTheme(Theme::THANKSGIVING);
   return LV_RES_OK;
 }
@@ -475,7 +478,7 @@ void init_marble_ui() {
   OGStyles::initStyles();
   ChristmasStyles::initStyles();
   NickStyles::initStyles();
-  cout << "[UI] (INFO): Initalizing matchscr\n";
+  guilogger << "Initalizing matchscr" << std::endl;
   matchscr = lv_obj_create(NULL, NULL);
   currentScreen = matchscr;
 
@@ -484,42 +487,42 @@ void init_marble_ui() {
 
   /* ----------- Begin Match Screen ---------- */
 
-  cout << "[UI] (INFO): [SCREEN] [LOAD] matchscr\n";
+  guilogger << "[SCREEN] [LOAD] matchscr" << std::endl;
   lv_scr_load(matchscr);
 
   // Image Background
-  cout << "[UI] (INFO): [IMAGE] [CREATION] backgroundimage\n";
+  guilogger << "[IMAGE] [CREATION] backgroundimage" << std::endl;
   backgroundimage = createImage(matchscr, 0, 0, 1, &bg_image);
 
   // Team Name
-  cout << "[UI] (INFO): [LABEL] [CREATION] teamName\n";
+  guilogger << "[LABEL] [CREATION] teamName" << std::endl;
   teamName = createLabel(matchscr, 38, 25, "83280X");
   lv_label_set_style(teamName, &style_teamname);
   // BG Boxes
-  cout << "[UI] (INFO): [OBJ] [CREATION] rollerbg\n";
+  guilogger << "[OBJ] [CREATION] rollerbg" << std::endl;
   rollerbg = createBaseObject(matchscr, 240, 21);
   lv_obj_set_size(rollerbg, 216, 197);
   lv_obj_set_style(rollerbg, &roller_bg_style);
 
   // Auton Selector
   // -- Screen Switch Buttons
-  cout << "[UI] (INFO): [BUTTON] [CREATION] btn_match\n";
+  guilogger << "[BUTTON] [CREATION] btn_match" << std::endl;
   btn_match = createBtn(matchscr, 248, 29, 90, 40, 2, "MATCH");
   lv_btn_set_style(btn_match, LV_BTN_STYLE_REL, &style_btn);
   lv_btn_set_style(btn_match, LV_BTN_STATE_PR, &style_btn_selected);
-  cout << "[UI] (INFO): [BUTTON] [CREATION] btn_skills\n";
+  guilogger << "[BUTTON] [CREATION] btn_skills" << std::endl;
 
   btn_skills = createBtn(matchscr, 355, 29, 90, 40, 3, "SKILLS");
   lv_btn_set_style(btn_skills, LV_BTN_STYLE_REL, &style_btn);
   lv_btn_set_style(btn_skills, LV_BTN_STATE_PR, &style_btn_selected);
   // -- confirm button
-  cout << "[UI] (INFO): [BUTTON] [CREATION] confirm_btn\n";
+  guilogger << "[BUTTON] [CREATION] confirm_btn" << std::endl;
   confirm_btn = createBtn(matchscr, 248, 167, 197, 40, 4, "CONFIRM");
   lv_btn_set_style(confirm_btn, LV_BTN_STATE_REL, &style_confirmbtn);
   lv_btn_set_style(confirm_btn, LV_BTN_STATE_PR, &style_confirmbtn_selected);
 
   // roller
-  cout << "[UI] (INFO): [ROLLER] [CREATION] auton_selector\n";
+  guilogger << "[ROLLER] [CREATION] auton_selector" << std::endl;
   auton_selector = createRoller(matchscr, match_autons.c_str(), 248, 74);
   lv_obj_set_free_num(auton_selector, 20);
   lv_roller_set_hor_fit(auton_selector, false);
@@ -530,15 +533,15 @@ void init_marble_ui() {
                       &roller_style_selected);
 
   // Chick-Fil-A Chicken Sandwich
-  cout << "[UI] (INFO): [IMAGE] [CREATION] large image\n";
+  guilogger << "[IMAGE] [CREATION] large image" << std::endl;
   chicken = createImage(matchscr, 40, 69, 5, &big_image);
 
   // Apply Button Functions
-  cout << "[UI] (INFO): [BUTTON] btn_skills [ACTIONSET] m_btn_action_skills\n";
+  guilogger << "[BUTTON] btn_skills [ACTIONSET] m_btn_action_skills" << std::endl;
   lv_btn_set_action(btn_skills, LV_BTN_ACTION_CLICK, m_btn_action_skills);
-  cout << "[UI] (INFO): [BUTTON] btn_match [ACTIONSET] m_btn_action_match\n";
+  guilogger << "[BUTTON] btn_match [ACTIONSET] m_btn_action_match" << std::endl;
   lv_btn_set_action(btn_match, LV_BTN_ACTION_CLICK, m_btn_action_match);
-  cout << "[UI] (INFO): [BUTTON] confirm_btn [ACTIONSET] onMatchConfirmPress\n";
+  guilogger << "[BUTTON] confirm_btn [ACTIONSET] onMatchConfirmPress" << std::endl;
   lv_btn_set_action(confirm_btn, LV_BTN_ACTION_CLICK, onMatchConfirmPress);
   /* ---------- End Selections Screen ---------- */
   /* ----------- Begin Game Scr ----------- */
@@ -555,7 +558,7 @@ void init_marble_ui() {
   int useChicken = rand() % 10 + 1;
 
   gamescr = lv_obj_create(NULL, NULL);
-  cout << "[UI] (INFO): [IMAGE] [CREATION] Game Screen Background\n";
+  guilogger << "[IMAGE] [CREATION] Game Screen Background" << std::endl;
   game_backgroundimage = createImage(gamescr, 0, 0, 1, &bg_image);
 
   // Create a base object for the box

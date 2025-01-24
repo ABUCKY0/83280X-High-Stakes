@@ -3,8 +3,11 @@
 #include <cstddef>    // IWYU pragma: keep
 #include <iostream>
 #include <optional>  // IWYU pragma: keep
+#include <sstream>
 #include <string>
+#include "Logger/Logger.hpp"
 
+LCHS::Logger logger(__FILE_NAME__, std::cout);
 // PROS
 #include "main.h"
 
@@ -44,35 +47,58 @@ void initialize() {
 
   //pros::c::serctl(SERCTL_DISABLE_COBS, NULL);
 #if USE_UI == 1
-  std::cout << "[MAIN] (INFO): [UI_INIT] Marble UI\n";
-  std::cout << "Running Marble UI\n";
+  // logger << "[UI_INIT] Marble UI\n";
+  // logger << "Running Marble UI\n";
+  logger.debug("Init Marble UI");
   init_marble_ui();
   create_tasks();
 
 #else
-  cout << "[MAIN] (INFO): [NOUI_INIT] No UI Initalized\n";
+  logger.debug("No UI Initalized");
 #endif
   /*
   Build Information
   */
-  std::cout << "Build Date: " << BUILD_DATE << std::endl;
-  std::cout << "Git Branch: " << GIT_BRANCH << std::endl;
-  std::cout << "Git Commit: " << GIT_COMMIT << std::endl;
-  std::cout << "Compiler Version: " << COMPILER_VERSION << std::endl;
-  std::cout << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
-  std::cout << "Build Number: " << BUILD_NUMBER << std::endl;
-  std::cout << "Developer Name: " << DEVELOPER_NAME << std::endl;
-  std::cout << "Application Environment: " << APPLICATION_ENVIRONMENT
-            << std::endl;
-  std::cout << "Codebase Version: " << CODEBASE_VERSION << std::endl;
-  std::cout << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
+  // logger << "Build Date: " << BUILD_DATE << std::endl;
+  // logger << "Git Branch: " << GIT_BRANCH << std::endl;
+  // logger << "Git Commit: " << GIT_COMMIT << std::endl;
+  // logger << "Compiler Version: " << COMPILER_VERSION << std::endl;
+  // logger << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
+  // logger << "Build Number: " << BUILD_NUMBER << std::endl;
+  // logger << "Developer Name: " << DEVELOPER_NAME << std::endl;
+  // logger << "Application Environment: " << APPLICATION_ENVIRONMENT
+  //           << std::endl;
+  // logger << "Codebase Version: " << CODEBASE_VERSION << std::endl;
+  // logger << "Build Environment: " << BUILD_ENVIRONMENT << std::endl;
 
-  //vex things
-  std::cout << "Is Comp Switch??: "
-            << to_string(pros::competition::is_competition_switch())
-            << std::endl;
-  std::cout << "IS Field Control??: "
-            << to_string(pros::competition::is_field_control()) << std::endl;
+  // //vex things
+  // logger << "Is Comp Switch??: "
+  //           << to_string(pros::competition::is_competition_switch())
+  //           << std::endl;
+  // logger << "IS Field Control??: "
+  //           << to_string(pros::competition::is_field_control()) << std::endl;
+  // std::ostringstream ss;
+  // ss << "Build Date: " << BUILD_DATE << "\n";
+  // ss << "\nGit Branch: " << GIT_BRANCH << "\n";
+  // ss << "\nGit Commit: " << GIT_COMMIT << "\n";
+  // ss << "\nCompiler Version: " << COMPILER_VERSION << "\n";
+  // ss << "\nBuild Environment: " << BUILD_ENVIRONMENT << "\n";
+  // ss << "\nBuild Number: " << BUILD_NUMBER << "\n";
+  // ss << "\nDeveloper Name: " << DEVELOPER_NAME << "\n";
+  // ss << "\nApplication Environment: " << APPLICATION_ENVIRONMENT << "\n";
+  // ss << "\nCodebase Version: " << CODEBASE_VERSION << "\n";
+  // ss << "\nIs Comp Switch??: "
+  //    << to_string(pros::competition::is_competition_switch()) << "\n";
+  // ss << "\nIs Field Control??: "
+  //    << to_string(pros::competition::is_field_control()) << "\n";
+  // ss << "Is Comp Switch??: "
+  //    << to_string(pros::competition::is_competition_switch()) << "\n";
+  // ss << "\nIs Field Control??: "
+  //    << to_string(pros::competition::is_field_control()) << "\n";
+  // logger.info(ss.str().c_str());
+  logger << "Build Date: " << BUILD_DATE << std::endl;
+  logger << "Git Branch: " << GIT_BRANCH << std::endl;
+  logger << "test" << 0 << true << 1.1f << 'a'  << std::endl;
   chassis.calibrate();
 }
 
@@ -82,30 +108,30 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {
-  cout << "[MAIN] (INFO): [STATUS] Disabled";
+  logger << "[STATUS] Disabled";
 }
 
 void runMatchAuton(char auton) {
   // Run the selected match auton
   switch (auton) {
     case 0:
-      cout << "[MAIN] (INFO): [AUTONRUN] Blue Left (ID:0)\n";
+      logger << "[AUTONRUN] Blue Left (ID:0)\n";
       blueLeft(chassis, drivetrain);
       break;
     case 1:
-      cout << "[MAIN] (INFO): [AUTONRUN] Blue Right (ID:1)\n";
+      logger << "[AUTONRUN] Blue Right (ID:1)\n";
       blueRight(chassis, drivetrain);
       break;
     case 2:
-      cout << "[MAIN] (INFO): [AUTONRUN] Red Left (ID:2)\n";
+      logger << "[AUTONRUN] Red Left (ID:2)\n";
       redLeft(chassis, drivetrain);
       break;
     case 3:
-      cout << "[MAIN] (INFO): [AUTONRUN] Red Right (ID:3)\n";
+      logger << "[AUTONRUN] Red Right (ID:3)\n";
       redRight(chassis, drivetrain);
       break;
     default:
-      cout << "[MAIN] (INFO): [AUTONRUN] None (ID:0 [-1])\n";
+      logger << "[AUTONRUN] None (ID:0 [-1])\n";
       // run 0
       break;
   }
@@ -114,25 +140,25 @@ void runSkillsAuton(char auton) {
   // Run the selected skills auton
   switch (auton) {
     case 0:
-      cout << "[MAIN] (INFO): [SKILLSRUN] Over Barrier Autonomous (ID:0)\n";
+      logger << "[SKILLSRUN] Over Barrier Autonomous (ID:0)\n";
       // Over Barrier Auton
       break;
     case 1:
-      cout << "[MAIN] (INFO): [SKILLSRUN] Under Sidebar Autonomous (ID:1)\n";
+      logger << "[SKILLSRUN] Under Sidebar Autonomous (ID:1)\n";
       // Under Side Bar Auton
       break;
     case 2:
-      cout << "[MAIN] (INFO): [SKILLSRUN] Launch Only Autonomous (ID:2)\n";
+      logger << "[SKILLSRUN] Launch Only Autonomous (ID:2)\n";
       // Launch-Only Auton
       break;
     case 3:
-      cout << "[MAIN] (INFO): [SKILLSRUN] No Autonomous (ID:3)\n";
+      logger << "[SKILLSRUN] No Autonomous (ID:3)\n";
       // No Autonomous
       break;
     default:
-      cout << "[MAIN] (INFO): [AUTONRUN] Over Barrier Autonomous [Default "
-              "State] "
-              "(ID:0 [-1])\n";
+      logger << "[SKILLSRUN] Over Barrier Autonomous [Default "
+                "State] "
+                "(ID:0 [-1])\n";
       // run 0
       break;
   }
@@ -148,7 +174,7 @@ void runSkillsAuton(char auton) {
  * starts.
  */
 void competition_initialize() {
-  cout << "[MAIN] (INFO): [INIT] Competition Initalize\n";
+  logger << "[INIT] Competition Initalize\n";
 }
 
 /**
@@ -163,12 +189,12 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-  cout << "[MAIN] (INFO): [AUTON] Running Autonomous\n";
+  logger << "[AUTON] Running Autonomous\n";
 
-  std::cout << "Game Mode: " << gameMode << std::endl;
-  std::cout << "Auton: " << auton << std::endl;
+  logger << "Game Mode: " << gameMode << std::endl;
+  logger << "Auton: " << auton << std::endl;
   if (std::string(APPLICATION_ENVIRONMENT).compare("dev") == 0) {
-    std::cout << "Running Test Auton\n";
+    logger << "Running Test Auton\n";
     // run test auton
     runMatchAuton(2);
     return;

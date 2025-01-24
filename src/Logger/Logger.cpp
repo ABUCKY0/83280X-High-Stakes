@@ -1,15 +1,50 @@
-#include "Logger/Logger.hpp"
+#include "Logger.hpp"
 #include <iostream>
-#include <ostream>
-#include <sstream>
-#include "main.h"      // IWYU pragma: keep
 
-LCHS::Logger::Logger() {}
+namespace LCHS {
 
-void LCHS::Logger::log(const char* message, LogLevel level) {}
-void LCHS::Logger::info(const char* message) {
+Logger::Logger(std::string filename, std::ostream& str) :
+    std::ostream(&buffer), buffer(str, filename) {}
+
+Logger::Logger(std::ostream& str) : std::ostream(&buffer), buffer(str) {}
+
+Logger::~Logger() {}
+
+void Logger::debug(const std::string& message) {
+  buffer.setLogLevel(LogLevel::DEBUG);
+  log(LogLevel::DEBUG, message);
   
 }
-void LCHS::Logger::warn(const char* message) {}
-void LCHS::Logger::error(const char* message) {}
-void LCHS::Logger::debug(const char* message) {}
+
+void Logger::info(const std::string& message) {
+  buffer.setLogLevel(LogLevel::INFO);
+  log(LogLevel::INFO, message);
+}
+
+void Logger::error(const std::string& message) {
+  buffer.setLogLevel(LogLevel::ERROR);
+  log(LogLevel::ERROR, message);
+}
+
+void Logger::warning(const std::string& message) {
+  buffer.setLogLevel(LogLevel::WARNING);
+  log(LogLevel::WARNING, message);
+}
+
+void Logger::log(LogLevel level, const std::string& message) {
+  buffer.setLogLevel(level);
+  std::ostringstream logMessage;
+  logMessage << message;
+
+  // Output the log message
+  *this << logMessage.str();
+  this->flush();
+}
+
+
+
+void Logger::setLogLevel(LogLevel level) {
+  logLevel = level;
+}
+
+}  // namespace LCHS

@@ -125,19 +125,19 @@ void LCHS::Drivetrain::driverControl() {
   //   //pros::c::ext_adi_digital_write(5, 1, false);
   // }
 
-  // # Sweeper
-  // if (master.get_digital(CONTROL_BUTTON_SWEEPER_OUT)) {
-  //   sweeperMech.swingout();
-  // } else if (master.get_digital(CONTROL_BUTTON_SWEEPER_IN)) {
-  //   sweeperMech.swingin();
-  // }
-  // if (master.get_digital_new_press(CONTROL_BUTTON_SWEEPER_TOGGLE)) {
-  //   std::cout << "Toggling sweeper\n" << std::flush;
-  //   sweeperAct();
-  //   sweeperMech.toggle();
-  //   // print state
-  //   std::cout << "Sweeper state: " << int(sweeperMech.getState()) << std::endl;
-  // }
+  // # Doinker (SweeperMech)
+  if (master.get_digital(CONTROL_BUTTON_SWEEPER_OUT)) {
+    sweeperMech.swingout();
+  } else if (master.get_digital(CONTROL_BUTTON_SWEEPER_IN)) {
+    sweeperMech.swingin();
+  }
+  if (master.get_digital_new_press(CONTROL_BUTTON_SWEEPER_TOGGLE)) {
+    std::cout << "Toggling sweeper\n" << std::flush;
+    sweeperAct();
+    sweeperMech.toggle();
+    // print state
+    std::cout << "Sweeper state: " << int(sweeperMech.getState()) << std::endl;
+  }
 
   // // # FishMech
   // if (master.get_digital(CONTROL_BUTTON_FISHMECH_UP) && !master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {
