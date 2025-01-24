@@ -5,6 +5,7 @@ LCHS::FishMech::FishMech(std::initializer_list<std::int8_t> motorPorts) :
     motors(motorPorts, pros::v5::MotorGears::red, pros::v5::MotorUnits::degrees) {
   motors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   motors.tare_position_all();
+  std::cout << "FishMech init " << std::endl;
 }
 
 void LCHS::FishMech::onStartMatchSetup() {

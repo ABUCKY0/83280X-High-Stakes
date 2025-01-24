@@ -89,7 +89,8 @@ extern lv_obj_t *skillsscr;
 
 // ! SENSORS
 #define SENSOR_PORT_IMU                 5
-#define SENSOR_PORT_MOGO_LIMIT_SWITCH   'c'
+// #define SENSOR_PORT_MOGO_LIMIT_SWITCH   'c'
+#define SENSOR_PORT_MOGO_DISTANCE       6
 #define SENSOR_PORT_OPTICAL_COLOR       17//15
 
 // ! PNEUMATICS

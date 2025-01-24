@@ -27,11 +27,13 @@ LCHS::Drivetrain::Drivetrain(std::initializer_list<std::int8_t> leftDrivePorts,
     leftDrive(leftDrivePorts),
     rightDrive(rightDrivePorts),
     intake({MOTOR_PORT_INTAKE, MOTOR_PORT_INTAKE2}),
-    mogoGrabber(PNEUMATIC_ADIPORT_MOBILE_GOAL, SENSOR_PORT_MOGO_LIMIT_SWITCH),
+    mogoGrabber(PNEUMATIC_ADIPORT_MOBILE_GOAL, SENSOR_PORT_MOGO_DISTANCE),
     //fishMech({MOTOR_PORT_FISHMECH}),
     sweeperMech(PNEUMATIC_ADIPORT_SWEEPER),
     mogoAct(mogoAct),
-    sweeperAct(sweeperAct) {}
+    sweeperAct(sweeperAct) {
+      std::cout << "drivtrain init";
+    }
 
 void LCHS::Drivetrain::move(std::int32_t voltageLeft,
                             std::int32_t voltageRight) {
@@ -126,18 +128,18 @@ void LCHS::Drivetrain::driverControl() {
   // }
 
   // # Sweeper
-  // if (master.get_digital(CONTROL_BUTTON_SWEEPER_OUT)) {
-  //   sweeperMech.swingout();
-  // } else if (master.get_digital(CONTROL_BUTTON_SWEEPER_IN)) {
-  //   sweeperMech.swingin();
-  // }
-  // if (master.get_digital_new_press(CONTROL_BUTTON_SWEEPER_TOGGLE)) {
-  //   std::cout << "Toggling sweeper\n" << std::flush;
-  //   sweeperAct();
-  //   sweeperMech.toggle();
-  //   // print state
-  //   std::cout << "Sweeper state: " << int(sweeperMech.getState()) << std::endl;
-  // }
+  if (master.get_digital(CONTROL_BUTTON_SWEEPER_OUT)) {
+    sweeperMech.swingout();
+  } else if (master.get_digital(CONTROL_BUTTON_SWEEPER_IN)) {
+    sweeperMech.swingin();
+  }
+  if (master.get_digital_new_press(CONTROL_BUTTON_SWEEPER_TOGGLE)) {
+    std::cout << "Toggling sweeper\n" << std::flush;
+    sweeperAct();
+    sweeperMech.toggle();
+    // print state
+    std::cout << "Sweeper state: " << int(sweeperMech.getState()) << std::endl;
+  }
 
   // // # FishMech
   // if (master.get_digital(CONTROL_BUTTON_FISHMECH_UP) && !master.get_digital(CONTROL_BUTTON_FISHMECH_OVERRIDE)) {

@@ -18,7 +18,9 @@ static float kd_down = 0.0f;
  * This class is responsible for controlling the intake and lift subsystems. It
  * is responsible for controlling the intake motors, lift motors, and the PTOs.
  */
-LCHS::Intake::Intake(std::initializer_list<std::int8_t> motors): intakeMotors(motors, pros::v5::MotorGears::blue) {}
+LCHS::Intake::Intake(std::initializer_list<std::int8_t> motors): intakeMotors(motors, pros::v5::MotorGears::blue) {
+  std::cout << "Intake Init" << std::endl;
+}
 
 /**
  * @brief Move the intake motors at a given speed

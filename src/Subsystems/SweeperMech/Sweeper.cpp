@@ -3,9 +3,13 @@
 
 namespace LCHS {
 
-SweeperMech::SweeperMech(std::uint8_t adi_port) : sweeper(adi_port, false) {};
+SweeperMech::SweeperMech(std::uint8_t adi_port) : sweeper(adi_port, false) {
+  std::cout << "Doinker (SweeperMech) init, adiport" << adi_port;
+};
 
-SweeperMech::SweeperMech(pros::adi::ext_adi_port_pair_t port_pair) : sweeper(port_pair, false) {};
+SweeperMech::SweeperMech(pros::adi::ext_adi_port_pair_t port_pair) : sweeper(port_pair, false) {
+  std::cout << "Doinker (SweeperMech) init portpair" << port_pair.first << " " << port_pair.second;
+};
 
 void SweeperMech::swingout() {  
     sweeper.extend();

@@ -7,12 +7,12 @@
 #include "AutonomousSelector/Themes/Nick.hpp"
 #include "AutonomousSelector/Themes/OG.hpp"
 
-
 // Regular Includes
 #include "AutonomousSelector/helpers.hpp"
 #include "Constants.hpp"
 #include "main.h"
 #include "pros/apix.h"  // IWYU pragma: keep
+#include "pros/distance.h"
 
 #if USE_UI == 1
 
@@ -30,8 +30,8 @@ static lv_obj_t* box_m11;
 static lv_obj_t* box_m12;
 static lv_obj_t* box_m13;
 static lv_obj_t* box_intake;
-static lv_obj_t* box_vexnet;
-static lv_obj_t* box_fishmech;
+static lv_obj_t* box_distance;
+static lv_obj_t* box_intake2;
 static lv_obj_t* box_logo;
 static lv_obj_t* box_battery;
 static lv_obj_t* box_psi;
@@ -44,8 +44,8 @@ static lv_obj_t* box_m11_label;
 static lv_obj_t* box_m12_label;
 static lv_obj_t* box_m13_label;
 static lv_obj_t* box_intake_label;
-static lv_obj_t* box_vexnet_label;
-static lv_obj_t* box_fishmech_label;
+static lv_obj_t* box_distance_label;
+static lv_obj_t* box_intake2_label;
 static lv_obj_t* box_logo_label;
 static lv_obj_t* box_battery_label;
 static lv_obj_t* box_psi_label;
@@ -58,8 +58,8 @@ static lv_obj_t* box_m11_val;
 static lv_obj_t* box_m12_val;
 static lv_obj_t* box_m13_val;
 static lv_obj_t* box_intake_val;
-static lv_obj_t* box_vexnet_val;
-static lv_obj_t* box_fishmech_val;
+static lv_obj_t* box_distance_val;
+static lv_obj_t* box_intake2_val;
 static lv_obj_t* box_logo_val;
 static lv_obj_t* box_battery_val;
 static lv_obj_t* box_psi_val;
@@ -75,7 +75,6 @@ static lv_obj_t* box_psi_val;
 #define MOTOR_OVERTEMP_LEVEL3 65
 #define MOTOR_OVERTEMP_LEVEL4 70
 #define MOTOR_OVER_TEMP_MAX MOTOR_OVERTEMP_LEVEL4
-
 
 // Auton Selection Arrays
 static const char* auton_options[] = {"BLU-L", "BLU-R", "RED-L", "RED-R"};
@@ -93,8 +92,8 @@ double drivetrain_right_a_temp = 0.0;
 double drivetrain_right_b_temp = 0.0;
 double drivetrain_right_c_temp = 0.0;
 double intake_temp = 0.0;
-double fishmech_temp = 0.0;
-char vexnet_status = 0;  // 0 = No Connection, 1 = Primary, 2 = Backup
+double intake2_temp = 0.0;
+char distance_status = 0;  // 0 = No Connection, 1 = Primary, 2 = Backup
 
 double estpsi = 100.0;
 double batteryCharge = 0.0;
@@ -395,9 +394,9 @@ void switchTheme(Theme theme) {
   // lv_label_set_style(box_battery_label, &style_largetext);
   // lv_label_set_style(box_psi_label, &style_largetext);
   // lv_label_set_style(box_autonsel_label, &style_midtext);
-  // lv_label_set_style(box_fishmech_label, &style_smalltext);
+  // lv_label_set_style(box_intake2_label, &style_smalltext);
   // lv_label_set_style(box_intake_label, &style_smalltext);
-  // lv_label_set_style(box_vexnet_label, &style_smalltext);
+  // lv_label_set_style(box_distance_label, &style_smalltext);
   // lv_label_set_style(box_m1_val, &style_midtext);
   // lv_label_set_style(box_m2_val, &style_midtext);
   // lv_label_set_style(box_m3_val, &style_midtext);
@@ -406,9 +405,9 @@ void switchTheme(Theme theme) {
   // lv_label_set_style(box_m13_val, &style_midtext);
   // lv_label_set_style(box_battery_val, &style_midtext);
   // lv_label_set_style(box_psi_val, &style_midtext);
-  // lv_label_set_style(box_fishmech_val, &style_midtext);
+  // lv_label_set_style(box_intake2_val, &style_midtext);
   // lv_label_set_style(box_intake_val, &style_midtext);
-  // lv_label_set_style(box_vexnet_val, &style_midtext);
+  // lv_label_set_style(box_distance_val, &style_midtext);
   // lv_obj_set_style(box_m1, box_green);
   // lv_obj_set_style(box_m2, box_green);
   // lv_obj_set_style(box_m3, box_green);
@@ -418,9 +417,9 @@ void switchTheme(Theme theme) {
   // lv_obj_set_style(box_battery, box_green);
   // lv_obj_set_style(box_psi, box_green);
   // lv_obj_set_style(box_autonsel, box_midnightblue);
-  // lv_obj_set_style(box_fishmech, box_green);
+  // lv_obj_set_style(box_intake2, box_green);
   // lv_obj_set_style(box_intake, box_green);
-  // lv_obj_set_style(box_vexnet, box_green);
+  // lv_obj_set_style(box_distance, box_green);
   // lv_obj_set_style(box_logo, box_midnightblue);
   // lv_obj_set_style(buildtag, &style_buildtext);
 
@@ -586,9 +585,9 @@ void init_marble_ui() {
   box_battery = lv_obj_create(gamescr, NULL);
   box_psi = lv_obj_create(gamescr, NULL);
   box_autonsel = lv_btn_create(gamescr, NULL);
-  box_fishmech = lv_obj_create(gamescr, NULL);
+  box_intake2 = lv_obj_create(gamescr, NULL);
   box_intake = lv_obj_create(gamescr, NULL);
-  box_vexnet = lv_obj_create(gamescr, NULL);
+  box_distance = lv_obj_create(gamescr, NULL);
   box_logo = lv_obj_create(gamescr, NULL);
 
   box_m1_label = lv_label_create(box_m1, NULL);
@@ -600,9 +599,9 @@ void init_marble_ui() {
   box_battery_label = lv_label_create(box_battery, NULL);
   box_psi_label = lv_label_create(box_psi, NULL);
   box_autonsel_label = lv_label_create(box_autonsel, NULL);
-  box_fishmech_label = lv_label_create(box_fishmech, NULL);
+  box_intake2_label = lv_label_create(box_intake2, NULL);
   box_intake_label = lv_label_create(box_intake, NULL);
-  box_vexnet_label = lv_label_create(box_vexnet, NULL);
+  box_distance_label = lv_label_create(box_distance, NULL);
 
   // set the labels to small text
   lv_label_set_style(box_m1_label, &style_smalltext);
@@ -643,17 +642,17 @@ void init_marble_ui() {
   // make clickthrough
   lv_obj_set_click(box_autonsel_label, false);
 
-  lv_label_set_style(box_fishmech_label, &style_smalltext);
-  lv_label_set_text(box_fishmech_label, "Intake2\nTemp");
-  lv_label_set_align(box_fishmech_label, LV_LABEL_ALIGN_CENTER);
+  lv_label_set_style(box_intake2_label, &style_smalltext);
+  lv_label_set_text(box_intake2_label, "Intake2\nTemp");
+  lv_label_set_align(box_intake2_label, LV_LABEL_ALIGN_CENTER);
 
   lv_label_set_style(box_intake_label, &style_smalltext);
   lv_label_set_text(box_intake_label, "Intake\nTemp");
   lv_label_set_align(box_intake_label, LV_LABEL_ALIGN_CENTER);
 
-  lv_label_set_style(box_vexnet_label, &style_smalltext);
-  lv_label_set_text(box_vexnet_label, "VexNet\nStatus");
-  lv_label_set_align(box_vexnet_label, LV_LABEL_ALIGN_CENTER);
+  lv_label_set_style(box_distance_label, &style_smalltext);
+  lv_label_set_text(box_distance_label, "distance\nStatus");
+  lv_label_set_align(box_distance_label, LV_LABEL_ALIGN_CENTER);
 
   lv_obj_set_style(box_m1, box_green);
   lv_obj_set_style(box_m2, box_green);
@@ -664,9 +663,9 @@ void init_marble_ui() {
   lv_obj_set_style(box_battery, box_green);
   lv_obj_set_style(box_psi, box_green);
   //lv_obj_set_style(box_autonsel, box_midnightblue);
-  lv_obj_set_style(box_fishmech, box_green);
+  lv_obj_set_style(box_intake2, box_green);
   lv_obj_set_style(box_intake, box_green);
-  lv_obj_set_style(box_vexnet, box_green);
+  lv_obj_set_style(box_distance, box_green);
   lv_obj_set_style(box_logo, box_midnightblue);
 
   // all motor boxes and logo are 72 by 72
@@ -677,9 +676,9 @@ void init_marble_ui() {
   lv_obj_set_size(box_m12, 72, 72);
   lv_obj_set_size(box_m13, 72, 72);
   lv_obj_set_size(box_logo, 72, 72);
-  lv_obj_set_size(box_fishmech, 72, 72);
+  lv_obj_set_size(box_intake2, 72, 72);
   lv_obj_set_size(box_intake, 72, 72);
-  lv_obj_set_size(box_vexnet, 72, 72);
+  lv_obj_set_size(box_distance, 72, 72);
 
   // battery and psi are 161 by 42
   lv_obj_set_size(box_battery, 161, 42);
@@ -698,9 +697,9 @@ void init_marble_ui() {
   lv_obj_set_pos(box_battery, 25, 101);
   lv_obj_set_pos(box_psi, 289, 101);
   lv_obj_set_pos(box_autonsel, 201, 101);
-  lv_obj_set_pos(box_fishmech, 289, 150);
+  lv_obj_set_pos(box_intake2, 289, 150);
   lv_obj_set_pos(box_intake, 289, 24);
-  lv_obj_set_pos(box_vexnet, 377, 24);
+  lv_obj_set_pos(box_distance, 377, 24);
   lv_obj_set_pos(box_logo, 377, 149);
 
   // Position the labels in the boxes to below center
@@ -713,9 +712,9 @@ void init_marble_ui() {
   lv_obj_align(box_battery_label, box_battery, LV_ALIGN_CENTER, 40, 0);
   lv_obj_align(box_psi_label, box_psi, LV_ALIGN_CENTER, 35, 0);
   lv_obj_align(box_autonsel_label, box_autonsel, LV_ALIGN_CENTER, 0, 0);
-  lv_obj_align(box_fishmech_label, box_fishmech, LV_ALIGN_CENTER, 0, 15);
+  lv_obj_align(box_intake2_label, box_intake2, LV_ALIGN_CENTER, 0, 15);
   lv_obj_align(box_intake_label, box_intake, LV_ALIGN_CENTER, 0, 15);
-  lv_obj_align(box_vexnet_label, box_vexnet, LV_ALIGN_CENTER, 0, 15);
+  lv_obj_align(box_distance_label, box_distance, LV_ALIGN_CENTER, 0, 15);
 
   // CREATE THE LARGE LABELS above the small labels above
   box_m1_val = lv_label_create(box_m1, NULL);
@@ -726,9 +725,9 @@ void init_marble_ui() {
   box_m13_val = lv_label_create(box_m13, NULL);
   box_battery_val = lv_label_create(box_battery, NULL);
   box_psi_val = lv_label_create(box_psi, NULL);
-  box_fishmech_val = lv_label_create(box_fishmech, NULL);
+  box_intake2_val = lv_label_create(box_intake2, NULL);
   box_intake_val = lv_label_create(box_intake, NULL);
-  box_vexnet_val = lv_label_create(box_vexnet, NULL);
+  box_distance_val = lv_label_create(box_distance, NULL);
 
   // set the labels to midtext
   lv_label_set_style(box_m1_val, &style_midtext);
@@ -739,9 +738,9 @@ void init_marble_ui() {
   lv_label_set_style(box_m13_val, &style_midtext);
   lv_label_set_style(box_battery_val, &style_midtext);
   lv_label_set_style(box_psi_val, &style_midtext);
-  lv_label_set_style(box_fishmech_val, &style_midtext);
+  lv_label_set_style(box_intake2_val, &style_midtext);
   lv_label_set_style(box_intake_val, &style_midtext);
-  lv_label_set_style(box_vexnet_val, &style_midtext);
+  lv_label_set_style(box_distance_val, &style_midtext);
 
   // set the text to the labels to -2
   lv_label_set_text(box_m1_val, "199%");
@@ -752,9 +751,9 @@ void init_marble_ui() {
   lv_label_set_text(box_m13_val, "-99%");
   lv_label_set_text(box_battery_val, "100%");
   lv_label_set_text(box_psi_val, "100");
-  lv_label_set_text(box_fishmech_val, "-99%");
+  lv_label_set_text(box_intake2_val, "-99%");
   lv_label_set_text(box_intake_val, "-99%");
-  lv_label_set_text(box_vexnet_val, "-99%");
+  lv_label_set_text(box_distance_val, "-99%");
 
   // Position the labels in the boxes to above center
 
@@ -769,9 +768,9 @@ void init_marble_ui() {
   lv_obj_align(box_m13_val, box_m13, LV_ALIGN_CENTER, 0, -15);
   lv_obj_align(box_battery_val, box_battery, LV_ALIGN_CENTER, -30, 0);
   lv_obj_align(box_psi_val, box_psi, LV_ALIGN_CENTER, -45, 0);
-  lv_obj_align(box_fishmech_val, box_fishmech, LV_ALIGN_CENTER, 0, -15);
+  lv_obj_align(box_intake2_val, box_intake2, LV_ALIGN_CENTER, 0, -15);
   lv_obj_align(box_intake_val, box_intake, LV_ALIGN_CENTER, 0, -15);
-  lv_obj_align(box_vexnet_val, box_vexnet, LV_ALIGN_CENTER, 0, -15);
+  lv_obj_align(box_distance_val, box_distance, LV_ALIGN_CENTER, 0, -15);
 
   // Icon
   //logo = createImage(gamescr, 382, 157, 8, &small_image);
@@ -976,20 +975,20 @@ void task_updvar(void* param) {
     if (intake_temp == PROS_ERR_F)
       intake_temp = -1;
 
-    fishmech_temp = pros::c::motor_get_temperature(MOTOR_PORT_INTAKE2);
-    if (fishmech_temp == PROS_ERR_F)
-      intake_temp = -1;
+    intake2_temp = pros::c::motor_get_temperature(MOTOR_PORT_INTAKE2);
+    if (intake2_temp == PROS_ERR_F)
+      intake2_temp = -1;
 
-    if (pros::c::link_connected(GEN_PORT_VEXNET_PRIMARY)) {
-      vexnet_status = 0;
-    } else if (pros::c::link_connected(GEN_PORT_VEXNET_BACKUP)) {
-      vexnet_status = 1;
-    } else {
-      vexnet_status = -1;
-    }
+    // if (pros::c::link_connected(GEN_PORT_distance_PRIMARY)) {
+    //   distance_status = 0;
+    // } else if (pros::c::link_connected(GEN_PORT_distance_BACKUP)) {
+    //   distance_status = 1;
+    // } else {
+    //   distance_status = -1;
+    // }
 
-    if (vexnet_status == PROS_ERR_F)
-      vexnet_status = -1;
+    if (distance_status == PROS_ERR_F)
+      distance_status = -1;
 
     batteryCharge = pros::battery::get_capacity();
     if (batteryCharge == PROS_ERR)
@@ -1058,18 +1057,23 @@ void task_updui(void* param) {
       } else {
         lv_label_set_text(box_intake_val, "ERR");
       }
-      if (vexnet_status != -1) {
-        lv_label_set_text(box_vexnet_val,
-                          (std::to_string((int)vexnet_status) + "C").c_str());
-      } else {
-        lv_label_set_text(box_vexnet_val, "ERR");
+      // if (distance_status != -1) {
+      //   lv_label_set_text(box_distance_val,
+      //                     (std::to_string((int)distance_status) + "C").c_str());
+      // } else {
+      //   lv_label_set_text(box_distance_val, "ERR");
+      // }
+      if (pros::c::distance_get(SENSOR_PORT_MOGO_DISTANCE) != PROS_ERR) {
+        lv_label_set_text(box_distance_val, to_string(pros::c::distance_get(SENSOR_PORT_MOGO_DISTANCE)).c_str());
       }
-
-      if (fishmech_temp != -1) {
-        lv_label_set_text(box_fishmech_val,
-                          (std::to_string((int)fishmech_temp) + "C").c_str());
+      else {
+        lv_label_set_text(box_distance_val, "ERR");
+      }
+      if (intake2_temp != -1) {
+        lv_label_set_text(box_intake2_val,
+                          (std::to_string((int)intake2_temp) + "C").c_str());
       } else {
-        lv_label_set_text(box_fishmech_val, "ERR");
+        lv_label_set_text(box_intake2_val, "ERR");
       }
 
       if (batteryCharge != -1) {
@@ -1118,20 +1122,20 @@ void task_updui(void* param) {
       } else {
         lv_obj_align(box_m13_val, box_m13, LV_ALIGN_CENTER, -1, -15);
       }
-      // if (ActiveVexNetConnection >= 100) {
-      //   lv_obj_align(box_fishmech_val, box_fishmech, LV_ALIGN_CENTER, 0, -15);
+      // if (ActivedistanceConnection >= 100) {
+      //   lv_obj_align(box_intake2_val, box_intake2, LV_ALIGN_CENTER, 0, -15);
       // } else {
-      //   lv_obj_align(box_fishmech_val, box_fishmech, LV_ALIGN_CENTER, -1, -15);
+      //   lv_obj_align(box_intake2_val, box_intake2, LV_ALIGN_CENTER, -1, -15);
       // }
       if (intake_temp >= 100) {
         lv_obj_align(box_intake_val, box_intake, LV_ALIGN_CENTER, 0, -15);
       } else {
         lv_obj_align(box_intake_val, box_intake, LV_ALIGN_CENTER, -1, -15);
       }
-      if (fishmech_temp >= 100) {
-        lv_obj_align(box_fishmech_val, box_fishmech, LV_ALIGN_CENTER, 0, -15);
+      if (intake2_temp >= 100) {
+        lv_obj_align(box_intake2_val, box_intake2, LV_ALIGN_CENTER, 0, -15);
       } else {
-        lv_obj_align(box_fishmech_val, box_fishmech, LV_ALIGN_CENTER, -1, -15);
+        lv_obj_align(box_intake2_val, box_intake2, LV_ALIGN_CENTER, -1, -15);
       }
 
       /*
@@ -1139,7 +1143,8 @@ void task_updui(void* param) {
        */
 
       // Left Drive Temperature
-      if (drivetrain_left_a_temp < MOTOR_WARNING_TEMP && drivetrain_left_a_temp > 0) {
+      if (drivetrain_left_a_temp < MOTOR_WARNING_TEMP &&
+          drivetrain_left_a_temp > 0) {
         lv_obj_set_style(box_m1, &box_color_temp_normal);
       } else if (drivetrain_left_a_temp < MOTOR_OVERTEMP_LEVEL1) {
         lv_obj_set_style(box_m1, &box_color_temp_warning);
@@ -1155,7 +1160,8 @@ void task_updui(void* param) {
         lv_obj_set_style(box_m1, &box_color_temp_error);
       }
 
-      if (drivetrain_left_b_temp < MOTOR_WARNING_TEMP && drivetrain_left_b_temp > 0) {
+      if (drivetrain_left_b_temp < MOTOR_WARNING_TEMP &&
+          drivetrain_left_b_temp > 0) {
         lv_obj_set_style(box_m2, &box_color_temp_normal);
       } else if (drivetrain_left_b_temp < MOTOR_OVERTEMP_LEVEL1) {
         lv_obj_set_style(box_m2, &box_color_temp_warning);
@@ -1171,7 +1177,8 @@ void task_updui(void* param) {
         lv_obj_set_style(box_m2, &box_color_temp_error);
       }
 
-      if (drivetrain_left_c_temp < MOTOR_WARNING_TEMP && drivetrain_left_c_temp > 0) {
+      if (drivetrain_left_c_temp < MOTOR_WARNING_TEMP &&
+          drivetrain_left_c_temp > 0) {
         lv_obj_set_style(box_m3, &box_color_temp_normal);
       } else if (drivetrain_left_c_temp < MOTOR_OVERTEMP_LEVEL1) {
         lv_obj_set_style(box_m3, &box_color_temp_warning);
@@ -1188,7 +1195,8 @@ void task_updui(void* param) {
       }
 
       // Right Drive Temperature
-      if (drivetrain_right_a_temp < MOTOR_WARNING_TEMP && drivetrain_right_a_temp > 0) {
+      if (drivetrain_right_a_temp < MOTOR_WARNING_TEMP &&
+          drivetrain_right_a_temp > 0) {
         lv_obj_set_style(box_m11, &box_color_temp_normal);
       } else if (drivetrain_right_a_temp < MOTOR_OVERTEMP_LEVEL1) {
         lv_obj_set_style(box_m11, &box_color_temp_warning);
@@ -1204,7 +1212,8 @@ void task_updui(void* param) {
         lv_obj_set_style(box_m11, &box_color_temp_error);
       }
 
-      if (drivetrain_right_b_temp < MOTOR_WARNING_TEMP && drivetrain_right_b_temp > 0) {
+      if (drivetrain_right_b_temp < MOTOR_WARNING_TEMP &&
+          drivetrain_right_b_temp > 0) {
         lv_obj_set_style(box_m12, &box_color_temp_normal);
       } else if (drivetrain_right_b_temp < MOTOR_OVERTEMP_LEVEL1) {
         lv_obj_set_style(box_m12, &box_color_temp_warning);
@@ -1220,7 +1229,8 @@ void task_updui(void* param) {
         lv_obj_set_style(box_m12, &box_color_temp_error);
       }
 
-      if (drivetrain_right_c_temp < MOTOR_WARNING_TEMP && drivetrain_right_c_temp > 0) {
+      if (drivetrain_right_c_temp < MOTOR_WARNING_TEMP &&
+          drivetrain_right_c_temp > 0) {
         lv_obj_set_style(box_m13, &box_color_temp_normal);
       } else if (drivetrain_right_c_temp < MOTOR_OVERTEMP_LEVEL1) {
         lv_obj_set_style(box_m13, &box_color_temp_warning);
@@ -1253,34 +1263,34 @@ void task_updui(void* param) {
         lv_obj_set_style(box_intake, &box_color_temp_error);
       }
 
-      // Fish Mech Temperature
-      if (fishmech_temp < MOTOR_WARNING_TEMP && fishmech_temp > 0) {
-        lv_obj_set_style(box_fishmech, &box_color_temp_normal);
-      } else if (fishmech_temp < MOTOR_OVERTEMP_LEVEL1) {
-        lv_obj_set_style(box_fishmech, &box_color_temp_warning);
-      } else if (fishmech_temp < MOTOR_OVERTEMP_LEVEL2) {
-        lv_obj_set_style(box_fishmech, &box_color_temp_level1);
-      } else if (fishmech_temp < MOTOR_OVERTEMP_LEVEL3) {
-        lv_obj_set_style(box_fishmech, &box_color_temp_level2);
-      } else if (fishmech_temp < MOTOR_OVERTEMP_LEVEL4) {
-        lv_obj_set_style(box_fishmech, &box_color_temp_level3);
-      } else if (fishmech_temp >= MOTOR_OVERTEMP_LEVEL4) {
-        lv_obj_set_style(box_fishmech, &box_color_temp_level4);
+      // Intake2 Temperature
+      if (intake2_temp < MOTOR_WARNING_TEMP && intake2_temp > 0) {
+        lv_obj_set_style(box_intake2, &box_color_temp_normal);
+      } else if (intake2_temp < MOTOR_OVERTEMP_LEVEL1) {
+        lv_obj_set_style(box_intake2, &box_color_temp_warning);
+      } else if (intake2_temp < MOTOR_OVERTEMP_LEVEL2) {
+        lv_obj_set_style(box_intake2, &box_color_temp_level1);
+      } else if (intake2_temp < MOTOR_OVERTEMP_LEVEL3) {
+        lv_obj_set_style(box_intake2, &box_color_temp_level2);
+      } else if (intake2_temp < MOTOR_OVERTEMP_LEVEL4) {
+        lv_obj_set_style(box_intake2, &box_color_temp_level3);
+      } else if (intake2_temp >= MOTOR_OVERTEMP_LEVEL4) {
+        lv_obj_set_style(box_intake2, &box_color_temp_level4);
       } else {
-        lv_obj_set_style(box_fishmech, &box_color_temp_error);
+        lv_obj_set_style(box_intake2, &box_color_temp_error);
       }
 
-      
-
-      // VexNet Status
-      if (vexnet_status == 0) {
-        lv_obj_set_style(box_vexnet, box_green);
-      } else if (vexnet_status == 1) {
-        lv_obj_set_style(box_vexnet, box_yellow);
+      // distance Status
+      if (pros::c::distance_get(SENSOR_PORT_MOGO_DISTANCE) > 15 &&
+          pros::c::distance_get(SENSOR_PORT_MOGO_DISTANCE) < 30) {
+        lv_obj_set_style(box_distance, box_green);
+      } else if (pros::c::distance_get(SENSOR_PORT_MOGO_DISTANCE) < 15 &&
+                 pros::c::distance_get(SENSOR_PORT_MOGO_DISTANCE) > 0) {
+        lv_obj_set_style(box_distance, box_blue);
       } else {
-        lv_obj_set_style(box_vexnet, box_red);
+        lv_obj_set_style(box_distance, box_red);
       }
-      
+
       // Battery Charge
       if (batteryCharge > 50) {
         lv_obj_set_style(box_battery, box_green);
@@ -1298,7 +1308,6 @@ void task_updui(void* param) {
       } else {
         lv_obj_set_style(box_psi, box_red);
       }
-
     }
 
     dataMutex.give();  // Release the mutex
