@@ -8,6 +8,7 @@ ASSET(grab_mogo_txt);
 ASSET(grabFirstRing_txt);
 ASSET(grabSecondRing_txt);
 ASSET(contactBar_txt);
+ASSET(blueLeftEnd_txt);
 
 /**
  * @brief Red Left autonomous code
@@ -39,8 +40,10 @@ void redRight(lemlib::Chassis& chassis, LCHS::Drivetrain& drivetrain) {
   chassis.waitUntilDone();
   drivetrain.mogoGrabber.grab();
   drivetrain.intake.setIntakeSpeedPreset( LCHS::IntakeSpeedPresets::IN); 
-  chassis.moveToPoint(-24, -52, 3000);
-  chassis.moveToPoint(-11, -11, 3000);
+  chassis.moveToPoint(-24, -50, 3000);
+  chassis.moveToPoint(-24,-2, 3000);
+  // chassis.moveToPoint(-11, -11, 3000);
+  // chassis.follow(blueLeftEnd_txt, 4, 2000);
 }
 
 /**
@@ -56,8 +59,8 @@ void blueLeft(lemlib::Chassis& chassis, LCHS::Drivetrain& drivetrain) {
   chassis.waitUntilDone();
   drivetrain.mogoGrabber.grab();
   drivetrain.intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::IN);
-  chassis.moveToPoint(24, -52, 3000);
-  chassis.moveToPoint(11, -11, 3000);
+  chassis.moveToPoint(24, -50, 3000);
+  chassis.moveToPoint(24, -3, 3000);
 }
 
 /**

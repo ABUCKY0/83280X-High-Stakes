@@ -36,57 +36,57 @@ bool LCHS::MobileGoalGrabber::getState() {
 }
 
 void LCHS::MobileGoalGrabber::mobileGoalTaskFunction() {
-  bool test = true;
-  bool grabButtonPressed = false;
-  std::uint32_t grabButtonPressTime = 0;
-  std::uint32_t distanceBelow15Time = 0;
-  std::uint32_t distanceAbove15Time = 0;
+  // bool test = true;
+  // bool grabButtonPressed = false;
+  // std::uint32_t grabButtonPressTime = 0;
+  // std::uint32_t distanceBelow15Time = 0;
+  // std::uint32_t distanceAbove15Time = 0;
 
-  while (true) {
-    std::uint32_t currentTime = pros::millis();
-    std::int32_t distanceReading = distance.get_distance();
+  // while (true) {
+  //   std::uint32_t currentTime = pros::millis();
+  //   std::int32_t distanceReading = distance.get_distance();
 
-    // Check if the distance is below 15mm
-    if (distanceReading < 15) {
-      if (distanceBelow15Time == 0) {
-        distanceBelow15Time = currentTime;
-      } else if (currentTime - distanceBelow15Time >= 100) {
-        grab();
-        distanceBelow15Time = 0;
-      }
-    } else {
-      distanceBelow15Time = 0;
-    }
+  //   // // Check if the distance is below 15mm
+  //   // if (distanceReading < 15) {
+  //   //   if (distanceBelow15Time == 0) {
+  //   //     distanceBelow15Time = currentTime;
+  //   //   } else if (currentTime - distanceBelow15Time >= 100) {
+  //   //     grab();
+  //   //     distanceBelow15Time = 0;
+  //   //   }
+  //   // } else {
+  //   //   distanceBelow15Time = 0;
+  //   // }
 
-    // Check if the distance is above 15mm
-    if (distanceReading > 15) {
-      if (distanceAbove15Time == 0) {
-        distanceAbove15Time = currentTime;
-      } else if (currentTime - distanceAbove15Time >= 150) {
-        release();
-        distanceAbove15Time = 0;
-      }
-    } else {
-      distanceAbove15Time = 0;
-    }
+  //   // // Check if the distance is above 15mm
+  //   // if (distanceReading > 15) {
+  //   //   if (distanceAbove15Time == 0) {
+  //   //     distanceAbove15Time = currentTime;
+  //   //   } else if (currentTime - distanceAbove15Time >= 150) {
+  //   //     release();
+  //   //     distanceAbove15Time = 0;
+  //   //   }
+  //   // } else {
+  //   //   distanceAbove15Time = 0;
+  //   // }
 
-    // Check if the mogo grab button is pressed
-    if (pros::c::controller_get_digital_new_press(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_DIGITAL_R1)) {
-      if (!grabButtonPressed) {
-        grabButtonPressed = true;
-        grabButtonPressTime = currentTime;
-      }
-    } else {
-      grabButtonPressed = false;
-    }
+  //   // // Check if the mogo grab button is pressed
+  //   // if (pros::c::controller_get_digital_new_press(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_DIGITAL_R1)) {
+  //   //   if (!grabButtonPressed) {
+  //   //     grabButtonPressed = true;
+  //   //     grabButtonPressTime = currentTime;
+  //   //   }
+  //   // } else {
+  //   //   grabButtonPressed = false;
+  //   // }
 
-    // Prevent grabbing for 150ms after the button is pressed
-    if (grabButtonPressed && currentTime - grabButtonPressTime < 150) {
-      pros::delay(150 - (currentTime - grabButtonPressTime));
-    }
+  //   // // Prevent grabbing for 150ms after the button is pressed
+  //   // if (grabButtonPressed && currentTime - grabButtonPressTime < 150) {
+  //   //   pros::delay(150 - (currentTime - grabButtonPressTime));
+  //   // }
 
-    pros::delay(30);
-  }
+    pros::delay(200000);
+  // }
 }
 
 void LCHS::MobileGoalGrabber::taskEntry(void *thisPtr) {
