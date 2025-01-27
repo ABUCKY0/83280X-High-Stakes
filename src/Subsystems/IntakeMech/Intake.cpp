@@ -40,10 +40,10 @@ void LCHS::Intake::setIntakeSpeed(int speed) {
 void LCHS::Intake::setIntakeSpeedPreset(LCHS::IntakeSpeedPresets preset) {
   switch (preset) {
   case IntakeSpeedPresets::IN:
-    intakeMotors.move(127);
+    intakeMotors.move(-127);
     break;
   case IntakeSpeedPresets::OUT:
-    intakeMotors.move(-127);
+    intakeMotors.move(127);
     break;
   case IntakeSpeedPresets::SLOW_IN:
     intakeMotors.move(-60);
