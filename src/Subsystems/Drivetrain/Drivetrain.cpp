@@ -93,9 +93,9 @@ void LCHS::Drivetrain::driverControl() {
 
   // # Intake
   if (master.get_digital(CONTROL_BUTTON_INTAKE_IN)) {
-    intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::IN);
-  } else if (master.get_digital(CONTROL_BUTTON_INTAKE_OUT)) {
     intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::OUT);
+  } else if (master.get_digital(CONTROL_BUTTON_INTAKE_OUT)) {
+    intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::IN);
   } else {
     intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::STOP);
   }
@@ -128,11 +128,11 @@ void LCHS::Drivetrain::driverControl() {
   // }
 
   // # Sweeper
-  if (master.get_digital(CONTROL_BUTTON_SWEEPER_OUT)) {
-    sweeperMech.swingout();
-  } else if (master.get_digital(CONTROL_BUTTON_SWEEPER_IN)) {
-    sweeperMech.swingin();
-  }
+  // if (master.get_digital(CONTROL_BUTTON_SWEEPER_OUT)) {
+  //   sweeperMech.swingout();
+  // } else if (master.get_digital(CONTROL_BUTTON_SWEEPER_IN)) {
+  //   sweeperMech.swingin();
+  // }
   if (master.get_digital_new_press(CONTROL_BUTTON_SWEEPER_TOGGLE)) {
     std::cout << "Toggling sweeper\n" << std::flush;
     sweeperAct();
