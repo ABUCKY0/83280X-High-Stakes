@@ -195,10 +195,13 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  while (true) {
-    drivetrain.driverControl();  // Drivetrain.cpp/Drivetrain.hpp
-    pros::delay(20);
+  if (std::string(APPLICATION_ENVIRONMENT).compare("dev") == 0) {
+    // runMatchAuton(0);
   }
+    while (true) {
+      drivetrain.driverControl();  // Drivetrain.cpp/Drivetrain.hpp
+      pros::delay(20);
+    }
 }
 
 
