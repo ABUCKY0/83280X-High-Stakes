@@ -15,8 +15,8 @@
 #include "AutonomousSelector/Selector.hpp"
 #include "Subsystems/Drivetrain/Drivetrain.hpp"
 #include "Vex/things.h"
-#include "pros/rtos.hpp"
 #include "autonomi.hpp"
+#include "pros/rtos.hpp"
 
 // pros::Controller master(CONTROLLER_MASTER);
 // pros::MotorGroup leftdt({MOTOR_PORT_LEFT_A, MOTOR_PORT_LEFT_B});
@@ -198,10 +198,8 @@ void opcontrol() {
   if (std::string(APPLICATION_ENVIRONMENT).compare("dev") == 0) {
     // runMatchAuton(0);
   }
-    while (true) {
-      drivetrain.driverControl();  // Drivetrain.cpp/Drivetrain.hpp
-      pros::delay(20);
-    }
+  while (true) {
+    drivetrain.driverControl();  // Drivetrain.cpp/Drivetrain.hpp
+    pros::delay(10);
+  }
 }
-
-

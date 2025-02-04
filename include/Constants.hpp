@@ -74,10 +74,10 @@ extern lv_obj_t *skillsscr;
 #define MOTOR_PORT_RIGHT_C              3
 
 // * INTAKE
-#define MOTOR_PORT_INTAKE               -4
+#define MOTOR_PORT_INTAKE               14
 
 // * Fish Mech
-#define MOTOR_PORT_INTAKE2            14
+#define MOTOR_PORT_INTAKE2            9
 
 // Legacy Motors Redefinition to please auton selector (to avoid scope creep for the auton selector)
 #define MOTOR_PORT_UNUSED               17

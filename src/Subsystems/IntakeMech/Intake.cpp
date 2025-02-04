@@ -20,6 +20,7 @@ static float kd_down = 0.0f;
  */
 LCHS::Intake::Intake(std::initializer_list<std::int8_t> motors): intakeMotors(motors, pros::v5::MotorGears::blue) {
   std::cout << "Intake Init" << std::endl;
+  intakeMotors.set_current_limit(12000);
 }
 
 /**
@@ -40,10 +41,12 @@ void LCHS::Intake::setIntakeSpeed(int speed) {
 void LCHS::Intake::setIntakeSpeedPreset(LCHS::IntakeSpeedPresets preset) {
   switch (preset) {
   case IntakeSpeedPresets::IN:
-    intakeMotors.move(-127);
+    // intakeMotors.move(-127);
+    intakeMotors.move_voltage(-12000);
     break;
   case IntakeSpeedPresets::OUT:
-    intakeMotors.move(127);
+    // intakeMotors.move(127);
+    intakeMotors.move_voltage(12000);
     break;
   case IntakeSpeedPresets::SLOW_IN:
     intakeMotors.move(-60);
