@@ -32,12 +32,12 @@ BUILD_ENVIRONMENT:=$(shell uname -a | sed 's/[()#]/_/g')
 BUILD_NUMBER:=$(shell cat $(SRCDIR)/AutonomousSelector/BuildInfo/build_number.txt)
 $(shell echo $$(($(BUILD_NUMBER) + 1)) > $(SRCDIR)/AutonomousSelector/BuildInfo/build_number.txt)
 DEVELOPER_NAME:=ABUCKY0
-APPLICATION_ENVIRONMENT:=dev
+APPLICATION_ENVIRONMENT:=comp
 TEAM:=83280X
 TEAM_NAME:=CHA0S
 SEASON_NAME:=High Stakes
 ROBOT_NAME:=Khaos
-COMPETITION_NAME:=CyRidgeOpen
+COMPETITION_NAME:=Districts
 CODEBASE_VERSION:=3.0.0
 # Print build information
 $(info Build Date: $(BUILD_DATE))

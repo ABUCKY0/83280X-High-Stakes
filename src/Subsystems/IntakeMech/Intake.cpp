@@ -42,17 +42,17 @@ void LCHS::Intake::setIntakeSpeedPreset(LCHS::IntakeSpeedPresets preset) {
   switch (preset) {
   case IntakeSpeedPresets::IN:
     // intakeMotors.move(-127);
-    intakeMotors.move_voltage(-12000);
+    intakeMotors.move_voltage(12000);
     break;
   case IntakeSpeedPresets::OUT:
     // intakeMotors.move(127);
-    intakeMotors.move_voltage(12000);
+    intakeMotors.move_voltage(-12000);
     break;
   case IntakeSpeedPresets::SLOW_IN:
-    intakeMotors.move(-60);
+    intakeMotors.move(60);
     break;
   case IntakeSpeedPresets::SLOW_OUT:
-    intakeMotors.move_velocity(60);
+    intakeMotors.move_velocity(-60);
     break;
   case IntakeSpeedPresets::STOP:
     intakeMotors.move_velocity(0);
