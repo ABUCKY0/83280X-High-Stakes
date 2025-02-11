@@ -85,7 +85,7 @@ void blueRight(lemlib::Chassis& chassis, LCHS::Drivetrain& drivetrain) {
   drivetrain.intake.setIntakeSpeedPreset(LCHS::IntakeSpeedPresets::IN);
   chassis.moveToPoint(24, 50, 3000);
   chassis.turnToHeading(180, 2000);
-  chassis.moveToPoint(24, 16k, 3000);
+  chassis.moveToPoint(24, 16, 3000);
   // chassis.turnToHeading(300, 1000);
 }
 
